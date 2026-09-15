@@ -1,0 +1,320 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-15T14:34:30.335587+00:00",
+  "title": "Design System: Wildfire Media Coverage",
+  "extensions": {
+    "colorMeta": {
+      "ember": {
+        "role": "primary",
+        "displayName": "Ember",
+        "canonical": "#E8613C",
+        "tonalRamp": [
+          "#2B0F07",
+          "#4A1B0C",
+          "#6E2913",
+          "#93381A",
+          "#B84824",
+          "#E8613C",
+          "#F4835F",
+          "#FBC0AD"
+        ]
+      },
+      "ember-bright": {
+        "role": "primary",
+        "displayName": "Bright Ember",
+        "canonical": "#F4835F",
+        "tonalRamp": [
+          "#2E1109",
+          "#4F1E10",
+          "#743018",
+          "#9A4322",
+          "#C0592E",
+          "#F4835F",
+          "#F8A98E",
+          "#FDD6C7"
+        ]
+      },
+      "ember-deep": {
+        "role": "primary",
+        "displayName": "Deep Ember",
+        "canonical": "#C0301A",
+        "tonalRamp": [
+          "#250905",
+          "#41100A",
+          "#611810",
+          "#822116",
+          "#A2291C",
+          "#C0301A",
+          "#DB6B56",
+          "#F0B5A9"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#0D0E0F",
+        "tonalRamp": [
+          "#0D0E0F",
+          "#121315",
+          "#1B1E21",
+          "#2A2D30",
+          "#4A4E52",
+          "#9E9891",
+          "#BDB7AF",
+          "#F2EFEA"
+        ]
+      },
+      "surface-raised": {
+        "role": "neutral",
+        "displayName": "Surface Raised",
+        "canonical": "#121315",
+        "tonalRamp": [
+          "#0D0E0F",
+          "#121315",
+          "#1B1E21",
+          "#2A2D30",
+          "#4A4E52",
+          "#6E7276",
+          "#9E9891",
+          "#BDB7AF"
+        ]
+      },
+      "surface-card": {
+        "role": "neutral",
+        "displayName": "Surface Card",
+        "canonical": "#1B1E21",
+        "tonalRamp": [
+          "#0D0E0F",
+          "#121315",
+          "#1B1E21",
+          "#2A2D30",
+          "#4A4E52",
+          "#6E7276",
+          "#9E9891",
+          "#BDB7AF"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Rule",
+        "canonical": "#2A2D30",
+        "tonalRamp": [
+          "#0D0E0F",
+          "#16181A",
+          "#2A2D30",
+          "#3A3E42",
+          "#4A4E52",
+          "#6E7276",
+          "#9E9891",
+          "#BDB7AF"
+        ]
+      },
+      "rule-strong": {
+        "role": "neutral",
+        "displayName": "Rule Strong",
+        "canonical": "#4A4E52",
+        "tonalRamp": [
+          "#0D0E0F",
+          "#1B1E21",
+          "#2A2D30",
+          "#3A3E42",
+          "#4A4E52",
+          "#6E7276",
+          "#9E9891",
+          "#BDB7AF"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper",
+        "canonical": "#F2EFEA",
+        "tonalRamp": [
+          "#2A2823",
+          "#4A4740",
+          "#6E6A61",
+          "#938E84",
+          "#BDB7AF",
+          "#D8D3CB",
+          "#F2EFEA",
+          "#FBFAF8"
+        ]
+      },
+      "paper-dim": {
+        "role": "neutral",
+        "displayName": "Paper Dim",
+        "canonical": "#BDB7AF",
+        "tonalRamp": [
+          "#241F19",
+          "#3F3A33",
+          "#5E584F",
+          "#7D766C",
+          "#9E9891",
+          "#BDB7AF",
+          "#D8D3CB",
+          "#F2EFEA"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted",
+        "canonical": "#9E9891",
+        "tonalRamp": [
+          "#1E1B18",
+          "#35312C",
+          "#4E4941",
+          "#6B655B",
+          "#847E75",
+          "#9E9891",
+          "#BDB7AF",
+          "#DAD5CE"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "The wordmark in the hero. Once per page, at maximum scale."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section openers set in Playfair."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "State names, press headlines, and the large record figures."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Running copy, always capped between 40 and 70 characters."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Uppercase kickers, metadata, coordinates, nav and buttons. Tracked 0.2em to 0.34em."
+      }
+    },
+    "shadows": [],
+    "motion": [],
+    "breakpoints": [
+      {
+        "name": "container",
+        "value": "container-type: inline-size — sizes interpolate with clamp() against cqw rather than snapping at breakpoints"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "CTA Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The header's primary action. Square, hairline-outlined, motionless.",
+      "html": "<a class=\"ds-btn-cta\" href=\"#\">Corrections</a>",
+      "css": ".ds-btn-cta{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 26px;background:transparent;color:#F2EFEA;border:1px solid #4A4E52;border-radius:0;font:600 11px/1 Archivo,system-ui,sans-serif;letter-spacing:.2em;text-transform:uppercase;text-decoration:none}.ds-btn-cta:hover{color:#F4835F;border-color:#F4835F}.ds-btn-cta:focus-visible{outline:3px solid #E8613C;outline-offset:3px}"
+    },
+    {
+      "name": "Nav Link",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "Primary navigation item. Current state carries the ember.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-link\" href=\"#\">The season</a><a class=\"ds-nav-link is-current\" href=\"#\" aria-current=\"page\">States</a><a class=\"ds-nav-link\" href=\"#\">Map</a></nav>",
+      "css": ".ds-nav{display:flex;align-items:center;gap:40px}.ds-nav-link{display:inline-flex;align-items:center;min-height:44px;color:#F2EFEA;font:500 12px/1 Archivo,system-ui,sans-serif;letter-spacing:.2em;text-transform:uppercase;text-decoration:none}.ds-nav-link:hover{color:#F4835F}.ds-nav-link.is-current{color:#E8613C}.ds-nav-link:focus-visible{outline:3px solid #E8613C;outline-offset:3px}"
+    },
+    {
+      "name": "State Record",
+      "kind": "custom",
+      "refersTo": "card-record",
+      "description": "The signature pattern: a hairline-topped ledger row where every figure travels with its provenance.",
+      "html": "<article class=\"ds-record\"><div class=\"ds-record-head\"><h3 class=\"ds-record-state\">Oregon</h3><span class=\"ds-record-window\">Jun — Oct</span></div><p class=\"ds-record-value\">7,876</p><p class=\"ds-record-unit\">Recorded starts</p><p class=\"ds-record-body\">Filed by the Oregon Dept. of Forestry. Large federal-land share means counts are reconciled against two separate agency ledgers.</p><a class=\"ds-record-link\" href=\"#\">Open the filing</a><p class=\"ds-record-coords\">[ 43° 48′ N, 120° 33′ W ]</p></article>",
+      "css": ".ds-record{border-top:1px solid #2A2D30;padding:34px 0;max-width:34rem;font-family:Archivo,system-ui,sans-serif}.ds-record-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px}.ds-record-state{margin:0;font-family:'Playfair Display',Georgia,serif;font-weight:400;font-size:40px;line-height:1.12;color:#F2EFEA}.ds-record-window{font:500 11px/1 Archivo,system-ui,sans-serif;letter-spacing:.26em;text-transform:uppercase;color:#9E9891}.ds-record-value{margin:18px 0 0;font-family:'Playfair Display',Georgia,serif;font-weight:400;font-size:50px;line-height:1;color:#E8613C}.ds-record-unit{margin:8px 0 0;font:500 11px/1 Archivo,system-ui,sans-serif;letter-spacing:.26em;text-transform:uppercase;color:#9E9891}.ds-record-body{margin:20px 0 0;max-width:52ch;font-size:15px;line-height:1.7;color:#BDB7AF}.ds-record-link{display:inline-flex;align-items:center;min-height:44px;margin-top:12px;color:#F2EFEA;font:600 11px/1 Archivo,system-ui,sans-serif;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;border-bottom:1px solid #4A4E52}.ds-record-link:hover{color:#F4835F;border-color:#F4835F}.ds-record-link:focus-visible{outline:3px solid #E8613C;outline-offset:3px}.ds-record-coords{margin:8px 0 0;font:500 11px/1 Archivo,system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#9E9891}"
+    },
+    {
+      "name": "Metric Chip",
+      "kind": "chip",
+      "refersTo": "chip-metric",
+      "description": "Square filter chip that recolours the choropleth by land class. Selected state is ember-filled.",
+      "html": "<div class=\"ds-chips\"><button class=\"ds-chip is-on\" type=\"button\" aria-pressed=\"true\">All land</button><button class=\"ds-chip\" type=\"button\" aria-pressed=\"false\">National parks</button><button class=\"ds-chip\" type=\"button\" aria-pressed=\"false\">Forest</button></div>",
+      "css": ".ds-chips{display:flex;flex-wrap:wrap;gap:8px}.ds-chip{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;background:transparent;color:#9E9891;border:1px solid #2A2D30;border-radius:0;font:600 11px/1 Archivo,system-ui,sans-serif;letter-spacing:.2em;text-transform:uppercase;cursor:pointer}.ds-chip:hover{color:#F4835F;border-color:#4A4E52}.ds-chip.is-on{background:#E8613C;color:#0D0E0F;border-color:#E8613C}.ds-chip:focus-visible{outline:3px solid #E8613C;outline-offset:3px}"
+    },
+    {
+      "name": "Legend Entry",
+      "kind": "custom",
+      "refersTo": "legend-entry",
+      "description": "Square swatch plus band label. Always names the absent band explicitly.",
+      "html": "<ul class=\"ds-legend\"><li><span class=\"ds-sw\" style=\"background:#E8613C\"></span>High<em>5,000 – 7,999</em></li><li><span class=\"ds-sw\" style=\"background:#C0301A\"></span>Extreme<em>8,000 or more</em></li><li><span class=\"ds-sw\" style=\"background:#2A2D30\"></span>No data<em>Not yet reported</em></li></ul>",
+      "css": ".ds-legend{display:flex;flex-wrap:wrap;gap:24px;margin:0;padding:0;list-style:none}.ds-legend li{display:flex;align-items:center;gap:8px;font:500 11px/1 Archivo,system-ui,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#F2EFEA}.ds-sw{display:block;width:14px;height:14px;border-radius:0}.ds-legend em{font-style:normal;letter-spacing:.14em;color:#9E9891}"
+    },
+    {
+      "name": "Drawer Row",
+      "kind": "nav",
+      "refersTo": "drawer-row",
+      "description": "Compact-header navigation row. 58px tall, divided by hairlines.",
+      "html": "<nav class=\"ds-drawer\"><a href=\"#\">The season</a><a href=\"#\" aria-current=\"page\">States</a><a href=\"#\">Map</a><a href=\"#\">Press</a></nav>",
+      "css": ".ds-drawer{display:flex;flex-direction:column;background:#0D0E0F;border-top:1px solid #2A2D30}.ds-drawer a{display:flex;align-items:center;min-height:58px;border-bottom:1px solid #2A2D30;color:#F2EFEA;font:500 12px/1 Archivo,system-ui,sans-serif;letter-spacing:.2em;text-transform:uppercase;text-decoration:none}.ds-drawer a[aria-current]{color:#E8613C}.ds-drawer a:hover{color:#F4835F}.ds-drawer a:focus-visible{outline:3px solid #E8613C;outline-offset:-3px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Night Newsroom",
+    "overview": "The client aggregates two things that normally live apart: what agencies filed, and what the press reported. The system is built as the room where both land after dark — a desk lit low, copy set for reading rather than for scanning, and a single ember of colour marking the thing that is still burning. It is a newsroom, not a dashboard: the work is editorial judgment about a record, not telemetry.\n\nDensity is generous and vertical. Sections breathe at up to 168px of padding and text is capped between 40 and 70 characters, because the brief's first requirement is that information reach every audience. Nothing competes for attention through decoration, because there is none: the entire system carries hierarchy through type, rule, and tonal ground. The surface is flat by construction — no shadow, no radius, no transition exists anywhere in the implementation.\n\nThe restraint is doing argumentative work. The subject is a crisis, and the design refuses to dramatise it, on the theory that an unembellished record is more persuasive than an urgent one. Where the brief asks for active language for engagement, that energy belongs in verbs and in what the page asks the reader to do — never in visual volume.",
+    "keyCharacteristics": [
+      "Absolute flatness: zero border-radius, zero box-shadow, zero transition in the entire implementation",
+      "Depth from three tonal grounds plus 1px hairlines, never from elevation",
+      "One accent, used sparingly, always at a point of attention",
+      "Display serif against a single grotesque; no third family",
+      "Container-query sizing so the layout adapts continuously rather than by breakpoint"
+    ],
+    "rules": [
+      {
+        "name": "The One Ember Rule",
+        "body": "The accent family appears on no more than a few elements per viewport. Its scarcity is what makes it legible as a signal; an interface where several things are ember is an interface where nothing is.",
+        "section": "colors"
+      },
+      {
+        "name": "The Warm Neutral Rule",
+        "body": "No pure white and no pure black in the interface. Text is #F2EFEA, ground is #0D0E0F. #FFFFFF appears only inside data visualisation, where maximum contrast against a filled state is functional.",
+        "section": "colors"
+      },
+      {
+        "name": "The Tracking Ladder Rule",
+        "body": "Letter-spacing and case move together. Uppercase labels are tracked from 0.2em to 0.34em; lowercase running text is tracked at normal. Wide tracking on lowercase body copy is a defect, not a style.",
+        "section": "typography"
+      },
+      {
+        "name": "The Measure Rule",
+        "body": "Every text block declares a ch cap — 40ch for display-adjacent copy, 52–58ch for body, 70ch for fine print. No paragraph runs the full 1480px container.",
+        "section": "typography"
+      },
+      {
+        "name": "The Continuous Scale Rule",
+        "body": "New surfaces size with clamp(min, Ncqw, max) against the inline container. Reach for a media query only for a structural change no clamp can express, and say why.",
+        "section": "layout"
+      },
+      {
+        "name": "The No-Shadow Rule",
+        "body": "Surfaces never lift. To separate two planes, change the tonal ground or draw a hairline. A box-shadow anywhere in this system is a defect.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Still Surface Rule",
+        "body": "The implementation declares no transition and no animation. State changes are instant colour swaps. Motion must be argued for, not assumed.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do size with clamp(min, Ncqw, max) against the inline container so layouts adapt continuously.",
+      "Do separate planes with a tonal ground change or a 1px hairline.",
+      "Do pair wide tracking with uppercase, and only with uppercase.",
+      "Do cap every text block with a ch measure.",
+      "Do keep a figure and its route back to the source in the same component.",
+      "Do state absence explicitly — NO DATA, Not yet reported, 3 of 50 filed — rather than omitting the row.",
+      "Do hold the accessibility floor already shipped: skip link, 3px solid Ember focus ring at 3px offset, 44px minimum targets."
+    ],
+    "donts": [
+      "Don't add border-radius. The system is square everywhere.",
+      "Don't add box-shadow. Depth comes from tone and hairline.",
+      "Don't add transition or animation without an explicit decision; the implementation is motionless by construction.",
+      "Don't introduce a third type family, or set Playfair below Title scale.",
+      "Don't spend the ember on more than a few elements per viewport.",
+      "Don't use pure white or pure black in the interface; #FFFFFF is reserved for data labels.",
+      "Don't fill a gap in the record to balance a composition."
+    ]
+  }
+}

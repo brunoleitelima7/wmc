@@ -1,0 +1,6 @@
+{
+  "files": ["Wildfire Homepage v3 Night.dc.html"],
+  "insertBefore": "</body>",
+  "commentSyntax": "html",
+  "cspChecked": true
+}
