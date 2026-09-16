@@ -8,167 +8,146 @@
 <body>
 <x-dc>
 <helmet>
+<title>Wildfire Media Coverage</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Playfair+Display:wght@400..700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Krub:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/d3@7.9.0/dist/d3.min.js" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/lottie-web@5.12.2/build/player/lottie_light.min.js" integrity="sha384-Vtbz3QbtSBqleuQry6kQy5smig1gPZCXUoTFN7RmN9QW47xpEDsV/J1w0Pw0rDJu" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/gsap@3.13.0/dist/gsap.min.js" integrity="sha384-HOvlOYPIs/zjoIkWUGXkVmXsjr8GuZLV+Q+rcPwmJOVZVpvTSXQChiN4t9Euv9Vc" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/gsap@3.13.0/dist/SplitText.min.js" integrity="sha384-xb96EMJeax+NLXMC88ZBa1xAeAW+kn+horHh/zFlbMLG2UPWhMJJSlv7fi57hS+Q" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/topojson-client@3.1.0/dist/topojson-client.min.js" integrity="sha384-Ukv1p/xTma6P4/2bY5KzWBw+ydSpXmhCMtyciIQVDJ1RmOxtCYNMF1uXT9T63H67" crossorigin="anonymous"></script>
-<style>
-  *, *::before, *::after { box-sizing: border-box; }
-  body { margin: 0; background: #0D0E0F; -webkit-font-smoothing: antialiased; }
-  a { color: #E8613C; text-decoration: underline; text-underline-offset: 4px; }
-  a:hover { color: #F4835F; }
-  *:focus-visible { outline: 3px solid #E8613C; outline-offset: 3px; }
-  input::placeholder { color: #9E9891; opacity: 1; }
-</style>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://unpkg.com/mapbox-gl@3.9.0/dist/mapbox-gl.css" integrity="sha384-GTsgKcJXGSkBp0M68qpxkz9XovzVH0PwSrjYONvkn3tXtySOSq+a14bG2gVJHwQG" crossorigin="anonymous">
+<script src="https://unpkg.com/mapbox-gl@3.9.0/dist/mapbox-gl.js" integrity="sha384-QRI8HEhaDamjVGfoos6X0AB+VVxCE4fAm6jaRZqcMn8mPsbxJvCc8cyG3Wu/+Pyq" crossorigin="anonymous"></script>
 </helmet>
 
-<div style="container-type:inline-size;background:#0D0E0F;color:#F2EFEA;font-family:Archivo,system-ui,sans-serif;overflow-x:hidden">
+<div style="container-type:inline-size;background:#000000;color:#F2EFEA;font-family:Krub,system-ui,sans-serif;overflow-x:hidden">
 
-  <a href="#opening" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden" style-focus="position:static;left:auto;width:auto;height:auto;display:inline-flex;align-items:center;min-height:44px;padding:0 20px;background:#E8613C;color:#0D0E0F;font:600 12px/1 Archivo,system-ui;letter-spacing:.2em;text-transform:uppercase;text-decoration:none">Skip to content</a>
+  <a href="#opening" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden" style-focus="position:static;left:auto;width:auto;height:auto;display:inline-flex;align-items:center;min-height:44px;padding:0 20px;background:#E8613C;color:#000000;font:600 12px/1 Krub,system-ui;letter-spacing:.2em;text-transform:uppercase;text-decoration:none">Skip to content</a>
 
-  <header id="top" style="position:sticky;top:0;z-index:60;background:rgba(13,14,15,0.9);backdrop-filter:blur(12px);border-bottom:1px solid #2A2D30">
-    <div style="width:100%;max-width:1480px;margin:0 auto;padding:0 clamp(20px,4cqw,72px);display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:78px">
-      <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
-        <nav aria-label="Primary" style="flex:1 1 0;display:flex;align-items:center;gap:clamp(12px,2.4cqw,40px)">
-          <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="3">
-            <a href="{{ item.href }}" aria-current="{{ item.current }}" onClick="{{ item.onClick }}" style="display:inline-flex;align-items:center;min-height:44px;font-weight:500;font-size:clamp(11px,0.8cqw,12px);letter-spacing:.2em;text-transform:uppercase;text-decoration:none;color:{{ item.color }}" style-hover="color:#F4835F">{{ item.label }}</a>
-          </sc-for>
-        </nav>
-      </sc-if>
+  <header id="top" style="position:sticky;top:0;z-index:60;background:rgba(0,0,0,0.9);backdrop-filter:blur(12px);border-bottom:1px solid #2A2D30">
+    <div class="wmc-header-bar">
 
-      <a href="#top" style="display:flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;color:#F2EFEA;padding:10px 0">
-        <span style="font-family:'Playfair Display',Georgia,serif;font-weight:400;font-size:clamp(20px,1.8cqw,27px);line-height:1;letter-spacing:.02em">Wildfire</span>
-        <span style="font-weight:500;font-size:clamp(11px,0.72cqw,11px);line-height:1;letter-spacing:.3em;text-transform:uppercase;color:#9E9891">United States</span>
+      <a class="wmc-masthead" href="#top">
+        <span class="wmc-masthead-name">Wildfire</span>
+        <span class="wmc-masthead-sub">Media Coverage</span>
       </a>
 
-      <div style="flex:1 1 0;display:flex;align-items:center;justify-content:flex-end;gap:clamp(10px,1.6cqw,26px)">
-        <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
-          <a href="#records" style="display:inline-flex;align-items:center;min-height:44px;font-weight:500;font-size:clamp(11px,0.8cqw,12px);letter-spacing:.2em;text-transform:uppercase;text-decoration:none;color:#F2EFEA" style-hover="color:#F4835F">Records</a>
-        </sc-if>
-        <a href="#corrections" style="display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 clamp(16px,1.6cqw,26px);background:transparent;color:#F2EFEA;border:1px solid #4A4E52;font:600 11px/1 Archivo,system-ui;letter-spacing:.2em;text-transform:uppercase;text-decoration:none" style-hover="background:#F2EFEA;border-color:#F2EFEA;color:#0D0E0F">Corrections</a>
-        <sc-if value="{{ compact }}" hint-placeholder-val="{{ false }}">
-          <button type="button" aria-expanded="{{ menuOpenStr }}" aria-controls="v3n-nav" onClick="{{ toggleMenu }}" style="position:relative;display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;background:transparent;color:#F2EFEA;border:1px solid #4A4E52;cursor:pointer" style-hover="border-color:#F2EFEA">
-            <span aria-hidden="true" style="display:flex;flex-direction:column;gap:4px;width:16px">
-              <span style="display:block;height:1px;background:#F2EFEA"></span>
-              <span style="display:block;height:1px;background:#F2EFEA"></span>
-              <span style="display:block;height:1px;background:#F2EFEA"></span>
-            </span>
-            <span style="position:absolute;left:-9999px">Menu</span>
-          </button>
-        </sc-if>
+      <div class="wmc-header-right">
+        <nav class="wmc-nav-wide" aria-label="Primary">
+          <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="5">
+            <a class="wmc-nav-item" href="{{ item.href }}" aria-current="{{ item.current }}" onClick="{{ item.onClick }}">{{ item.label }}</a>
+          </sc-for>
+        </nav>
+
+        <span class="wmc-share-status" role="status" data-share-status></span>
+        <button class="wmc-btn wmc-nav-wide-inline" type="button" data-share>Share</button>
+
+        <button class="wmc-nav-toggle" type="button" aria-expanded="{{ menuOpenStr }}" aria-controls="v3n-nav" onClick="{{ toggleMenu }}" style="position:relative;align-items:center;justify-content:center;width:46px;height:46px;background:transparent;color:#F2EFEA;border:1px solid #4A4E52;cursor:pointer">
+          <span aria-hidden="true" style="display:flex;flex-direction:column;gap:4px;width:16px">
+            <span style="display:block;height:1px;background:#F2EFEA"></span>
+            <span style="display:block;height:1px;background:#F2EFEA"></span>
+            <span style="display:block;height:1px;background:#F2EFEA"></span>
+          </span>
+          <span class="wmc-sr">Menu</span>
+        </button>
       </div>
     </div>
 
     <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
-      <nav id="v3n-nav" aria-label="Primary" style="border-top:1px solid #2A2D30;background:#0D0E0F;padding:4px clamp(20px,4cqw,72px) 26px;display:flex;flex-direction:column">
+      <nav id="v3n-nav" class="wmc-menu" aria-label="Primary">
         <sc-for list="{{ menuItems }}" as="item" hint-placeholder-count="5">
-          <a href="{{ item.href }}" aria-current="{{ item.current }}" onClick="{{ item.onClick }}" style="display:flex;align-items:center;min-height:58px;border-bottom:1px solid #2A2D30;font-weight:500;font-size:12px;letter-spacing:.24em;text-transform:uppercase;text-decoration:none;color:{{ item.color }}">{{ item.label }}</a>
+          <a class="wmc-menu-item" href="{{ item.href }}" aria-current="{{ item.current }}" onClick="{{ item.onClick }}">{{ item.label }}</a>
         </sc-for>
+        <span class="wmc-menu-share">
+          <button class="wmc-btn" type="button" data-share>Share</button>
+          <span class="wmc-share-status" role="status" data-share-status></span>
+        </span>
       </nav>
     </sc-if>
   </header>
 
   <main>
-    <section data-screen-label="Hero" style="position:relative;isolation:isolate;min-height:min(88svh,920px);display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;background:#0D0E0F">
-      <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3GxdsKlGUaogeow5akSseF6dWZJ/hf_20260915_125216_f8b7410a-73e5-48f6-b89c-3f249376e8e2.png" alt="A wildfire smoke plume over a forested mountain ridge after dark" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 46%;z-index:-3;filter:brightness(.4) contrast(1.22) saturate(.7)">
-      <span aria-hidden="true" style="position:absolute;inset:0;z-index:-2;background:radial-gradient(120% 80% at 50% 62%,rgba(232,97,60,.22) 0%,rgba(13,14,15,0) 58%)"></span>
-      <span aria-hidden="true" style="position:absolute;inset:0;z-index:-1;background:linear-gradient(to bottom,rgba(13,14,15,.72) 0%,rgba(13,14,15,.38) 32%,rgba(13,14,15,.48) 58%,rgba(13,14,15,.86) 84%,#0D0E0F 100%)"></span>
+    <section id="hero" data-screen-label="Hero" data-rail-label="Top" style="position:relative;isolation:isolate;min-height:calc(100dvh - 79px);display:flex;flex-direction:column;justify-content:center;overflow:hidden;background:#000000">
+      <img src="hero-poster.jpg" alt="A wildfire burning along a forested hillside after dark, with the lights of a town in the valley below" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 46%;z-index:-2;filter:brightness(.4) contrast(1.22) saturate(.7)">
+      
+      <img src="treeline.svg" alt="" aria-hidden="true" style="position:absolute;left:0;bottom:-1px;width:min(70%,1180px);height:auto;z-index:0;pointer-events:none;user-select:none">
+      <video data-hero-video autoplay muted="muted" loop="loop" playsinline="playsinline" preload="metadata" poster="hero-poster.jpg" aria-hidden="true" tabindex="-1" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 46%;z-index:-1;filter:brightness(.4) contrast(1.22) saturate(.7);pointer-events:none"><source src="hero.mp4" type="video/mp4"></video>
 
-      <div style="position:relative;width:100%;max-width:1480px;margin:0 auto;padding:clamp(96px,12cqw,180px) clamp(20px,4cqw,72px) clamp(28px,3cqw,48px);display:flex;flex-direction:column;gap:clamp(18px,2cqw,30px);align-items:flex-start;text-align:left"><h1 style="margin:0;font-family:'Playfair Display',Georgia,serif;font-weight:400;line-height:0.86;letter-spacing:-0.02em;color:#F2EFEA;font-size:clamp(58px,15cqw,232px)">Wildfire</h1><span style="display:flex;flex-wrap:wrap;align-items:center;gap:clamp(14px,1.8cqw,28px);width:100%"><span aria-hidden="true" style="flex:0.4 1 0;min-width:24px;height:1px;background:#E8613C"></span><p style="margin:0;font-weight:500;line-height:1.5;letter-spacing:.34em;text-transform:uppercase;font-size:clamp(11px,0.82cqw,12px);color:#F2EFEA">The 2023 season · 56,580 recorded starts</p></span></div>
-    </section>
-
-    <section id="opening" data-screen-label="Opening" style="padding:clamp(56px,7cqw,120px) 0 clamp(72px,9cqw,160px)">
-      <div style="width:100%;max-width:1480px;margin:0 auto;padding:0 clamp(20px,4cqw,72px);display:flex;flex-direction:column;gap:clamp(26px,3cqw,44px);align-items:center;text-align:center">
-        <p style="margin:0;display:inline-flex;align-items:center;gap:10px;font-weight:600;font-size:11px;line-height:1;letter-spacing:.3em;text-transform:uppercase;color:#9E9891"><span aria-hidden="true" style="display:block;width:5px;height:5px;background:#E8613C"></span>The burned year</p>
-        <h2 style="margin:0;max-width:24ch;font-family:'Playfair Display',Georgia,serif;font-weight:400;font-size:clamp(30px,4cqw,59px);line-height:1.1;letter-spacing:-0.012em;color:#F2EFEA;text-wrap:balance">Fifty-six thousand starts, two and a half million acres &mdash; and a public record that still has holes in it.</h2>
-        <p style="margin:0;max-width:50ch;font-size:clamp(14px,1.02cqw,15px);line-height:1.78;letter-spacing:.005em;color:#9E9891;text-wrap:pretty">This is an index of what agencies actually filed in 2023, and what the press actually reported. Nothing here is modelled or estimated. Where a state filed nothing, it stays blank.</p>
+      <div aria-hidden="true" class="wmc-scroll-hint"><x-import component-from-global-scope="scroll-hint" from="./scroll-hint.js" hint-size="100%,100%"></x-import></div>
+      <div style="position:relative;width:100%;max-width:1480px;margin:0 auto;padding:clamp(64px,8cqw,130px) clamp(20px,4cqw,72px) clamp(28px,3cqw,48px);display:flex;flex-wrap:wrap;gap:clamp(18px,2cqw,30px);align-items:flex-start;text-align:left">
+        <div style="flex:0 1 auto;width:100%;max-width:max(320px,50%);display:flex;flex-direction:column;gap:clamp(18px,2cqw,30px)">
+          <p style="margin:0;font-weight:700;font-size:clamp(11px,0.95cqw,13px);line-height:1;letter-spacing:.24em;text-transform:uppercase;color:#9E9891" data-anim="kicker">Why does it matter</p>
+          <h1 style="margin:0;display:flex;flex-direction:column;gap:clamp(18px,2.4cqw,40px)">
+            <span style="font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:clamp(56px,13cqw,192px);line-height:0.92;letter-spacing:-0.02em;color:#F2EFEA;font-variant-numeric:tabular-nums" data-anim="figure"><span aria-hidden="true" data-count-to="56580">56,580</span><span class="wmc-sr">56,580</span></span>
+            <span style="font-family:Inter,system-ui,sans-serif;font-weight:800;font-size:clamp(28px,4.4cqw,64px);line-height:0.96;letter-spacing:0.005em;text-transform:uppercase;color:#F2EFEA;text-wrap:balance" data-anim="claim">wildfires<span style="color:#9E9891">*</span> in the United States in 2023</span>
+          </h1>
+          <a href="#opening" class="wmc-btn wmc-btn--start" data-anim="cta">Understand the scenario</a>
+        </div>
       </div>
     </section>
-    <section data-screen-label="The season" style="position:relative;isolation:isolate;overflow:hidden;background:#0D0E0F">
+
+    <section id="opening" data-screen-label="Opening" data-rail-label="The scale" style="padding:clamp(56px,7cqw,120px) 0 clamp(72px,9cqw,160px)">
+      <div style="width:100%;max-width:1480px;margin:0 auto;padding:0 clamp(20px,4cqw,72px);display:flex;flex-direction:column;gap:clamp(26px,3cqw,44px);align-items:center;text-align:center">
+        <p style="margin:0;display:inline-flex;align-items:center;gap:10px;font-weight:600;font-size:11px;line-height:1;letter-spacing:.3em;text-transform:uppercase;color:#9E9891" data-reveal="1"><span aria-hidden="true" style="display:block;width:5px;height:5px;background:#E8613C"></span>The burned year</p>
+        <h2 style="margin:0;max-width:29ch;font-family:Inter,system-ui,sans-serif;font-weight:400;font-size:clamp(24px,3.1cqw,44px);line-height:1.1;letter-spacing:-0.012em;color:#F2EFEA;text-wrap:balance" data-lines>Wildfires are becoming increasingly destructive across the US, threatening communities and ecosystems. Understanding the scale of the crisis is the first step to mitigating its impact.</h2>
+        <p style="margin:0;max-width:50ch;font-size:clamp(14px,1.02cqw,15px);line-height:1.78;letter-spacing:.005em;color:#9E9891;text-wrap:pretty" data-reveal="3">This is an index of what agencies actually filed in 2023, and what the press actually reported. Nothing here is modelled or estimated. Where a state filed nothing, it stays blank.</p>
+      </div>
+    </section>
+    <section id="season" data-screen-label="The season" data-rail-label="The season" style="position:relative;isolation:isolate;overflow:hidden;background:#000000">
       <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3GxdsKlGUaogeow5akSseF6dWZJ/hf_20260915_125216_3b823bf0-b4a2-4d6e-ad5a-5c81958c42e8.png" alt="Aerial view of a burn scar at night, scorched ground meeting unburned grass" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;filter:brightness(.34) contrast(1.15) saturate(.45) hue-rotate(-8deg)">
-      <span aria-hidden="true" style="position:absolute;inset:0;z-index:-1;background:linear-gradient(to bottom,#0D0E0F 0%,rgba(13,14,15,.78) 10%,rgba(13,14,15,.5) 26%,rgba(13,14,15,.62) 44%,rgba(13,14,15,.72) 66%,rgba(13,14,15,.86) 86%,#0D0E0F 100%)"></span>
+      <span aria-hidden="true" style="position:absolute;inset:0;z-index:-1;background:linear-gradient(to bottom,#000000 0%,rgba(0,0,0,.78) 10%,rgba(0,0,0,.5) 26%,rgba(0,0,0,.62) 44%,rgba(0,0,0,.72) 66%,rgba(0,0,0,.86) 86%,#000000 100%)"></span>
 
       <div style="position:relative;width:100%;max-width:1480px;margin:0 auto;padding:clamp(120px,15cqw,280px) clamp(20px,4cqw,72px) clamp(56px,7cqw,120px);display:flex;flex-direction:column;gap:clamp(24px,2.8cqw,44px);align-items:stretch">
         <p style="margin:0;font-weight:500;font-size:11px;line-height:1;letter-spacing:.34em;text-transform:uppercase;color:#E8613C">The season</p>
         <div style="display:flex;align-items:center;gap:clamp(16px,2cqw,32px);width:100%">
-          <h2 style="margin:0;font-family:'Playfair Display',Georgia,serif;font-weight:400;font-size:clamp(34px,6cqw,110px);line-height:1;letter-spacing:-0.016em;color:#F2EFEA;white-space:nowrap">May</h2>
-          <span aria-hidden="true" style="flex:1 1 0;min-width:24px;height:1px;background:#E8613C"></span>
-          <h2 style="margin:0;font-family:'Playfair Display',Georgia,serif;font-weight:400;font-size:clamp(34px,6cqw,110px);line-height:1;letter-spacing:-0.016em;color:#F2EFEA;white-space:nowrap">October</h2>
+          <h2 style="margin:0;font-family:Inter,system-ui,sans-serif;font-weight:400;font-size:clamp(34px,6cqw,110px);line-height:1;letter-spacing:-0.016em;color:#F2EFEA;white-space:nowrap">May</h2>
+          <span aria-hidden="true" data-season="rule" style="flex:1 1 0;min-width:24px;height:1px;background:#E8613C;transform-origin:left center"></span>
+          <h2 style="margin:0;font-family:Inter,system-ui,sans-serif;font-weight:400;font-size:clamp(34px,6cqw,110px);line-height:1;letter-spacing:-0.016em;color:#F2EFEA;white-space:nowrap" data-season="end">October</h2>
         </div>
         <span aria-hidden="true" style="display:block;width:100%;height:1px;background:#2A2D30"></span>
       <p style="flex:1 1 min(100%,380px);margin:0;max-width:68ch;font-size:clamp(16px,1.16cqw,17px);line-height:1.82;color:#F2EFEA;text-wrap:pretty">Most of the year's ignitions land in six months. Federal and state crews move between them on a rolling deployment — the same engines, the same hotshot teams, three thousand miles apart in a fortnight. The record below is what those deployments left behind on paper.</p>
       </div>
     </section>
 
-    <section id="records" data-screen-label="State records" style="padding:clamp(72px,9cqw,168px) 0">
+    <section id="records" data-screen-label="State records" data-rail-label="The confirmed states" style="padding:clamp(72px,9cqw,168px) 0">
       <div style="width:100%;max-width:1480px;margin:0 auto;padding:0 clamp(20px,4cqw,72px);display:flex;flex-direction:column;gap:clamp(36px,4.5cqw,72px)">
-        <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px">
-          <h2 style="margin:0;font-family:'Playfair Display',Georgia,serif;font-weight:400;font-size:clamp(28px,3.4cqw,50px);line-height:1.06;letter-spacing:-0.006em;color:#F2EFEA">The confirmed states</h2>
-          <p style="margin:0;font-size:clamp(11px,0.8cqw,12px);line-height:1.6;letter-spacing:.16em;text-transform:uppercase;color:#9E9891">[ 3 of 50 filed · 752 records ]</p>
+        <div class="wmc-section-head">
+          <h2 class="wmc-section-title">The confirmed states</h2>
+          <p class="wmc-section-meta">[ 3 of 50 filed &middot; 752 records ]</p>
         </div>
 
-        <ul style="list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:clamp(28px,3cqw,52px)">
-          <sc-for list="{{ stateCards }}" as="s" hint-placeholder-count="3">
-            <li style="display:flex;flex-direction:column;gap:clamp(16px,1.8cqw,24px);padding-top:clamp(20px,2.2cqw,30px);border-top:1px solid #4A4E52">
-              <span style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:12px">
-                <span style="font-family:'Playfair Display',Georgia,serif;font-weight:400;font-size:clamp(24px,2.3cqw,34px);line-height:1.05;color:#F2EFEA">{{ s.state }}</span>
-                <span style="font-weight:500;font-size:clamp(11px,0.8cqw,12px);letter-spacing:.2em;text-transform:uppercase;color:#9E9891">{{ s.window }}</span>
-              </span>
-              <span style="display:flex;flex-direction:column;gap:6px">
-                <span style="font-family:'Playfair Display',Georgia,serif;font-weight:400;font-size:clamp(40px,4.4cqw,66px);line-height:1;color:#E8613C;font-variant-numeric:tabular-nums lining-nums">{{ s.value }}</span>
-                <span style="font-weight:500;font-size:clamp(11px,0.8cqw,12px);letter-spacing:.24em;text-transform:uppercase;color:#9E9891">Recorded starts</span>
-              </span>
-              <span aria-hidden="true" style="display:block;height:3px;background:#2A2D30">
-                <span style="display:block;height:100%;background:#E8613C;width:{{ s.pct }}"></span>
-              </span>
-              <span style="font-size:clamp(14px,1.05cqw,15px);line-height:1.66;color:#BDB7AF;max-width:40ch;text-wrap:pretty">{{ s.body }}</span>
-              <span style="display:flex;flex-direction:column;gap:10px;margin-top:auto;padding-top:clamp(8px,1cqw,14px)">
-                <a href="#records" style="display:inline-flex;align-items:center;min-height:32px;font-weight:600;font-size:clamp(11px,0.8cqw,12px);letter-spacing:.2em;text-transform:uppercase;color:#F2EFEA;text-decoration:none;border-bottom:1px solid #4A4E52;align-self:flex-start" style-hover="color:#F4835F;border-bottom-color:#F4835F">Open the filing</a>
-                <span style="font-size:clamp(11px,0.8cqw,12px);line-height:1.6;letter-spacing:.14em;text-transform:uppercase;color:#9E9891">{{ s.coords }}</span>
-              </span>
-            </li>
-          </sc-for>
-        </ul>
+        <x-import component-from-global-scope="state-explorer" from="./state-explorer.js" data-filed="{&quot;Texas&quot;: {&quot;value&quot;: 9134, &quot;agency&quot;: &quot;Texas A&M Forest Service&quot;, &quot;lead&quot;: &quot;Greg Abbott&quot;, &quot;window&quot;: &quot;Feb — Aug&quot;}, &quot;California&quot;: {&quot;value&quot;: 8412, &quot;agency&quot;: &quot;CAL FIRE&quot;, &quot;lead&quot;: &quot;Gavin Newsom&quot;, &quot;window&quot;: &quot;May — Nov&quot;}, &quot;Oregon&quot;: {&quot;value&quot;: 7876, &quot;agency&quot;: &quot;Oregon Dept. of Forestry&quot;, &quot;lead&quot;: &quot;Tina Kotek&quot;, &quot;window&quot;: &quot;Jun — Oct&quot;}}" data-total="752" hint-size="100%,620px"></x-import>
       </div>
     </section>
 
-    <section data-screen-label="Quote" style="padding:0 0 clamp(72px,9cqw,160px)">
+    <section id="quote" data-screen-label="Quote" data-rail-label="In their words" style="background:#121315;padding:0 0 clamp(72px,9cqw,160px)">
       <div style="width:100%;max-width:1480px;margin:0 auto;padding:clamp(56px,7cqw,120px) clamp(20px,4cqw,72px) 0;border-top:1px solid #2A2D30;display:flex;flex-direction:column;gap:clamp(24px,3cqw,44px);align-items:center;text-align:center">
-        <span aria-hidden="true" style="font-family:'Playfair Display',Georgia,serif;font-size:clamp(44px,5cqw,76px);line-height:0.4;color:#E8613C">&ldquo;</span>
-        <blockquote style="margin:0;max-width:34ch;font-family:'Playfair Display',Georgia,serif;font-weight:400;font-size:clamp(23px,2.7cqw,40px);line-height:1.38;color:#F2EFEA;text-wrap:pretty">A containment figure is not a measure of safety. It is a measure of the line we have managed to hold.</blockquote>
-        <span style="display:flex;flex-direction:column;gap:8px;align-items:center">
+        <span aria-hidden="true" style="font-family:Inter,system-ui,sans-serif;font-size:clamp(44px,5cqw,76px);line-height:0.4;color:#E8613C">&ldquo;</span>
+        <blockquote data-lines style="margin:0;max-width:34ch;font-family:Inter,system-ui,sans-serif;font-weight:400;font-size:clamp(23px,2.7cqw,40px);line-height:1.38;color:#F2EFEA;text-wrap:pretty">A containment figure is not a measure of safety. It is a measure of the line we have managed to hold.</blockquote>
+        <span data-reveal="quote" style="display:flex;flex-direction:column;gap:8px;align-items:center">
           <span aria-hidden="true" style="display:block;width:28px;height:1px;background:#4A4E52"></span>
           <span style="font-weight:500;font-size:clamp(11px,0.8cqw,12px);letter-spacing:.26em;text-transform:uppercase;color:#9E9891">Incident commander, Oregon Dept. of Forestry</span>
         </span>
       </div>
     </section>
 
-    <section id="map" data-screen-label="Map" style="background:#121315;border-top:1px solid #2A2D30;border-bottom:1px solid #2A2D30;padding:clamp(72px,9cqw,160px) 0">
-      <div style="width:100%;max-width:1480px;margin:0 auto;padding:0 clamp(20px,4cqw,72px);display:flex;flex-direction:column;gap:clamp(40px,5cqw,80px)">
-        <div style="display:flex;flex-direction:column;gap:clamp(14px,1.6cqw,22px);align-items:center;text-align:center">
-          <p style="margin:0;font-weight:500;font-size:clamp(11px,0.82cqw,12px);line-height:1;letter-spacing:.34em;text-transform:uppercase;color:#9E9891">Where it burned</p>
-          <h2 style="margin:0;font-family:'Playfair Display',Georgia,serif;font-weight:400;font-size:clamp(34px,5cqw,78px);line-height:1;letter-spacing:.04em;color:#F2EFEA">TX · CA · OR</h2>
-          <p style="margin:0;max-width:52ch;font-size:clamp(15px,1.15cqw,17px);line-height:1.72;color:#BDB7AF;text-wrap:pretty">Three states filed confirmed 2023 counts. The rest of the map is blank because the record is blank, not because nothing burned there.</p>
+    <section id="map" data-screen-label="Map" data-rail-label="Where it burned" style="background:#000000;border-top:1px solid #2A2D30;border-bottom:1px solid #2A2D30;padding:clamp(72px,9cqw,160px) 0">
+      <div style="width:100%;max-width:1480px;margin:0 auto;padding:0 clamp(20px,4cqw,72px);display:flex;flex-direction:column;gap:clamp(36px,4.5cqw,72px)">
+        <div class="wmc-section-head">
+          <h2 class="wmc-section-title">Where it burned</h2>
+          <p class="wmc-section-meta">[ 4 land classes &middot; illustrative ]</p>
         </div>
 
-        <div style="display:flex;flex-direction:column;gap:clamp(16px,2cqw,26px)">
-          <p id="v3n-metric-label" style="margin:0;font-weight:500;font-size:clamp(11px,0.82cqw,12px);line-height:1;letter-spacing:.26em;text-transform:uppercase;color:#9E9891">Recolour by land class</p>
-          <div role="group" aria-labelledby="v3n-metric-label" style="display:flex;flex-wrap:wrap;gap:0">
-            <sc-for list="{{ metrics }}" as="m" hint-placeholder-count="4">
-              <button type="button" aria-pressed="{{ m.pressed }}" onClick="{{ m.onClick }}" style="display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:0 clamp(16px,1.8cqw,26px);margin:0 -1px -1px 0;background:{{ m.bg }};color:{{ m.fg }};border:1px solid {{ m.edge }};font-weight:600;font-size:11px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer" style-hover="border-color:#F2EFEA;z-index:1">{{ m.label }}</button>
-            </sc-for>
-          </div>
-          <x-import component-from-global-scope="us-choropleth" from="./us-choropleth.js" data-values="{{ metricValues }}" data-thresholds="{{ metricThresholds }}" data-unit="{{ metricUnit }}" data-empty="{{ metricEmpty }}" data-theme="night" data-frame="none" hint-size="100%,560px"></x-import>
-          <p aria-live="polite" style="margin:0;font-size:clamp(13px,1cqw,14px);line-height:1.66;color:#BDB7AF;max-width:64ch">Showing <strong style="font-weight:600;color:#F2EFEA">{{ metricLabel }}</strong> — {{ metricCaption }}</p>
-        </div>
+        <x-import component-from-global-scope="metric-map" from="./metric-map.js" hint-size="100%,620px"></x-import>
 
         <ul style="list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:clamp(24px,3cqw,48px)">
           <sc-for list="{{ heroStats }}" as="s" hint-placeholder-count="3">
             <li style="display:flex;flex-direction:column;gap:clamp(10px,1.2cqw,16px);padding-top:clamp(18px,2cqw,26px);border-top:1px solid #4A4E52">
               <span style="font-weight:500;font-size:clamp(11px,0.82cqw,12px);line-height:1;letter-spacing:.26em;text-transform:uppercase;color:#9E9891">{{ s.label }}</span>
-              <span style="font-family:'Playfair Display',Georgia,serif;font-weight:400;font-size:clamp(32px,3.4cqw,50px);line-height:1;color:#F2EFEA">{{ s.value }}</span>
+              <span style="font-family:Inter,system-ui,sans-serif;font-weight:400;font-size:clamp(32px,3.4cqw,50px);line-height:1;color:#F2EFEA">{{ s.value }}</span>
               <span style="font-size:clamp(13px,1cqw,14px);line-height:1.6;color:#BDB7AF;max-width:32ch">{{ s.note }}</span>
             </li>
           </sc-for>
@@ -176,30 +155,43 @@
       </div>
     </section>
 
-    <section id="press" data-screen-label="Press" style="padding:clamp(72px,9cqw,168px) 0">
+    <section id="press" data-screen-label="Press" data-rail-label="In the press" style="padding:clamp(72px,9cqw,168px) 0">
       <div style="width:100%;max-width:1480px;margin:0 auto;padding:0 clamp(20px,4cqw,72px);display:flex;flex-direction:column;gap:clamp(36px,4.5cqw,72px)">
         <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px">
           <div style="display:flex;flex-direction:column;gap:clamp(12px,1.4cqw,20px)">
             <p style="margin:0;font-weight:500;font-size:clamp(11px,0.82cqw,12px);line-height:1;letter-spacing:.34em;text-transform:uppercase;color:#9E9891">In the press</p>
-            <h2 style="margin:0;font-family:'Playfair Display',Georgia,serif;font-weight:400;font-size:clamp(28px,3.4cqw,50px);line-height:1.06;color:#F2EFEA">What was reported</h2>
+            <h2 style="margin:0;font-family:Inter,system-ui,sans-serif;font-weight:400;font-size:clamp(28px,3.4cqw,50px);line-height:1.06;color:#F2EFEA">What was reported</h2>
           </div>
-          <a href="#press" style="display:inline-flex;align-items:center;min-height:44px;font-weight:600;font-size:clamp(11px,0.8cqw,12px);letter-spacing:.2em;text-transform:uppercase;color:#F2EFEA;text-decoration:none;border-bottom:1px solid #4A4E52" style-hover="color:#F4835F;border-bottom-color:#F4835F">All 752 records</a>
+          <a class="wmc-btn" href="#press">See all</a>
         </div>
 
 
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:clamp(28px,3.5cqw,64px);align-items:stretch">
-          <article style="display:flex;flex-direction:column;gap:clamp(10px,1.1cqw,14px);height:100%"><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3GxdsKlGUaogeow5akSseF6dWZJ/hf_20260915_125216_4c39304f-aa56-475f-a90f-d60c5d446e9a.png" alt="Ash falling over a rural road at night with smoke obscuring the horizon" style="display:block;object-fit:cover;background:#1B1E21;filter:brightness(.52) contrast(1.16) saturate(.62);width:100%;aspect-ratio:1.4;flex:1 1 auto;min-height:0"><span style="flex:0 0 auto;display:flex;flex-direction:column;gap:6px"><span style="font-weight:500;font-size:clamp(11px,0.8cqw,12px);letter-spacing:.26em;text-transform:uppercase;color:#9E9891">Reuters · 14 Sep 2023</span><a href="#press" style="display:flex;align-items:center;min-height:28px;font-family:'Playfair Display',Georgia,serif;font-weight:400;text-decoration:none;text-wrap:pretty;font-size:clamp(17px,1.5cqw,21px);line-height:1.26;color:#F2EFEA" style-hover="color:#F4835F;text-decoration:underline">Record season stretches federal crews thin</a><span style="font-size:clamp(13px,0.96cqw,14px);line-height:1.58;color:#9E9891;max-width:50ch;text-wrap:pretty">Rolling deployments moved the same hotshot teams across four states in a fortnight, leaving gaps in the ledger behind them.</span></span></article>
-
-        <article style="display:flex;flex-direction:column;gap:clamp(10px,1.1cqw,14px);height:100%">
-          <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3GxdsKlGUaogeow5akSseF6dWZJ/hf_20260915_125216_21ba4960-2e52-4421-92d8-f67f85fd49af.png" alt="Close detail of charred pine bark covered in fine white ash" style="display:block;width:100%;aspect-ratio:1.4;object-fit:cover;background:#1B1E21;filter:brightness(.5) contrast(1.2) saturate(.55);flex:1 1 auto;min-height:0">
-          <span style="flex:0 0 auto;display:flex;flex-direction:column;gap:6px">
-            <span style="font-weight:500;font-size:clamp(11px,0.8cqw,12px);letter-spacing:.26em;text-transform:uppercase;color:#9E9891">The Atlantic · 02 Nov 2023</span>
-            <a href="#press" style="display:flex;align-items:center;min-height:28px;font-family:'Playfair Display',Georgia,serif;font-weight:400;font-size:clamp(17px,1.5cqw,21px);line-height:1.26;color:#F2EFEA;text-decoration:none;text-wrap:pretty" style-hover="color:#F4835F;text-decoration:underline">What a containment percentage really tells you</a>
-            <span style="font-size:clamp(13px,0.96cqw,14px);line-height:1.58;color:#9E9891;max-width:50ch;text-wrap:pretty">Ninety-four per cent contained is a statement about perimeter, not about risk — and the two are routinely confused in reporting.</span>
+      <div class="wmc-press-grid">
+        <article class="wmc-press-card">
+          <span class="wmc-press-media">
+            <img class="wmc-press-img" src="https://d8j0ntlcm91z4.cloudfront.net/user_3GxdsKlGUaogeow5akSseF6dWZJ/hf_20260915_125216_4c39304f-aa56-475f-a90f-d60c5d446e9a.png" alt="Ash falling over a rural road at night with smoke obscuring the horizon">
+            <span class="wmc-press-cue" aria-hidden="true"><span>Read full story</span></span>
+          </span>
+          <span style="display:flex;flex-direction:column;gap:6px">
+            <span style="font-weight:500;font-size:clamp(11px,0.8cqw,12px);letter-spacing:.26em;text-transform:uppercase;color:#9E9891">Reuters &middot; 14 Sep 2023</span>
+            <a class="wmc-press-headline" href="#press" style="display:flex;align-items:center;min-height:28px;font-family:Inter,system-ui,sans-serif;font-weight:400;font-size:clamp(17px,1.5cqw,21px);line-height:1.26;text-decoration:none;text-wrap:pretty">Record season stretches federal crews thin</a>
+            <span style="font-size:clamp(13px,0.96cqw,14px);line-height:1.58;color:#9E9891;max-width:50ch;text-wrap:pretty">Rolling deployments moved the same hotshot teams across four states in a fortnight, leaving gaps in the ledger behind them.</span>
           </span>
         </article>
 
-        <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column">
+        <article class="wmc-press-card">
+          <span class="wmc-press-media">
+            <img class="wmc-press-img" src="https://d8j0ntlcm91z4.cloudfront.net/user_3GxdsKlGUaogeow5akSseF6dWZJ/hf_20260915_125216_21ba4960-2e52-4421-92d8-f67f85fd49af.png" alt="Close detail of charred pine bark covered in fine white ash">
+            <span class="wmc-press-cue" aria-hidden="true"><span>Read full story</span></span>
+          </span>
+          <span style="display:flex;flex-direction:column;gap:6px">
+            <span style="font-weight:500;font-size:clamp(11px,0.8cqw,12px);letter-spacing:.26em;text-transform:uppercase;color:#9E9891">The Atlantic &middot; 02 Nov 2023</span>
+            <a class="wmc-press-headline" href="#press" style="display:flex;align-items:center;min-height:28px;font-family:Inter,system-ui,sans-serif;font-weight:400;font-size:clamp(17px,1.5cqw,21px);line-height:1.26;text-decoration:none;text-wrap:pretty">What a containment percentage really tells you</a>
+            <span style="font-size:clamp(13px,0.96cqw,14px);line-height:1.58;color:#9E9891;max-width:50ch;text-wrap:pretty">Ninety-four per cent contained is a statement about perimeter, not about risk &mdash; and the two are routinely confused in reporting.</span>
+          </span>
+        </article>
+
+        <ul class="wmc-press-list" style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column">
           <sc-for list="{{ press }}" as="p" hint-placeholder-count="4">
             <li style="display:flex;flex-direction:column;gap:8px;padding:clamp(18px,2cqw,26px) 0;border-bottom:1px solid #2A2D30">
               <span style="font-weight:500;font-size:clamp(11px,0.8cqw,12px);letter-spacing:.26em;text-transform:uppercase;color:#9E9891">{{ p.source }}</span>
@@ -212,17 +204,17 @@
       </div>
     </section>
 
-    <section id="agencies" data-screen-label="Agencies" style="padding:0 0 clamp(72px,9cqw,168px)">
+    <section id="agencies" data-screen-label="Agencies" data-rail-label="Who filed it" style="background:#121315;padding:0 0 clamp(72px,9cqw,168px)">
       <div style="width:100%;max-width:1480px;margin:0 auto;padding:clamp(56px,7cqw,120px) clamp(20px,4cqw,72px) 0;border-top:1px solid #2A2D30;display:flex;flex-direction:column;gap:clamp(36px,4.5cqw,68px)">
         <div style="display:flex;flex-direction:column;gap:clamp(12px,1.4cqw,20px);max-width:52ch">
           <p style="margin:0;font-weight:500;font-size:clamp(11px,0.82cqw,12px);line-height:1;letter-spacing:.34em;text-transform:uppercase;color:#9E9891">Who filed it</p>
-          <h2 style="margin:0;font-family:'Playfair Display',Georgia,serif;font-weight:400;font-size:clamp(28px,3.4cqw,50px);line-height:1.06;color:#F2EFEA">The responding agencies</h2>
+          <h2 style="margin:0;font-family:Inter,system-ui,sans-serif;font-weight:400;font-size:clamp(28px,3.4cqw,50px);line-height:1.06;color:#F2EFEA">The responding agencies</h2>
         </div>
 
-        <ul style="list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:0 clamp(24px,3cqw,48px)">
+        <ul class="wmc-agencies">
           <sc-for list="{{ agencies }}" as="a" hint-placeholder-count="10">
             <li style="display:flex;flex-direction:column;gap:clamp(12px,1.2cqw,16px);padding:clamp(22px,2.4cqw,32px) 0;border-top:1px solid #2A2D30">
-              <a href="#agencies" style="display:flex;align-items:center;min-height:28px;font-family:'Playfair Display',Georgia,serif;font-weight:400;font-size:clamp(18px,1.5cqw,22px);line-height:1.16;color:#F2EFEA;text-decoration:none;text-wrap:balance" style-hover="color:#F4835F;text-decoration:underline">{{ a.name }}</a>
+              <a href="#agencies" style="display:flex;align-items:center;min-height:28px;font-family:Inter,system-ui,sans-serif;font-weight:400;font-size:clamp(18px,1.5cqw,22px);line-height:1.16;color:#F2EFEA;text-decoration:none;text-wrap:balance" style-hover="color:#F4835F;text-decoration:underline">{{ a.name }}</a>
               <span style="display:flex;flex-direction:column;gap:7px;font-size:clamp(13px,1cqw,14px);line-height:1.5">
                 <a href="#agencies" style="display:flex;align-items:center;min-height:24px;color:#F2EFEA;text-decoration:none" style-hover="color:#F4835F;text-decoration:underline">{{ a.site }}</a>
                 <a href="#agencies" style="display:flex;align-items:center;min-height:24px;color:#F2EFEA;text-decoration:none;font-variant-numeric:tabular-nums" style-hover="color:#F4835F;text-decoration:underline">{{ a.phone }}</a>
@@ -234,55 +226,73 @@
       </div>
     </section>
 
-    <section id="corrections" data-screen-label="Corrections" style="position:relative;isolation:isolate;overflow:hidden;background:#0D0E0F">
+    <section id="corrections" data-screen-label="Corrections" data-rail-label="Corrections" style="position:relative;isolation:isolate;overflow:hidden;background:#000000">
       <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3GxdsKlGUaogeow5akSseF6dWZJ/hf_20260915_125216_f8b7410a-73e5-48f6-b89c-3f249376e8e2.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 80%;z-index:-2;filter:brightness(.34) contrast(1.2) saturate(.6)">
-      <span aria-hidden="true" style="position:absolute;inset:0;z-index:-1;background:linear-gradient(to bottom,#0D0E0F 0%,rgba(13,14,15,.74) 12%,rgba(13,14,15,.58) 38%,rgba(13,14,15,.7) 70%,rgba(13,14,15,.9) 100%)"></span>
+      <span aria-hidden="true" style="position:absolute;inset:0;z-index:-1;background:linear-gradient(to bottom,#000000 0%,rgba(0,0,0,.74) 12%,rgba(0,0,0,.58) 38%,rgba(0,0,0,.7) 70%,rgba(0,0,0,.9) 100%)"></span>
 
       <div style="position:relative;width:100%;max-width:1480px;margin:0 auto;padding:clamp(120px,15cqw,260px) clamp(20px,4cqw,72px) clamp(64px,8cqw,130px);display:flex;flex-direction:column;gap:clamp(24px,3cqw,40px);align-items:center;text-align:center">
-        <h2 style="margin:0;max-width:26ch;font-family:'Playfair Display',Georgia,serif;font-weight:400;font-size:clamp(28px,3.6cqw,54px);line-height:1.12;color:#F2EFEA;text-wrap:pretty">Found something wrong? We fix it in public.</h2>
+        <h2 style="margin:0;max-width:26ch;font-family:Inter,system-ui,sans-serif;font-weight:800;font-size:clamp(26px,3.4cqw,50px);line-height:1.04;letter-spacing:0.005em;text-transform:uppercase;color:#F2EFEA;text-wrap:balance">Found something wrong? We fix it in public.</h2>
         <p style="margin:0;max-width:50ch;font-size:clamp(15px,1.15cqw,17px);line-height:1.72;color:#F2EFEA;text-wrap:pretty">Every correction is logged with the date, the source that triggered it, and the figure it replaced. Nothing is quietly edited.</p>
         <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center">
-          <a href="#corrections" style="display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 30px;background:#C0301A;color:#FFFFFF;border:1px solid #C0301A;font:600 11px/1 Archivo,system-ui;letter-spacing:.22em;text-transform:uppercase;text-decoration:none" style-hover="background:#E8613C;border-color:#E8613C;color:#0D0E0F">File a correction</a>
-          <a href="#corrections" style="display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 30px;background:transparent;color:#F2EFEA;border:1px solid rgba(242,239,234,.6);font:600 11px/1 Archivo,system-ui;letter-spacing:.22em;text-transform:uppercase;text-decoration:none" style-hover="background:#F2EFEA;border-color:#F2EFEA;color:#0D0E0F">Read the method</a>
+          <a href="#corrections" style="display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 30px;background:#C0301A;color:#FFFFFF;border:1px solid #C0301A;font:600 11px/1 Krub,system-ui;letter-spacing:.22em;text-transform:uppercase;text-decoration:none" style-hover="background:#E8613C;border-color:#E8613C;color:#000000">File a correction</a>
+          <a href="#corrections" style="display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 30px;background:transparent;color:#F2EFEA;border:1px solid rgba(242,239,234,.6);font:600 11px/1 Krub,system-ui;letter-spacing:.22em;text-transform:uppercase;text-decoration:none" style-hover="background:#F2EFEA;border-color:#F2EFEA;color:#000000">Read the method</a>
         </div>
       </div>
     </section>
   </main>
 
-  <footer style="background:#0D0E0F;padding:clamp(56px,7cqw,110px) 0 clamp(28px,3cqw,44px)">
-    <div style="width:100%;max-width:1480px;margin:0 auto;padding:0 clamp(20px,4cqw,72px);display:flex;flex-direction:column;gap:clamp(40px,5cqw,76px)">
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(190px,100%),1fr));gap:clamp(28px,3.5cqw,56px)">
-        <sc-for list="{{ footerGroups }}" as="g" hint-placeholder-count="4">
-          <nav aria-label="{{ g.title }}" style="display:flex;flex-direction:column;gap:clamp(12px,1.4cqw,18px)">
-            <p style="margin:0;font-weight:500;font-size:clamp(11px,0.8cqw,12px);line-height:1;letter-spacing:.26em;text-transform:uppercase;color:#9E9891">{{ g.title }}</p>
-            <span style="display:flex;flex-direction:column">
-              <sc-for list="{{ g.links }}" as="l" hint-placeholder-count="4">
-                <a href="{{ l.href }}" style="display:flex;align-items:center;min-height:34px;font-size:clamp(14px,1.05cqw,15px);color:#F2EFEA;text-decoration:none" style-hover="color:#F4835F;text-decoration:underline">{{ l.label }}</a>
-              </sc-for>
-            </span>
-          </nav>
-        </sc-for>
+  <footer class="wmc-footer">
+    <div class="wmc-container wmc-footer-inner">
+
+      <div class="wmc-sources">
+        <h2 class="wmc-sources-title">Wildfire Data Sources &amp; Accuracy</h2>
+        <p>This website is intended to provide an accurate representation of wildfire data from federal and state fire agencies. The data is complex, and thus some errors may have been made. If you find something that is incorrect, please <a href="https://github.com/brunoleitelima7/wmc/issues/new">raise an issue on GitHub</a> and we&rsquo;ll endeavour to fix it quickly.</p>
+        <p>Wildfire data is sourced from incident reports, fire perimeter updates, and air quality monitoring systems. We combine data from USFS, CAL FIRE, BLM, and NWS to provide a unified view of active fires, containment status, and smoke forecasts. If you notice inconsistencies in fire naming, acreage, or containment percentages, please let us know so we can reconcile the data.</p>
+        <p class="wmc-sources-note">All the data sources are listed on the <a href="https://github.com/brunoleitelima7/wmc">source code</a> website.</p>
       </div>
 
-      <div style="display:flex;flex-direction:column;gap:clamp(20px,2.4cqw,32px);padding-top:clamp(28px,3cqw,44px);border-top:1px solid #2A2D30;align-items:center;text-align:center">
-        <p style="margin:0;max-width:40ch;font-family:'Playfair Display',Georgia,serif;font-weight:400;font-size:clamp(19px,1.7cqw,26px);line-height:1.34;color:#F2EFEA">&ldquo;The fire does not read the county line.&rdquo;</p>
-        <p style="margin:0;font-size:clamp(11px,0.8cqw,12px);line-height:1.7;color:#9E9891;max-width:70ch">Text and data licensed CC BY-SA 4.0. Reuse it, build on it, credit it — and tell us what you find.</p>
+      <div class="wmc-footer-bar">
+        <a class="wmc-footer-mark" href="#top">
+          <span class="wmc-footer-mark-name">Wildfire</span>
+          <span class="wmc-footer-mark-sub">Media Coverage</span>
+        </a>
+
+        <nav class="wmc-footer-nav" aria-label="Footer">
+            <a class="wmc-footer-link" href="#top">Home</a>
+            <a class="wmc-footer-link" href="#opening">The scenario</a>
+            <a class="wmc-footer-link" href="#records">States</a>
+            <a class="wmc-footer-link" href="#map">Fire Data</a>
+            <a class="wmc-footer-link" href="#agencies">Fire Agencies</a>
+            <a class="wmc-footer-link" href="#press">Media Appearances</a>
+        </nav>
+
+        <div class="wmc-footer-actions">
+          <a class="wmc-icon-btn" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fbrunoleitelima7.github.io%2Fwmc%2F" aria-label="Share this page on Twitter"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a>
+          <a class="wmc-icon-btn" href="https://github.com/brunoleitelima7/wmc" aria-label="Source code on GitHub"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a>
+          <button class="wmc-btn" type="button" data-share>Share</button>
+          <span class="wmc-share-status" role="status" data-share-status></span>
+        </div>
       </div>
+
+      <p class="wmc-colophon">&copy; 2023 Wildfire Media Coverage. Text and data licensed <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>. Data provided by NIFC and state fire agencies. Full copyright information available <a href="#corrections">here</a>.</p>
+
     </div>
   </footer>
+
+  <x-import component-from-global-scope="section-rail" from="./section-rail.js" hint-size="0px,0px"></x-import>
 </div>
 
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;compact&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;},&quot;activeSection&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;The season&quot;,&quot;States&quot;,&quot;Map&quot;,&quot;Press&quot;,&quot;Agencies&quot;],&quot;default&quot;:&quot;States&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Navbar&quot;},&quot;defaultMetric&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;All land&quot;,&quot;National parks&quot;,&quot;Forest&quot;,&quot;Grassland&quot;],&quot;default&quot;:&quot;All land&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Map&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;compact&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;},&quot;activeSection&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Home&quot;,&quot;The Scenario&quot;,&quot;States&quot;,&quot;Fire Data&quot;,&quot;Fire Agencies&quot;],&quot;default&quot;:&quot;States&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Navbar&quot;},&quot;defaultMetric&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;All land&quot;,&quot;National parks&quot;,&quot;Forest&quot;,&quot;Grassland&quot;],&quot;default&quot;:&quot;All land&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Map&quot;}}">
 class Component extends DCLogic {
   state = { metric: null, active: null, menuOpen: false };
 
   NAV = [
-    { label: "The season", href: "#opening" },
+    { label: "Home", href: "#top" },
+    { label: "The Scenario", href: "#opening" },
     { label: "States", href: "#records" },
-    { label: "Map", href: "#map" },
-    { label: "Press", href: "#press" },
-    { label: "Agencies", href: "#agencies" }
+    { label: "Fire Data", href: "#map" },
+    { label: "Fire Agencies", href: "#agencies" }
   ];
 
   HERO_STATS = [
@@ -369,11 +379,11 @@ class Component extends DCLogic {
     return {
       compact,
       wide: !compact,
-      menuOpen: compact && this.state.menuOpen,
+      menuOpen: this.state.menuOpen,   // a largura quem decide e o CSS, nao esta prop
       menuOpenStr: this.state.menuOpen ? "true" : "false",
       toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })),
 
-      navItems: this.NAV.slice(0, 3).map(navShape),
+      navItems: this.NAV.map(navShape),
       menuItems: this.NAV.map(navShape),
 
       stateCards: this.STATES.map(s => ({
@@ -413,5 +423,252 @@ class Component extends DCLogic {
 }
 
 </script>
+
+<script>
+(function () {
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var FLAG = '__wmcAnimated';
+
+  /* --- hero: cascata de entrada -------------------------------------- */
+  function heroIn() {
+    var keys = ['kicker', 'figure', 'claim', 'cta'];
+    var els = keys.map(function (k) { return document.querySelector('[data-anim="' + k + '"]'); });
+    if (els.some(function (e) { return !e; })) return false;
+    if (els.every(function (e) { return e[FLAG]; })) return true;
+    els.forEach(function (e) { e[FLAG] = true; });
+    /* fromTo, e nao from: .from() le o estado atual como destino, entao se o
+       React troca o no e esta funcao roda de novo sobre um elemento que ja
+       carrega o transform inicial, o destino gravado vira o proprio deslocamento
+       e o elemento fica parado fora do lugar. Com destino explicito o segundo
+       passe pousa no mesmo ponto do primeiro. */
+    gsap.timeline({ defaults: { ease: 'expo.out', duration: 1.1 } })
+      .fromTo(els[0], { y: 14, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.7 })
+      .fromTo(els[1], { y: 44, autoAlpha: 0 }, { y: 0, autoAlpha: 1 }, '-=0.45')
+      .fromTo(els[2], { y: 26, autoAlpha: 0 }, { y: 0, autoAlpha: 1 }, '-=0.85')
+      .fromTo(els[3], { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.8 }, '-=0.7');
+    return true;
+  }
+
+  /* --- contagem do numero da hero -------------------------------------
+     O que esta na tela e uma afirmacao factual, entao a animacao so pode
+     tocar a copia visual:
+       - o valor real fica num span so para leitor de tela, que nunca muda;
+       - a copia que conta e aria-hidden, entao nenhuma tecnologia assistiva
+         chega a ler uma cifra parcial;
+       - o HTML ja nasce com 56,580, entao sem JS o numero certo aparece;
+       - movimento reduzido nao anima, porque digito girando e movimento;
+       - e ha um prazo de seguranca: se o rAF morrer, o numero nao pode ficar
+         congelado numa cifra que nunca foi filada. */
+  function countUp() {
+    var el = document.querySelector('[data-count-to]');
+    if (!el) return false;
+    if (el[FLAG]) return true;
+    el[FLAG] = true;
+
+    var alvo = +el.getAttribute('data-count-to');
+    var fim = alvo.toLocaleString('en-US');
+
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) { el.textContent = fim; return true; }
+
+    /* cubic-bezier(.22,.61,.36,1) — a mesma curva do zoom da imprensa e do traco
+       da trilha, para o movimento da pagina falar uma lingua so. Resolvida por
+       bisseccao: precisa do y em funcao do x, e nao do parametro t. */
+    function curva(x) {
+      function bez(a, b, t) { var u = 1 - t; return 3 * u * u * t * a + 3 * u * t * t * b + t * t * t; }
+      var lo = 0, hi = 1, t = x;
+      for (var i = 0; i < 14; i++) { t = (lo + hi) / 2; if (bez(0.22, 0.36, t) < x) lo = t; else hi = t; }
+      return bez(0.61, 1, t);
+    }
+
+    var espera = 240, dur = 1100, t0 = null;
+    function passo(t) {
+      if (t0 === null) t0 = t;
+      var p = Math.min(1, (t - t0) / dur);
+      el.textContent = Math.round(alvo * curva(p)).toLocaleString('en-US');
+      if (p < 1) requestAnimationFrame(passo); else el.textContent = fim;
+    }
+    setTimeout(function () { requestAnimationFrame(passo); }, espera);   // entra junto com a cascata
+    setTimeout(function () { if (el.textContent !== fim) el.textContent = fim; }, espera + dur + 900);
+    return true;
+  }
+
+  /* --- opening: kicker e parágrafo, revelação simples ----------------- */
+  var io = null;
+  function revealIn() {
+    var els = document.querySelectorAll('[data-reveal]');
+    if (!els.length) return false;
+    var novos = [].filter.call(els, function (e) { return !e[FLAG]; });
+    if (!novos.length) return true;
+    if (!io) {
+      io = new IntersectionObserver(function (ents) {
+        ents.forEach(function (en) {
+          if (!en.isIntersecting) return;
+          io.unobserve(en.target);
+          gsap.from(en.target, { y: 28, autoAlpha: 0, duration: 1.1, ease: 'expo.out' });
+        });
+      }, { rootMargin: '0px 0px -18% 0px' });
+    }
+    novos.forEach(function (e) { e[FLAG] = true; io.observe(e); });
+    return true;
+  }
+
+  /* --- the season: fio e "October" atrelados ao scroll ---------------- */
+  var seasonTl = null, seasonEl = null, seasonEnd = null, sAlvo = 0, sAtual = 0, sLoop = 0;
+
+  function seasonProgress(el) {
+    var r = el.getBoundingClientRect();
+    var ini = innerHeight * 0.9, fim = innerHeight * 0.4;
+    var p = (ini - r.top) / (ini - fim);
+    return p < 0 ? 0 : (p > 1 ? 1 : p);
+  }
+
+  function buildSeason() {
+    var rule = document.querySelector('[data-season="rule"]');
+    var end = document.querySelector('[data-season="end"]');
+    if (!rule || !end) return false;
+    // o runtime troca os nos em momentos diferentes: so reaproveita a timeline
+    // se AMBOS os elementos ainda forem os mesmos que ela referencia
+    if (rule === seasonEl && end === seasonEnd && seasonTl) return true;
+    if (seasonTl) { seasonTl.kill(); seasonTl = null; }
+    seasonEl = rule; seasonEnd = end;
+    // fromTo, e nao from: o handler de resize zera seasonEl e forca a reconstrucao
+    // sobre o MESMO no. Se naquele instante a regua estiver em scaleX 0 — que e o
+    // estado normal enquanto a secao ainda nao foi rolada — o .from() grava 0 como
+    // destino e a linha nunca mais aparece. Destino explicito nao tem esse estado.
+    seasonTl = gsap.timeline({ paused: true })
+      .fromTo(rule, { scaleX: 0 }, { scaleX: 1, duration: 1, ease: "none" })
+      .fromTo(end, { autoAlpha: 0, x: 26 }, { autoAlpha: 1, x: 0, duration: 0.7, ease: "power2.out" }, 0.55);
+    sAlvo = sAtual = seasonProgress(rule);
+    seasonTl.progress(sAtual);
+    return true;
+  }
+
+  function seasonStep() {
+    sLoop = 0;
+    if (!seasonTl || !seasonEl || !seasonEl.isConnected) return;
+    sAlvo = seasonProgress(seasonEl);
+    sAtual += (sAlvo - sAtual) * 0.12;
+    if (Math.abs(sAlvo - sAtual) < 0.0008) sAtual = sAlvo;
+    seasonTl.progress(sAtual);
+    if (sAtual !== sAlvo) sLoop = requestAnimationFrame(seasonStep);
+  }
+
+  /* --- texto linha a linha, atrelado ao scroll ------------------------
+     Serve qualquer elemento com [data-lines] — a abertura e a citacao hoje.
+     Era de elemento unico (querySelector + variaveis soltas); virou uma lista
+     de bandas para nao duplicar maquinaria a cada bloco novo. */
+  var bandas = [], loop = 0;
+
+  function bandProgress(el) {              // 0 quando o topo entra, 1 mais acima
+    var r = el.getBoundingClientRect();
+    var ini = innerHeight * 0.92, fim = innerHeight * 0.22;   // faixa mais longa = mais suave
+    var p = (ini - r.top) / (ini - fim);
+    return p < 0 ? 0 : (p > 1 ? 1 : p);
+  }
+
+  function matarBanda(b) {
+    if (b.split) { try { b.split.revert(); } catch (e) {} }
+    if (b.tl) b.tl.kill();
+  }
+
+  function derrubarBandas() {              // usado no resize, antes de remedir
+    bandas.forEach(matarBanda);
+    bandas = [];
+  }
+
+  function buildLines() {
+    if (!window.SplitText) return false;
+    var els = [].slice.call(document.querySelectorAll('[data-lines]'));
+    if (!els.length) return false;
+
+    // solta bandas cujo no o React trocou ou removeu
+    bandas = bandas.filter(function (b) {
+      var vivo = b.el.isConnected && els.indexOf(b.el) !== -1 && b.el.querySelector('.wmc-line');
+      if (!vivo) matarBanda(b);
+      return vivo;
+    });
+
+    els.forEach(function (el) {
+      for (var i = 0; i < bandas.length; i++) if (bandas[i].el === el) return;
+      var split = new SplitText(el, { type: 'lines', linesClass: 'wmc-line' });
+      // curva suave: num scrub, a própria rolagem já dá o ritmo — expo.out
+      // empilhava o deslocamento todo no primeiro instante.
+      // fromTo, e nao from: o resize reconstroi, e destino explicito nunca
+      // grava o estado deslocado como ponto de chegada.
+      var tl = gsap.timeline({ paused: true })
+        .fromTo(split.lines,
+          { yPercent: 100, autoAlpha: 0 },
+          { yPercent: 0, autoAlpha: 1, duration: 1, ease: 'power1.out', stagger: 0.45 });
+      var p = bandProgress(el);
+      tl.progress(p);
+      bandas.push({ el: el, split: split, tl: tl, alvo: p, atual: p });
+    });
+    return bandas.length === els.length;
+  }
+
+  function anda() {                        // interpola em vez de copiar o scroll cru
+    loop = 0;
+    var seguir = false;
+    bandas.forEach(function (b) {
+      if (!b.el.isConnected) return;
+      b.alvo = bandProgress(b.el);
+      b.atual += (b.alvo - b.atual) * 0.12;        // amortecimento
+      if (Math.abs(b.alvo - b.atual) < 0.0008) b.atual = b.alvo;
+      b.tl.progress(b.atual);
+      if (b.atual !== b.alvo) seguir = true;
+    });
+    if (seguir) loop = requestAnimationFrame(anda);
+  }
+
+  function onScroll() {
+    if (!loop) loop = requestAnimationFrame(anda);
+    if (!sLoop) sLoop = requestAnimationFrame(seasonStep);
+  }
+
+  function tick() {
+    if (!window.gsap) return false;
+    var a = heroIn(), b = revealIn(), c = buildLines(), d = buildSeason(), e = countUp();
+    return a && b && c && d && e;
+  }
+
+  /* --- botao Share ---------------------------------------------------
+     Delegado no documento em vez de preso ao botao: o React troca nos ao
+     re-renderizar, e um listener no proprio botao morreria junto com ele. */
+  addEventListener('click', function (e) {
+    var b = e.target && e.target.closest ? e.target.closest('[data-share]') : null;
+    if (!b) return;
+    // Ha um Share no cabecalho e outro no rodape: o aviso precisa sair ao lado
+    // do que foi clicado, senao aparece fora da vista.
+    var status = (b.parentElement && b.parentElement.querySelector('[data-share-status]'))
+      || document.querySelector('[data-share-status]');
+    var url = location.href;
+    function avisar(txt) {
+      if (!status) return;
+      status.textContent = txt;
+      setTimeout(function () { if (status.isConnected) status.textContent = ''; }, 2400);
+    }
+    if (navigator.share) {
+      navigator.share({ title: document.title, url: url }).catch(function () {});
+      return;
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url)
+        .then(function () { avisar('Link copied'); })
+        .catch(function () { avisar('Copy failed'); });
+      return;
+    }
+    avisar('Copy this page URL');
+  });
+
+  tick();
+  addEventListener('scroll', onScroll, { passive: true });
+  addEventListener('resize', function () { derrubarBandas(); seasonEl = null; seasonEnd = null; buildLines(); buildSeason(); onScroll(); });
+  var obs = new MutationObserver(function () { tick(); });
+  obs.observe(document.body, { childList: true, subtree: true });
+  var n = 0, iv = setInterval(function () { if (tick() || ++n > 60) clearInterval(iv); }, 150);
+  setTimeout(function () { clearInterval(iv); obs.disconnect(); }, 20000);
+})();
+</script>
+
 </body>
 </html>

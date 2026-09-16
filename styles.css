@@ -1,0 +1,976 @@
+/* ==========================================================================
+   Wildfire Media Coverage — styles.css
+   Extraído do artboard. Tokens espelham DESIGN.md; a página segue usando
+   estilos inline por ser um canvas do Claude Design, então este arquivo
+   carrega a base, os tokens e os padrões que realmente se repetem.
+   ========================================================================== */
+
+:root {
+  /* Ground — preto puro, definido pelo cliente (substituiu #0D0E0F) */
+  --ink:             #000000;
+  --surface-raised:  #121315;   /* um degrau acima do ground: a citação e as
+                                   agências. O mapa voltou a ser preto. */
+  --surface-card:    #1B1E21;   /* chips e blocos embutidos */
+
+  /* Fios */
+  --rule:            #2A2D30;   /* divisor padrão */
+  --rule-strong:     #4A4E52;   /* borda que precisa ler como aresta */
+
+  /* Texto */
+  --paper:           #F2EFEA;   /* texto primário — nunca branco puro */
+  --paper-dim:       #BDB7AF;   /* corpo secundário */
+  --muted:           #9E9891;   /* rótulos, legendas, coordenadas */
+
+  /* Acento */
+  --ember:           #E8613C;   /* único acento quente — hsl(13 79% 57%) */
+  --ember-veil:      hsl(13 79% 10%);  /* mesmo matiz e saturação, L derrubado
+                                          para 10%: estado selecionado, nunca ação */
+  --ember-bright:    #F4835F;   /* hover */
+  --ember-deep:      #C0301A;   /* extremo do choropleth — só dado */
+
+  /* Tipografia */
+  /* Par em teste: Inter nos títulos, Krub no corpo.
+     O Archivo trazia eixo de largura e a página usava font-stretch:66% para a
+     voz condensada. Nenhuma das duas famílias novas tem esse eixo, então essas
+     declarações viraram letra morta e foram removidas em vez de ficarem
+     mentindo no arquivo — a voz condensada deixou de existir. */
+  --font-display: Inter, system-ui, sans-serif;
+  --font-body:    Krub, system-ui, sans-serif;
+
+  --type-display:  clamp(56px, 13cqw, 192px);
+  --type-headline: clamp(28px, 4.4cqw, 64px);
+  --type-title:    clamp(24px, 3.1cqw, 44px);
+  --type-body:     clamp(15px, 1.15cqw, 17px);
+  --type-label:    clamp(11px, 0.8cqw, 12px);
+
+  /* Escala espacial */
+  --space-hairline: 1px;
+  --space-xs:  8px;
+  --space-sm:  clamp(10px, 1.6cqw, 26px);
+  --space-md:  clamp(20px, 4cqw, 72px);
+  --space-lg:  clamp(56px, 7cqw, 120px);
+  --space-xl:  clamp(72px, 9cqw, 168px);
+
+  --container:  1480px;
+  --header-h:   79px;           /* min-height 78px + 1px de borda */
+
+  --radius: 0;                  /* o sistema é quadrado em todo lugar */
+}
+
+/* --------------------------------------------------------------- Base --- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--ember);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+a:hover { color: var(--ember-bright); }
+
+/* Piso de acessibilidade: anel de foco visível em todo controle */
+*:focus-visible {
+  outline: 3px solid var(--ember);
+  outline-offset: 3px;
+}
+
+input::placeholder { color: var(--muted); opacity: 1; }
+
+/* ---------------------------------------------------------- Movimento --- */
+/* O sistema era imóvel por construção; vídeo e GSAP foram decisões
+   posteriores do cliente. Quem pede movimento reduzido não recebe nenhum. */
+
+@media (prefers-reduced-motion: reduce) {
+  video[data-hero-video] { display: none; }
+  [data-anim], [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* -------------------------------------------------------- Componentes --- */
+/* Só os padrões com repetição real na página. O resto do artboard usa
+   estilo inline por ser canvas, e converter geraria classes de uso único. */
+
+.wmc-label {                      /* 30 ocorrências de caixa alta tracked */
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: var(--type-label);
+  line-height: 1;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.wmc-label--wide  { letter-spacing: .26em; }
+.wmc-label--widest{ letter-spacing: .34em; }
+.wmc-label--paper { color: var(--paper); }
+.wmc-label--ember { color: var(--ember); }
+
+.wmc-cta {                        /* botão do cabeçalho e da hero */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;               /* acima do piso de 44px para toque */
+  padding: 0 clamp(16px, 1.6cqw, 26px);
+  background: transparent;
+  color: var(--paper);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius);
+  font: 600 11px/1 var(--font-body);
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.wmc-cta:hover {
+  background: var(--paper);
+  border-color: var(--paper);
+  color: var(--ink);
+}
+
+/* Botão primário — a ação que a seção quer que você tome.
+   Preenchimento em ember sobre texto tinta: 6,21:1, passa AA. O inverso
+   (texto papel sobre ember) dá 2,95:1 e reprova, então o rótulo é sempre
+   tinta. O .wmc-cta acima continua sendo o secundário/fantasma; a diferença
+   entre os dois é preenchimento versus contorno, não tamanho de fonte.
+   O alinhamento NÃO entra aqui: um botão pode viver em qualquer contexto, e
+   prender align-self na classe base quebrou o uso no cabeçalho da imprensa,
+   que alinha pelo rodapé. Quem precisa encostar à esquerda pede o modificador. */
+.wmc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;               /* 2px acima do fantasma: hierarquia sem mudar o tipo */
+  padding: 0 clamp(20px, 2cqw, 32px);
+  background: var(--ember);
+  color: var(--ink);
+  border: 1px solid var(--ember);
+  border-radius: var(--radius);
+  font: 600 11px/1 var(--font-body);
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color .18s ease, border-color .18s ease, transform .12s ease;
+}
+
+/* A cor precisa ser repetida: a regra global a:hover troca o texto para
+   --ember-bright, que sobre um preenchimento ember-bright some por completo.
+   O rotulo de um botao preenchido e sempre tinta, em qualquer estado. */
+/* Em coluna flex o padrão é esticar na largura toda; este modificador é o que
+   mantém o botão com a largura do próprio rótulo. */
+.wmc-btn--start { align-self: flex-start; }
+
+.wmc-btn:hover,
+.wmc-btn:focus,
+.wmc-btn:active {
+  color: var(--ink);
+}
+
+.wmc-btn:hover {
+  background: var(--ember-bright);   /* 8,26:1 sobre tinta */
+  border-color: var(--ember-bright);
+}
+
+/* Só deslocamento no clique. --ember-deep daria o escurecimento esperado, mas
+   o DESIGN.md reserva esse token para o extremo do dado e não para interface. */
+.wmc-btn:active { transform: translateY(1px); }
+
+/* O anel fica no respiro de 3px, ou seja, sobre o fundo preto: 18,31:1.
+   Um anel em ember sobre um botão em ember seria invisível. */
+.wmc-btn:focus-visible {
+  outline: 2px solid var(--paper);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wmc-btn { transition: none; }
+  .wmc-btn:active { transform: none; }
+}
+
+.wmc-container {                  /* 11 ocorrências do wrapper centrado */
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding-inline: var(--space-md);
+}
+
+.wmc-rule {                       /* fio de 1px usado como divisor */
+  display: block;
+  width: 100%;
+  height: var(--space-hairline);
+  background: var(--rule);
+  border: 0;
+}
+.wmc-rule--ember { background: var(--ember); }
+
+.wmc-nav-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: var(--type-label);
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--paper);
+}
+.wmc-nav-link:hover { color: var(--ember-bright); }
+.wmc-nav-link[aria-current] { color: var(--ember); }
+
+/* Linhas do título da Opening, geradas pelo SplitText em runtime.
+   O overflow contém o deslocamento vertical de cada linha. */
+.wmc-line { overflow: hidden; will-change: transform, opacity; }
+
+/* --------------------------------------------- Explorador de estados --- */
+/* Mapa em largura total, com o painel de informação sobreposto à direita.
+   Abaixo do ponto de virada o painel empilha, porque sobrepor num contêiner
+   estreito esconderia o mapa inteiro. */
+
+.wmc-explorer { position: relative; width: 100%; }
+
+.wmc-explorer-map {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  min-height: 320px;
+  background: var(--ink);
+}
+
+.wmc-explorer-panel {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 2.4cqw, 32px);
+  min-width: 0;
+  padding-block: clamp(20px, 2.4cqw, 32px);
+}
+
+@container (min-width: 860px) {
+  /* O painel entra no fluxo como coluna da direita e passa a DEFINIR a altura;
+     o mapa é absoluto e preenche o que sobrar. Assim o conteúdo nunca é
+     cortado nem precisa de rolagem interna. */
+  .wmc-explorer {
+    display: grid;
+    grid-template-columns: 1fr min(48%, 620px);
+    min-height: 540px;
+  }
+
+  .wmc-explorer-map {
+    position: absolute;
+    inset: 0;
+    aspect-ratio: auto;
+    min-height: 0;
+  }
+
+  .wmc-explorer-panel {
+    grid-column: 2;
+    position: relative;          /* acima do mapa */
+    padding: clamp(24px, 2.6cqw, 40px);
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: blur(14px);
+    border-left: 1px solid var(--rule);
+  }
+}
+
+/* Controles e atribuição da Mapbox saem de baixo do painel. A atribuição é
+   exigida pelos termos de uso, entao muda de lugar em vez de sumir. */
+.wmc-explorer .mapboxgl-ctrl-bottom-right,
+.wmc-explorer .mapboxgl-ctrl-top-right { right: auto; left: 0; }
+
+/* ── Chips de métrica ────────────────────────────────────────────────────────
+   Wrap livre produzia 3 + 1 (uma órfã na segunda linha). A grade só admite
+   duas formas: 2x2, ou 4 em linha quando há largura. O contêiner é a própria
+   caixa dos chips, não o painel — assim os cqw da tipografia do painel
+   continuam medindo a seção. */
+.wmc-chipbox { container-type: inline-size; }
+
+.wmc-chips {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  /* Se um rótulo quebra em duas linhas, as duas fileiras acompanham a mais
+     alta — sem isso o 2x2 sai com degrau. */
+  grid-auto-rows: 1fr;
+  /* Bordas colapsadas sem margens negativas: cada chip desenha topo+esquerda,
+     a caixa fecha direita+baixo. Vale para as duas formas da grade. */
+  border-right: 1px solid var(--rule-strong);
+  border-bottom: 1px solid var(--rule-strong);
+}
+
+@container (min-width: 660px) {
+  .wmc-chips { grid-template-columns: repeat(4, 1fr); }
+}
+
+.wmc-chip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 10px clamp(10px, 3cqw, 22px);
+  background: transparent;
+  color: var(--paper);
+  border: 0;
+  border-top: 1px solid var(--rule-strong);
+  border-left: 1px solid var(--rule-strong);
+  border-radius: 0;
+  font: 600 11px/1.3 var(--font-body);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  text-align: center;
+  text-wrap: balance;
+  cursor: pointer;
+}
+
+/* Selecionado é estado, não ação — então não pode repetir o bloco sólido do
+   .wmc-btn. Mesmo matiz, L em 10%: ember sobre ele dá 5,25:1 e passa AA.
+   Com L em 20% cairia para 3,84:1 e reprovaria.
+   A borda continua --rule-strong como as demais: no esquema de bordas
+   colapsadas cada chip só desenha topo e esquerda, então tingir a borda
+   deixaria dois lados quentes e dois frios no mesmo retângulo.
+   O peso muda junto com a cor, para o estado não depender só de matiz. */
+.wmc-chip[aria-pressed="true"] {
+  background: var(--ember-veil);
+  color: var(--ember);
+  font-weight: 700;
+}
+
+/* ── In the press ────────────────────────────────────────────────────────────
+   O auto-fit anterior tinha três filhos (duas matérias e a lista). Em duas
+   colunas isso punha a lista numa faixa de 1fr e deixava a outra metade da
+   linha vazia. Aqui as faixas são explícitas e a lista atravessa a linha
+   inteira enquanto não houver espaço para a terceira coluna. */
+.wmc-press-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(28px, 3.5cqw, 64px);
+  align-items: stretch;
+}
+
+.wmc-press-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, 1.1cqw, 14px);
+}
+
+/* Duas colunas: matérias lado a lado, lista ocupando a linha toda embaixo. */
+@container (min-width: 700px) {
+  .wmc-press-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr auto;
+  }
+  /* subgrid: as duas matérias passam a dividir as MESMAS faixas. A imagem de
+     uma não pode mais ficar mais alta que a da outra por causa de um título
+     que quebrou numa linha a mais — era essa a diferença de altura. */
+  .wmc-press-card {
+    display: grid;
+    grid-row: span 2;
+    grid-template-rows: subgrid;
+    row-gap: clamp(10px, 1.1cqw, 14px);
+  }
+  .wmc-press-list { grid-column: 1 / -1; }
+}
+
+/* Três colunas: a lista volta para a direita e, por ser a mais alta, estica a
+   faixa 1fr — é ela que faz a imagem crescer até a altura do bloco da direita. */
+@container (min-width: 1100px) {
+  .wmc-press-grid { grid-template-columns: 1fr 1fr 1fr; }
+  .wmc-press-list { grid-column: auto; grid-row: span 2; }
+}
+
+.wmc-press-media {
+  position: relative;
+  display: block;
+  overflow: hidden;              /* contém o zoom */
+  aspect-ratio: 1.4;             /* vale só quando a faixa não define altura */
+  min-height: 0;
+  background: var(--surface-card);
+}
+
+.wmc-press-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(.52) contrast(1.16) saturate(.62);
+  transition: transform .5s cubic-bezier(.22, .61, .36, 1), filter .4s ease;
+}
+
+/* A cor sai do inline e vem para ca: um color inline venceria a regra de
+   hover por especificidade e o titulo nunca mudaria junto com o cartao. */
+.wmc-press-headline {
+  color: var(--paper);
+  transition: color .25s ease;
+}
+
+/* O cartão inteiro é a área de clique: o ::after do título cobre o cartão.
+   Um único link continua sendo o alvo, então o leitor de tela não ganha
+   destinos repetidos. */
+.wmc-press-headline::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.wmc-press-cue {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity .3s ease;
+  pointer-events: none;
+}
+
+/* Contorno, e não preenchimento ember: a pista é um afordance secundário e o
+   bloco ember sólido pertence ao .wmc-btn. */
+.wmc-press-cue > span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 0 20px;
+  border: 1px solid var(--paper);
+  color: var(--paper);
+  font: 600 11px/1 var(--font-body);
+  letter-spacing: .2em;
+  text-transform: uppercase;
+}
+
+.wmc-press-card:hover .wmc-press-img,
+.wmc-press-card:focus-within .wmc-press-img {
+  transform: scale(1.06);
+  filter: brightness(.3) contrast(1.16) saturate(.62);   /* escurece para a pista ler */
+}
+
+.wmc-press-card:hover .wmc-press-cue,
+.wmc-press-card:focus-within .wmc-press-cue { opacity: 1; }
+
+.wmc-press-card:hover .wmc-press-headline,
+.wmc-press-card:focus-within .wmc-press-headline { color: var(--ember-bright); }
+
+/* O anel pertence ao cartão, não ao texto do título: a área clicável é o
+   cartão inteiro, e o foco precisa mostrar isso. */
+.wmc-press-headline:focus-visible { outline: none; }
+.wmc-press-card:has(.wmc-press-headline:focus-visible) {
+  outline: 2px solid var(--paper);
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wmc-press-img { transition: filter .4s ease; }
+  .wmc-press-card:hover .wmc-press-img,
+  .wmc-press-card:focus-within .wmc-press-img { transform: none; }
+}
+
+/* ── The responding agencies ─────────────────────────────────────────────────
+   São 10 agências. O auto-fit escolhia 4 colunas na largura máxima e deixava
+   4 + 4 + 2, com a última fileira pela metade. Aqui as colunas são explícitas
+   e o topo da escada é 5, que divide os 10 em duas fileiras cheias. */
+.wmc-agencies {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0 clamp(24px, 3cqw, 48px);   /* as fileiras se separam pelo fio do <li> */
+}
+
+/* min-width:0 para o nome longo não empurrar a coluna além da faixa. */
+.wmc-agencies > li { min-width: 0; }
+
+/* A escada só usa divisores de 10 — 1, 2 e 5. Uma faixa de 3 colunas encaixaria
+   bem na largura intermediária, mas deixaria 3 + 3 + 3 + 1, com um órfão e dois
+   vãos vazios na última fileira. Nenhuma largura aqui termina uma fileira pela
+   metade. O limiar de 5 está em 1020px: medido, dá 166px por coluna, sem
+   estouro e com a linha de coordenadas ainda cabendo em uma linha. */
+@container (min-width: 560px)  { .wmc-agencies { grid-template-columns: repeat(2, 1fr); } }
+@container (min-width: 1020px) { .wmc-agencies { grid-template-columns: repeat(5, 1fr); } }
+
+/* ── Trilha de seções ────────────────────────────────────────────────────────
+   Fixa na direita, um traço por seção. Fica dentro do contentor da página, o
+   que permite container query aqui — position:fixed continua preso à viewport
+   porque container-type:inline-size sozinho não cria bloco de contenção. */
+.wmc-rail { display: none; }
+
+@container (min-width: 900px) {
+  /* Abaixo disso a trilha encostaria no texto: some, e o menu do topo assume. */
+  .wmc-rail {
+    display: block;
+    position: fixed;
+    top: 50%;
+    right: clamp(12px, 1.6cqw, 28px);
+    transform: translateY(-50%);
+    z-index: 40;
+  }
+}
+
+.wmc-rail ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* O traço desenha 1px; o min-height é que dá corpo ao alvo. Com o nome fora do
+   fluxo ele deixou de sustentar a altura, e sem isto o link media 21px — abaixo
+   do mínimo de 24px da WCAG 2.5.8. Está exatamente nesse piso: é o espaçamento
+   mais fechado possível sem encolher o alvo abaixo do permitido. */
+.wmc-rail-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-height: 24px;
+  text-decoration: none;
+  color: var(--muted);
+  transition: color .25s ease;
+}
+
+.wmc-rail-tick {
+  display: block;
+  width: 18px;
+  height: 1px;
+  background: currentColor;
+  transition: width .35s cubic-bezier(.22, .61, .36, 1);
+}
+
+/* O nome fica no DOM o tempo todo — só a opacidade muda — para continuar
+   sendo o nome acessível do link mesmo quando não está à vista. */
+/* Fora do fluxo de propósito. No fluxo, o nome — que existe sempre, só
+   invisível — dava 227px de largura a cada link, e essa faixa transparente
+   cobria o conteúdo da página interceptando o mouse. Absoluto, o link volta a
+   medir o que o traço mede. */
+.wmc-rail-name {
+  position: absolute;
+  right: calc(100% + 12px);
+  top: 50%;
+  font: 600 11px/1 var(--font-body);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding: 7px 11px;
+  background: rgba(0, 0, 0, .82);   /* a trilha passa por cima de foto e vídeo */
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  transform: translateY(-50%) translateX(8px);
+  transition: opacity .25s ease, transform .25s ease;
+  pointer-events: none;
+}
+
+.wmc-rail-link:hover,
+.wmc-rail-link:focus-visible { color: var(--paper); }
+
+.wmc-rail-link:hover .wmc-rail-tick,
+.wmc-rail-link:focus-visible .wmc-rail-tick { width: 30px; }
+
+.wmc-rail-link:hover .wmc-rail-name,
+.wmc-rail-link:focus-visible .wmc-rail-name { opacity: 1; transform: translateY(-50%); }
+
+.wmc-rail-link:focus-visible {
+  outline: 2px solid var(--paper);
+  outline-offset: 4px;
+}
+
+.wmc-rail-link[aria-current] { color: var(--ember); }
+.wmc-rail-link[aria-current] .wmc-rail-tick { width: 36px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .wmc-rail-link, .wmc-rail-tick, .wmc-rail-name { transition: none; }
+}
+
+/* ── Footer ──────────────────────────────────────────────────────────────── */
+.wmc-footer {
+  background: var(--ink);
+  border-top: 1px solid var(--rule);
+  padding-block: clamp(56px, 7cqw, 110px) clamp(28px, 3cqw, 44px);
+}
+
+.wmc-footer-inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(40px, 5cqw, 72px);
+}
+
+/* Fontes e precisão ---------------------------------------------------
+   Bloco reaproveitado em várias páginas: não depende do rodapé nem de nenhum
+   ancestral além de um contêiner de consulta. Para levá-lo a outra página
+   bastam a marcação .wmc-sources e este arquivo.
+
+   Ficou como marcação estática, e não como componente por <x-import> como o
+   mapa e a trilha: é um aviso de precisão de dado, o tipo de conteúdo que não
+   pode sumir se o JavaScript falhar.
+
+   O layout resolve o vazio à direita — a prosa corria em coluna única de 72ch
+   e sobrava metade do contêiner. */
+.wmc-sources {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(14px, 1.6cqw, 22px);
+}
+
+/* Duas colunas de prosa; o título e a nota curta atravessam a linha inteira. */
+@container (min-width: 720px) {
+  .wmc-sources {
+    grid-template-columns: 1fr 1fr;
+    column-gap: clamp(28px, 3.5cqw, 64px);
+    row-gap: clamp(18px, 2cqw, 30px);
+  }
+  .wmc-sources-title,
+  .wmc-sources-note { grid-column: 1 / -1; }
+}
+
+/* O título sai para uma coluna própria à esquerda e vira rótulo de margem. */
+@container (min-width: 1100px) {
+  .wmc-sources {
+    grid-template-columns: minmax(0, 0.72fr) minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .wmc-sources-title {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: start;
+    padding-right: clamp(20px, 2cqw, 40px);
+  }
+  .wmc-sources-note { grid-column: 2 / -1; }
+}
+
+/* Bloco dentro do rodapé, não uma seção da página: segue a voz de painel.
+   Ver a regra das duas vozes em .wmc-panel-title. */
+.wmc-sources-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(19px, 2cqw, 30px);
+  line-height: 1.08;
+  letter-spacing: .012em;
+  text-transform: uppercase;
+  color: var(--paper);
+}
+
+/* O wireframe corre o texto na largura inteira, o que a 1480px daria umas 130
+   letras por linha. A medida fica em 72ch, dentro da faixa legível e alinhada
+   com o resto da página, que já limita todo bloco de leitura. */
+.wmc-sources p {
+  margin: 0;
+  max-width: 68ch;              /* só morde na coluna única; nas grades a faixa manda */
+  font-size: clamp(14px, 1.05cqw, 16px);
+  line-height: 1.72;
+  color: var(--paper-dim);
+  text-wrap: pretty;
+}
+
+.wmc-sources a { color: var(--paper); text-decoration-color: var(--rule-strong); }
+.wmc-sources a:hover { color: var(--ember-bright); }
+
+/* Barra: marca, navegação e ações ------------------------------------- */
+.wmc-footer-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(20px, 2.6cqw, 40px);
+  padding-top: clamp(28px, 3cqw, 44px);
+  border-top: 1px solid var(--rule);
+}
+
+.wmc-footer-mark {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-decoration: none;
+  color: var(--paper);
+}
+.wmc-footer-mark-name {
+  font-family: var(--font-display);
+  font-size: clamp(19px, 1.7cqw, 25px);
+  line-height: 1;
+  letter-spacing: .02em;
+}
+.wmc-footer-mark-sub {
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.wmc-footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(14px, 1.8cqw, 32px);
+}
+
+.wmc-footer-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: clamp(14px, 1.05cqw, 15px);
+  color: var(--paper);
+  text-decoration: none;
+}
+.wmc-footer-link:hover { color: var(--ember-bright); }
+
+.wmc-footer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Quadrado, como o resto do sistema; o ícone herda a cor por currentColor. */
+.wmc-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius);
+  color: var(--paper);
+  text-decoration: none;
+  transition: border-color .2s ease, color .2s ease;
+}
+.wmc-icon-btn:hover { color: var(--ember-bright); border-color: var(--ember-bright); }
+.wmc-icon-btn:focus-visible { outline: 2px solid var(--paper); outline-offset: 3px; }
+
+/* Só ocupa espaço quando tem o que dizer. */
+.wmc-share-status {
+  font: 500 11px/1 var(--font-body);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.wmc-share-status:empty { display: none; }
+
+.wmc-colophon {
+  margin: 0;
+  font-size: clamp(11px, 0.82cqw, 12px);
+  line-height: 1.7;
+  color: var(--muted);
+  max-width: 88ch;
+}
+.wmc-colophon a { color: var(--muted); }
+.wmc-colophon a:hover { color: var(--ember-bright); }
+
+/* Visível só para leitor de tela. Fica no fluxo do texto (clip, não left:-9999px)
+   para não arrastar a caixa da página para fora. */
+.wmc-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Hierarquia de títulos ───────────────────────────────────────────────────
+   Duas vozes, uma regra:
+     Cinzel    → título de SEÇÃO da página
+     Archivo condensado pesado em caixa alta → título de PAINEL, de qualquer
+       bloco aninhado dentro de uma seção
+
+   Antes os dois níveis eram a mesma serifada em corpos vizinhos (50px contra 40px no
+   máximo), então "The confirmed states" e "Wildfire incidents by state" liam
+   como irmãos e não como título e subtítulo. Mudar só o corpo não resolveria:
+   o que separa é a voz. O registro condensado não é novo — é o mesmo da claim
+   da hero, que já existe na página. */
+.wmc-panel-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(19px, 2cqw, 30px);
+  line-height: 1.08;
+  letter-spacing: .012em;
+  text-transform: uppercase;
+  color: var(--paper);
+  text-wrap: balance;
+}
+
+/* ── Cabeçalho de seção ──────────────────────────────────────────────────────
+   As duas seções de mapa faziam a mesma coisa com marcações diferentes: uma
+   tinha <h2> e linha de meta, a outra só um kicker e nenhum cabeçalho — e por
+   isso o título do painel dela era <h2>, ocupando o nível que faltava acima.
+   Aqui os dois níveis ficam fixos: <h2> é a seção, <h3> é o painel. */
+.wmc-section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.wmc-section-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(28px, 3.4cqw, 50px);
+  line-height: 1.06;
+  letter-spacing: -0.01em;
+  color: var(--paper);
+}
+
+.wmc-section-meta {
+  margin: 0;
+  font-size: clamp(11px, 0.8cqw, 12px);
+  line-height: 1.6;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Caixa da pista de rolagem. O <div> fica vazio do ponto de vista do React; o
+   SVG vive dentro do <x-import>, fora do alcance da reconciliação. */
+.wmc-scroll-hint {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(20px, 2.6cqw, 40px);
+  transform: translateX(-50%);
+  width: clamp(40px, 3.4cqw, 56px);
+  height: clamp(40px, 3.4cqw, 56px);
+  z-index: 1;
+  pointer-events: none;
+  opacity: .85;
+}
+
+/* ── Cabeçalho: navegação larga contra menu ──────────────────────────────────
+   Antes a escolha vinha da propriedade `compact` do canvas, que é manual — a
+   página não a detectava. O resultado é que a 375px o cabeçalho largo continuava
+   montado e o botão à direita saía 175px para fora da tela.
+   Agora quem decide é a largura. O limiar de 800px foi medido: a 780px a
+   navegação termina a 24px da marca central, que é o ponto de colisão. */
+.wmc-nav-wide   { display: none; }
+/* O display precisa morar aqui, e nao no atributo style do botão: um display
+   inline venceria a consulta por especificidade e o hambúrguer apareceria
+   junto com a navegação larga. */
+.wmc-nav-toggle { display: inline-flex; }
+
+/* O Share tambem some do cabecalho no estreito: ele reaparece dentro do menu,
+   onde ha espaco para ele sem disputar com a marca. */
+.wmc-nav-wide-inline { display: none; }
+
+@container (min-width: 800px) {
+  .wmc-nav-wide        { display: flex; }
+  .wmc-nav-wide-inline { display: inline-flex; }
+  .wmc-nav-toggle      { display: none; }
+}
+
+/* --------------------------------------------------- Barra do cabeçalho --- */
+/* Marca à esquerda, navegação e ação à direita — as duas pontas, sem a marca
+   centrada que havia antes. */
+.wmc-header-bar {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding-inline: var(--space-md);
+  min-height: 78px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.wmc-masthead {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;      /* alinha pela esquerda, não pelo centro */
+  gap: 4px;
+  padding-block: 10px;
+  text-decoration: none;
+  color: var(--paper);
+}
+.wmc-masthead-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(19px, 1.7cqw, 25px);
+  line-height: 1;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+}
+.wmc-masthead-sub {
+  font-weight: 500;
+  font-size: clamp(10px, 0.72cqw, 11px);
+  line-height: 1;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.wmc-header-right {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 1.8cqw, 28px);
+}
+
+.wmc-nav-wide {
+  align-items: center;
+  gap: clamp(12px, 2.2cqw, 34px);
+}
+
+/* O item ativo ganha um fio embaixo, além da cor: estado que não depende só
+   de matiz. */
+.wmc-nav-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-weight: 500;
+  font-size: clamp(11px, 0.8cqw, 12px);
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--paper);
+}
+.wmc-nav-item:hover { color: var(--ember-bright); }
+.wmc-nav-item[aria-current] { color: var(--ember); }
+.wmc-nav-item[aria-current]::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 8px;
+  height: 2px;
+  background: var(--ember);
+}
+
+/* --------------------------------------------------------- Menu estreito --- */
+.wmc-menu {
+  border-top: 1px solid var(--rule);
+  background: var(--ink);
+  padding: 4px var(--space-md) 26px;
+  display: flex;
+  flex-direction: column;
+}
+
+.wmc-menu-item {
+  display: flex;
+  align-items: center;
+  min-height: 58px;
+  border-bottom: 1px solid var(--rule);
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--paper);
+}
+.wmc-menu-item[aria-current] { color: var(--ember); }
+
+.wmc-menu-share {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 22px;
+}
