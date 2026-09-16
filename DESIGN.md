@@ -1,8 +1,8 @@
 ---
 name: Wildfire Media Coverage
-description: A night newsroom for the public record of US wildfire — hairline-ruled, motionless, lit by a single ember.
+description: A night newsroom for the public record of US wildfire — hairline-ruled, square, lit by a single ember.
 colors:
-  ink: "#0D0E0F"
+  ink: "#000000"
   surface-raised: "#121315"
   surface-card: "#1B1E21"
   rule: "#2A2D30"
@@ -13,37 +13,68 @@ colors:
   ember: "#E8613C"
   ember-bright: "#F4835F"
   ember-deep: "#C0301A"
+  ember-veil: "#2E0E05"
+  chart-slack: "#595D62"
 typography:
   display:
-    fontFamily: "Playfair Display, Georgia, serif"
-    fontSize: "clamp(58px, 15cqw, 232px)"
-    fontWeight: 400
-    lineHeight: 0.82
-    letterSpacing: "-0.01em"
-  headline:
-    fontFamily: "Playfair Display, Georgia, serif"
-    fontSize: "clamp(34px, 5cqw, 78px)"
-    fontWeight: 400
-    lineHeight: 1.06
-    letterSpacing: "normal"
-  title:
-    fontFamily: "Playfair Display, Georgia, serif"
+    fontFamily: "Inter, system-ui, sans-serif"
+    fontSize: "clamp(56px, 13cqw, 192px)"
+    fontWeight: 800
+    lineHeight: 0.92
+    letterSpacing: "-0.03em"
+  hero-claim:
+    fontFamily: "Inter, system-ui, sans-serif"
+    fontSize: "clamp(28px, 3.6cqw, 56px)"
+    fontWeight: 800
+    lineHeight: 1.04
+    letterSpacing: "-0.015em"
+  section-title:
+    fontFamily: "Inter, system-ui, sans-serif"
     fontSize: "clamp(28px, 3.4cqw, 50px)"
     fontWeight: 400
-    lineHeight: 1.12
-    letterSpacing: "normal"
+    lineHeight: 1.06
+    letterSpacing: "-0.01em"
+  panel-title:
+    fontFamily: "Inter, system-ui, sans-serif"
+    fontSize: "clamp(19px, 2cqw, 30px)"
+    fontWeight: 800
+    lineHeight: 1.08
+    letterSpacing: "0.012em"
+    textTransform: "uppercase"
   body:
-    fontFamily: "Archivo, system-ui, sans-serif"
+    fontFamily: "Krub, system-ui, sans-serif"
     fontSize: "clamp(15px, 1.15cqw, 17px)"
     fontWeight: 400
-    lineHeight: 1.7
+    lineHeight: 1.72
     letterSpacing: "normal"
-  label:
-    fontFamily: "Archivo, system-ui, sans-serif"
+  label-rotulo:
+    fontFamily: "Krub, system-ui, sans-serif"
+    fontSize: "clamp(11px, 0.8cqw, 12px)"
+    fontWeight: 500
+    lineHeight: 1.6
+    letterSpacing: "0.24em"
+    textTransform: "uppercase"
+  label-controle:
+    fontFamily: "Krub, system-ui, sans-serif"
+    fontSize: "11px"
+    fontWeight: 600
+    lineHeight: 1
+    letterSpacing: "0.20em"
+    textTransform: "uppercase"
+  label-navegacao:
+    fontFamily: "Krub, system-ui, sans-serif"
     fontSize: "clamp(11px, 0.8cqw, 12px)"
     fontWeight: 500
     lineHeight: 1
-    letterSpacing: "0.2em"
+    letterSpacing: "0.20em"
+    textTransform: "uppercase"
+  label-assinatura:
+    fontFamily: "Krub, system-ui, sans-serif"
+    fontSize: "11px"
+    fontWeight: 500
+    lineHeight: 1
+    letterSpacing: "0.30em"
+    textTransform: "uppercase"
 rounded:
   none: "0"
 spacing:
@@ -53,172 +84,403 @@ spacing:
   md: "clamp(20px, 4cqw, 72px)"
   lg: "clamp(56px, 7cqw, 120px)"
   xl: "clamp(72px, 9cqw, 168px)"
+sizing:
+  container: "1480px"
+  header-h: "79px"
 components:
   button-primary:
-    backgroundColor: "{colors.ink}"
-    textColor: "{colors.paper}"
-    typography: "{typography.label}"
+    backgroundColor: "{colors.ember}"
+    textColor: "{colors.ink}"
+    borderColor: "{colors.ember}"
+    typography: "{typography.label-controle}"
     rounded: "{rounded.none}"
-    padding: "0 clamp(16px, 1.6cqw, 26px)"
-    height: "46px"
-  button-primary-hover:
-    backgroundColor: "{colors.ink}"
-    textColor: "{colors.ember-bright}"
-  nav-link:
+    padding: "0 clamp(20px, 2cqw, 32px)"
+    minHeight: "48px"
+  button-ghost:
+    backgroundColor: "transparent"
     textColor: "{colors.paper}"
-    typography: "{typography.label}"
+    borderColor: "{colors.rule-strong}"
+    typography: "{typography.label-controle}"
     rounded: "{rounded.none}"
-    height: "44px"
-  nav-link-hover:
-    textColor: "{colors.ember-bright}"
-  nav-link-current:
+    padding: "0 clamp(20px, 2cqw, 32px)"
+    minHeight: "48px"
+  nav-item:
+    textColor: "{colors.paper}"
+    typography: "{typography.label-navegacao}"
+    minHeight: "44px"
+  nav-item-current:
     textColor: "{colors.ember}"
-  card-record:
-    backgroundColor: "{colors.ink}"
+  chip:
+    backgroundColor: "transparent"
     textColor: "{colors.paper}"
-    rounded: "{rounded.none}"
-    padding: "clamp(20px, 2.4cqw, 34px) 0"
+    borderColor: "{colors.rule-strong}"
+    typography: "{typography.label-controle}"
+    minHeight: "46px"
+  chip-selected:
+    backgroundColor: "{colors.ember-veil}"
+    textColor: "{colors.ember}"
+    fontWeight: 700
+  table-cell-head:
+    textColor: "{colors.muted}"
+    typography: "{typography.label-rotulo}"
+    fontWeight: 600
+    borderBottomColor: "{colors.rule-strong}"
+    padding: "14px 18px 14px 0"
+  table-cell:
+    textColor: "{colors.paper}"
+    borderBottomColor: "{colors.rule}"
+    padding: "14px 18px 14px 0"
 ---
 
 # Design System: Wildfire Media Coverage
+
+> **Procedência.** O desenho veio primeiro: os wireframes de baixa fidelidade
+> foram feitos no Figma e é deles que saíram as páginas. A página **Design** do
+> mesmo arquivo é a versão de alta fidelidade — tokens, componentes e telas.
+> Este documento descreve **o sistema como ele está implementado hoje**; onde
+> divergir do Figma, a seção 10 do `HANDOFF.md` explica por quê.
 
 ## Overview
 
 **Creative North Star: "The Night Newsroom"**
 
-The client aggregates two things that normally live apart: what agencies filed, and what the press reported. The system is built as the room where both land after dark — a desk lit low, copy set for reading rather than for scanning, and a single ember of colour marking the thing that is still burning. It is a newsroom, not a dashboard: the work is editorial judgment about a record, not telemetry.
+O cliente junta duas coisas que normalmente vivem separadas: o que as agências
+filaram e o que a imprensa reportou. O sistema é a sala onde as duas aterrissam
+depois do escuro — uma mesa com pouca luz, texto composto para leitura e não para
+varredura, e uma única brasa marcando o que ainda queima. É uma redação, não um
+painel: o trabalho é julgamento editorial sobre um registro, não telemetria.
 
-Density is generous and vertical. Sections breathe at up to 168px of padding and text is capped between 40 and 70 characters, because the brief's first requirement is that information reach every audience. Nothing competes for attention through decoration, because there is none: the entire system carries hierarchy through type, rule, and tonal ground. The surface is flat by construction — no shadow, no radius, no transition exists anywhere in the implementation.
+**A direção visual foi uma escolha, não uma herança.** O briefing não nomeia a
+marca do cliente, nem paleta, nem tom. Sem isso, inventar uma identidade
+arriscaria contradizer o que o cliente já tem. O registro escolhido é editorial e
+neutro, e é **substituível de propósito**: trocar a marca significa trocar treze
+variáveis de cor e dois nomes de fonte num único bloco `:root`. A estrutura — os
+papéis de rótulo, a grade, os componentes, os limiares — sobrevive.
 
-The restraint is doing argumentative work. The subject is a crisis, and the design refuses to dramatise it, on the theory that an unembellished record is more persuasive than an urgent one. Where the brief asks for active language for engagement, that energy belongs in verbs and in what the page asks the reader to do — never in visual volume.
+**Características:**
 
-**Key Characteristics:**
-- Absolute flatness: zero `border-radius`, zero `box-shadow`, zero `transition` in the entire implementation
-- Depth from three tonal grounds plus 1px hairlines, never from elevation
-- One accent, used sparingly, always at a point of attention
-- Display serif against a single grotesque; no third family
-- Container-query sizing so the layout adapts continuously rather than by breakpoint
+- Zero `border-radius` e zero `box-shadow` em toda a implementação — verificado
+- Profundidade por três tons de fundo mais fios de 1px, nunca por elevação
+- Um acento, usado com parcimônia, sempre num ponto de atenção
+- Duas sem-serifa com papéis separados: Inter carrega título e número, Krub
+  carrega corpo e rótulo. Não há terceira família
+- Dimensionamento por container query, não por breakpoint
+- Movimento existe, mas é argumentado — e tem sempre um caminho sem movimento
 
 ## Colors
 
-A near-black field carrying warm off-white text, interrupted by exactly one warm accent.
+Um campo preto carregando texto off-white quente, interrompido por exatamente um
+acento quente.
 
 ### Primary
-- **Ember** (`#E8613C`): the only warm accent. Current nav item, the opening quotation mark, the largest state figure, focus rings, link text, and the highest choropleth band. It marks the thing still burning.
-- **Bright Ember** (`#F4835F`): hover state for every ember-coloured interactive element. Never used at rest.
-- **Deep Ember** (`#C0301A`): the extreme end of the choropleth scale and its legend chip. Data only; never an interface colour.
+
+- **Ember** (`#E8613C`) — o único acento. Item de navegação atual, aspas de
+  abertura, CTA primário, chip selecionado, a linha do gráfico, a fatia com
+  acento do anel. Marca o que ainda queima.
+- **Bright Ember** (`#F4835F`) — hover de todo elemento interativo em ember.
+  Nunca em repouso.
+- **Deep Ember** (`#C0301A`) — barras não selecionadas do explorador. Só dado.
+- **Ember Veil** (`#2E0E05`) — `hsl(13 79% 10%)`, o fundo do chip selecionado. A
+  brasa diluída até virar superfície.
 
 ### Neutral
-- **Ink** (`#0D0E0F`): the page ground and the header's translucent backing.
-- **Surface Raised** (`#121315`): the map section's ground, one step up from Ink to separate it without a border.
-- **Surface Card** (`#1B1E21`): the highest tonal step, for chips and inset blocks.
-- **Rule** (`#2A2D30`): the default hairline. Every section boundary and record divider.
-- **Rule Strong** (`#4A4E52`): hairline where a border must read as an edge — button outlines, the attribution dash.
-- **Paper** (`#F2EFEA`): primary text and inverted button grounds. Warm, never pure white.
-- **Paper Dim** (`#BDB7AF`): secondary body text inside dense passages.
-- **Muted** (`#9E9891`): labels, captions, coordinates, metadata, placeholders.
+
+- **Ink** (`#000000`) — o fundo da página e o forro translúcido do cabeçalho.
+- **Surface Raised** (`#121315`) — a citação e a seção de agências, um degrau
+  acima do ink para separar sem borda.
+- **Surface Card** (`#1B1E21`) — o degrau mais alto, para blocos embutidos.
+- **Rule** (`#2A2D30`) — o fio padrão. Toda fronteira de seção e divisor de
+  fileira.
+- **Rule Strong** (`#4A4E52`) — fio onde a borda precisa ler como aresta:
+  contorno de botão, de chip, de campo de busca.
+- **Paper** (`#F2EFEA`) — texto primário. Quente, nunca branco puro.
+- **Paper Dim** (`#BDB7AF`) — corpo secundário em passagens densas.
+- **Muted** (`#9E9891`) — rótulos, legendas, coordenadas, metadados,
+  placeholders.
+
+### Data
+
+- **Chart Slack** (`#595D62`) — a fatia sem acento nos gráficos. **Não é
+  `--rule`**: aquele dá 1,6:1 sobre o preto e serve como divisor, mas some
+  quando vira dado. Este foi escolhido por cálculo para dar **3,17:1**, o mínimo
+  da WCAG 1.4.11 para gráfico.
 
 ### Named Rules
 
-**The One Ember Rule.** The accent family appears on no more than a few elements per viewport. Its scarcity is what makes it legible as a signal; an interface where several things are ember is an interface where nothing is.
+**The One Ember Rule.** A família do acento aparece em poucos elementos por
+viewport. A escassez é o que a torna legível como sinal; uma interface onde
+várias coisas são ember é uma interface onde nada é.
 
-**The Warm Neutral Rule.** No pure white and no pure black in the interface. Text is `#F2EFEA`, ground is `#0D0E0F`. `#FFFFFF` appears only inside data visualisation, where maximum contrast against a filled state is functional.
+**The Warm Neutral Rule.** Texto é `#F2EFEA`, nunca branco puro. O fundo é preto
+puro `#000000` — foi uma mudança deliberada em relação ao `#0D0E0F` original,
+para que a fotografia noturna e o mapa escuro fundissem com o fundo da página em
+vez de recortarem contra ele.
+
+**The Computed Contrast Rule.** Nenhum par de cor entra por aparência. Muted
+sobre ink dá 7,35:1; chart-slack foi escolhido para dar 3,17:1. Sobre fotografia,
+o cálculo usa o pior caso composto sob o véu. Um par novo sem número medido é um
+par não aprovado.
 
 ## Typography
 
-**Display Font:** Playfair Display (with Georgia, serif)
-**Body Font:** Archivo (with system-ui, sans-serif)
+**Display:** Inter (com system-ui, sans-serif)
+**Body:** Krub (com system-ui, sans-serif)
 
-**Character:** A high-contrast transitional serif set very large against a neutral grotesque held very small. The pairing is a masthead against a caption — the serif carries the editorial claim, the grotesque carries the record. There is no third voice.
+**Caráter:** duas sem-serifa com papéis separados, não uma serifa contra uma
+grotesca. Inter carrega título e número — é o que precisa de peso extremo (800)
+e de numeral bem desenhado. Krub carrega corpo e rótulo — é o que precisa de
+altura-x generosa a 11px com tracking largo. Não há terceira voz.
 
-### Hierarchy
-- **Display** (400, `clamp(58px, 15cqw, 232px)`, 0.82): the wordmark in the hero. Once per page.
-- **Headline** (400, `clamp(34px, 5cqw, 78px)`, 1.06): section openers.
-- **Title** (400, `clamp(28px, 3.4cqw, 50px)`, 1.12): state names, press headlines, subsection titles.
-- **Body** (400, `clamp(15px, 1.15cqw, 17px)`, 1.7): running copy, capped 40–70ch.
-- **Label** (500/600, `clamp(11px, 0.8cqw, 12px)`, 1, `0.2em`–`0.34em`, uppercase): kickers, eyebrows, metadata, coordinates, buttons, nav.
+### Hierarquia
+
+- **Display** (800, `clamp(56px, 13cqw, 192px)`, 0.92) — o número da hero. Uma
+  vez por página.
+- **Hero claim** (800, `clamp(28px, 3.6cqw, 56px)`, 1.04) — a manchete da página
+  (`h1`).
+- **Section title** (400, `clamp(28px, 3.4cqw, 50px)`, 1.06) — cabeçalho de
+  seção (`h2`). **Peso 400**, não 800: o `h1` carrega o peso, o `h2` carrega a
+  escala.
+- **Panel title** (800, `clamp(19px, 2cqw, 30px)`, caixa alta) — título de painel
+  dentro de uma seção.
+- **Figure** (700, `clamp(34px, 3.4cqw, 52px)`) — números grandes, numeral
+  tabular.
+- **Body** (400, `clamp(15px, 1.15cqw, 17px)`, 1.72) — texto corrido, limitado
+  entre 46 e 68ch.
+
+### Os quatro papéis de caixa alta
+
+Este bloco existe porque o projeto chegou a ter **sete** trackings diferentes
+para a mesma coisa.
+
+| papel | peso | tracking | onde |
+|---|---|---|---|
+| **Rótulo** | 500 ou 600 | `.24em` | kicker, meta, legenda de dado, cabeçalho de coluna, fonte da notícia |
+| **Controle** | 600 ou 700 | `.20em` | botão, chip, traço da trilha |
+| **Navegação** | 500 | `.20em` | item de menu, largo ou estreito |
+| **Assinatura** | 500 | `.30em` | "MEDIA COVERAGE" sob a marca |
+
+**O peso carrega estado; o tracking carrega papel. Se precisar de um valor novo,
+o papel é que tem que ser novo.**
 
 ### Named Rules
 
-**The Tracking Ladder Rule.** Letter-spacing and case move together. Uppercase labels are tracked from `0.2em` to `0.34em`; lowercase running text is tracked at `normal`. Wide tracking on lowercase body copy is a defect, not a style.
+**The Tracking Ladder Rule.** Tracking largo anda com caixa alta, e só com ela.
+Texto corrido em caixa baixa é tracking `normal`. Caixa baixa com tracking largo
+é defeito, não estilo.
 
-**The Measure Rule.** Every text block declares a `ch` cap — 40ch for display-adjacent copy, 52–58ch for body, 70ch for fine print. No paragraph runs the full 1480px container.
+**The Measure Rule.** Todo bloco de texto declara um limite em `ch` — 46ch no
+apoio de coluna estreita, 58–68ch no corpo, 88ch na letra miúda. Nenhum parágrafo
+corre os 1480px do contêiner.
+
+**The Two Ends Rule.** Os tamanhos são fluidos no código: `clamp(mínimo, cqw,
+máximo)`. No Figma, que é estático, cada extremo é um estilo próprio — o desktop
+guarda o máximo resolvido a 1440, o grupo `Mobile/` guarda o mínimo medido a 390.
+**Não são overrides; são as duas pontas do mesmo token.**
 
 ## Layout
 
-A single centred column, `max-width: 1480px`, with side padding of `clamp(20px, 4cqw, 72px)`. Vertical rhythm is section padding of `clamp(72px, 9cqw, 168px)`, halved where a section abuts a rule.
+Uma coluna centrada, `max-width: 1480px`, com recuo lateral de
+`clamp(20px, 4cqw, 72px)`. O ritmo vertical é `clamp(72px, 9cqw, 168px)` de
+padding de seção.
 
-The system is **container-query driven**, not breakpoint driven: the root declares `container-type: inline-size` and every size is a `clamp()` against `cqw`. This satisfies the brief's requirement that the site work across resolutions without large code changes at each breakpoint — sizes interpolate continuously instead of snapping.
+O sistema é **dirigido por container query**, não por breakpoint: a raiz declara
+`container-type: inline-size` e cada tamanho é um `clamp()` contra `cqw`. Isso
+atende ao requisito do briefing de funcionar em várias resoluções sem grandes
+mudanças de código a cada breakpoint — os tamanhos interpolam continuamente em
+vez de saltar.
 
-Structural switches that cannot be expressed as a clamp — the header's full nav versus its compact drawer — are gated on a `compact` flag rather than CSS.
+### Os limiares
+
+Onde a estrutura muda de forma — o que nenhum `clamp()` expressa — há consulta de
+contêiner. São **dez**, e todas medem o contêiner, não a janela:
+
+| largura | o que muda |
+|---|---|
+| 440px | chips passam a 3 em linha |
+| 560px | agências em 2 colunas |
+| 620px | grade de matérias em 2 colunas |
+| 720px | fontes do rodapé em 2 colunas |
+| 800px | navegação larga aparece; o hambúrguer sai |
+| 860px | cabeçalho de tabela em 2 colunas, busca à direita |
+| 900px | lede em 2 colunas |
+| 1000px | bloco de destaque em 2 colunas; anel e legenda empilham |
+| 1020px | agências em 5 colunas, matérias em 3 |
+| 1100px | fontes do rodapé em 3 colunas |
 
 ### Named Rules
 
-**The Continuous Scale Rule.** New surfaces size with `clamp(min, Ncqw, max)` against the inline container. Reach for a media query only for a structural change no clamp can express, and say why.
+**The Continuous Scale Rule.** Superfícies novas dimensionam com
+`clamp(min, Ncqw, max)` contra o contêiner inline. Use consulta só para mudança
+estrutural que nenhum clamp expressa, e diga por quê.
+
+**The Container Not Viewport Rule.** São container queries. Elas medem o
+**contêiner**. O painel do explorador ocupa metade da tela numa página e a
+largura inteira em outra — media query não vê essa diferença, e trocar traz de
+volta um bug real: o painel ficava em 2+1 numa janela de 1280.
+
+**The `minmax(0, 1fr)` Rule.** `1fr` é `minmax(auto, 1fr)`: o mínimo é o
+conteúdo. Um mapa com min-content largo esticou o lede para 512px numa viewport
+de 280px. Toda coluna de grade usa `minmax(0, 1fr)`.
 
 ## Elevation & Depth
 
-**This system has no shadows.** There is no `box-shadow` anywhere in the implementation, and no radius. Depth is built from exactly two devices: three tonal grounds (`#0D0E0F` → `#121315` → `#1B1E21`), and 1px hairlines in `#2A2D30` or `#4A4E52`.
+**Este sistema não tem sombra.** Não há `box-shadow` em lugar nenhum da
+implementação — verificado — e não há raio. A profundidade vem de exatamente dois
+recursos: três tons de fundo (`#000000` → `#121315` → `#1B1E21`) e fios de 1px em
+`#2A2D30` ou `#4A4E52`.
 
-The one atmospheric device is photographic: night imagery overlaid with `linear-gradient` scrims in `rgba(13,14,15,…)` to hold text contrast, plus a single low-alpha ember `radial-gradient` used as a glow behind the hero. That glow is scene lighting, not elevation.
+O único recurso atmosférico é fotográfico: imagem noturna sob gradiente para
+segurar o contraste do texto. Isso é iluminação de cena, não elevação.
 
-The header is the only floating element, held by `position: sticky` with `rgba(13,14,15,0.9)` and `backdrop-filter: blur(12px)` — separated by a hairline, never a shadow.
+O cabeçalho é o único elemento flutuante, preso por `position: sticky` com
+`rgba(0,0,0,.9)` e `backdrop-filter: blur(12px)` — separado por um fio, nunca por
+sombra.
 
 ### Named Rules
 
-**The No-Shadow Rule.** Surfaces never lift. To separate two planes, change the tonal ground or draw a hairline. A `box-shadow` anywhere in this system is a defect.
+**The No-Shadow Rule.** Superfícies não levantam. Para separar dois planos, mude
+o tom do fundo ou desenhe um fio. Um `box-shadow` neste sistema é defeito.
 
-**The Still Surface Rule.** The implementation declares no `transition` and no animation. State changes are instant colour swaps. Motion must be argued for, not assumed.
+## Motion
+
+> **Esta seção substitui a antiga "Still Surface Rule".** O sistema tinha zero
+> `transition` quando foi documentado pela primeira vez. Hoje tem 18, todas
+> deliberadas. A regra deixou de ser "não há movimento" e passou a ser
+> "todo movimento tem justificativa e tem caminho alternativo".
+
+O que se move, e por quê:
+
+- **Entrada por rolagem** — a linha do gráfico desenha, o anel varre, os números
+  contam. Serve para dar direção à leitura de um dado que cresce.
+- **Faixa da temporada** — o fio May — October cresce com a rolagem. O gesto é o
+  próprio conteúdo: a duração de uma estação.
+- **Altura de tabela** — quando o filtro muda o número de linhas, a caixa
+  transiciona. Sem isso o conteúdo abaixo salta.
+- **Estado de controle** — cor e fundo em 0,18–0,25s. Troca de estado, não
+  espetáculo.
+
+### Named Rules
+
+**The Reduced-Motion Rule.** Seis arquivos consultam `prefers-reduced-motion`.
+Sob ele: a linha aparece pronta, o anel não varre, a contagem vai direto ao
+número, o Lottie para no primeiro quadro, a altura muda sem transição. **Toda
+animação nova precisa do mesmo caminho.**
+
+**The `fromTo` Rule.** `gsap.from()` grava o estado **atual** como destino. Se o
+nó for reconstruído enquanto está escondido, o destino vira "invisível" e o
+elemento nunca mais aparece. Isso derrubou duas coisas aqui. Não há nenhum
+`gsap.from()` no código hoje; mantenha assim.
 
 ## Shapes
 
-Every corner is square. `border-radius` is `0` throughout, with no exceptions — buttons, chips, cards, inputs, images, and the map all terminate in hard corners.
+Todo canto é reto. `border-radius` é `0` em toda parte, sem exceção — botões,
+chips, cartões, campos, imagens e o mapa terminam em canto duro.
 
-Borders are always exactly `1px`, solid, in `Rule` or `Rule Strong`. The system draws lines rather than filling boxes: dividers, section boundaries, table-like record rows, and the 28px attribution dash are all the same hairline vocabulary at different lengths. The resulting silhouette is rectilinear and typographic, closer to a printed ledger than to a card-based interface.
+Bordas são sempre exatamente `1px`, sólidas, em Rule ou Rule Strong. O sistema
+desenha linhas em vez de preencher caixas: divisores, fronteiras de seção,
+fileiras de registro e cabeçalhos de coluna são o mesmo vocabulário de fio em
+comprimentos diferentes. A silhueta resultante é retilínea e tipográfica, mais
+perto de um livro-razão impresso do que de uma interface de cartões.
+
+**Not everything is a card.** Borda, preenchimento, raio e sombra dizem "objeto
+separado". Gaste por papel, levantando a coisa que precisa, em vez de carimbar
+tudo.
 
 ## Components
 
 ### Buttons
-- **Shape:** square (`border-radius: 0`), `1px` border
-- **Primary (CTA):** transparent ground, `Paper` text, `1px solid Rule Strong`, `min-height: 46px`, padding `0 clamp(16px, 1.6cqw, 26px)`, uppercase label at `600`, `11px`, `0.2em`
-- **Inverted:** `Paper` ground with `Ink` text, used for the skip link and the highest-emphasis action
-- **Hover / Focus:** colour swap only — text to `Ember Bright`. Focus is the global `3px solid Ember` ring at `3px` offset. No lift, no shadow, no transition
+
+- **Forma:** quadrada, borda de `1px`, `min-height: 48px`, padding
+  `0 clamp(20px, 2cqw, 32px)`, rótulo no papel Controle
+- **Primary:** fundo Ember, texto Ink, borda Ember. É a ação da seção
+- **Ghost:** fundo transparente, texto Paper, borda Rule Strong. A alternativa ao
+  lado da primária
+- **Foco:** `2px solid Paper` com `outline-offset: 3px`
 
 ### Navigation
-- **Style:** uppercase label, `500`, `clamp(11px, 0.8cqw, 12px)`, `0.2em`, `min-height: 44px`
-- **Default `Paper` · Hover `Ember Bright` · Current `Ember`** with `aria-current`
-- **Header:** sticky, `rgba(13,14,15,0.9)` with `blur(12px)`, `1px solid Rule` bottom, `min-height: 78px`
-- **Compact:** a 46px square hamburger opens a full-width drawer of 58px rows divided by `Rule` hairlines
 
-### Cards / Containers
-- **Corner Style:** square, always
-- **Background:** the section ground; record cards are not filled
-- **Shadow Strategy:** none — see Elevation & Depth
-- **Border:** a single `1px solid Rule` on top, dividing rows like a ledger
-- **Internal Padding:** `clamp(20px, 2.4cqw, 34px)` vertical
+- **Item:** papel Navegação, `min-height: 44px`
+- **Default Paper · Hover Ember Bright · Current Ember** com `aria-current="page"`
+  e um fio de 1px embaixo — **duas pistas, nunca só a cor**
+- **Cabeçalho:** sticky, `rgba(0,0,0,.9)` com `blur(12px)`, fio de 1px embaixo,
+  `min-height: 78px`
+- **Estreito:** abaixo de 800px a navegação larga some, o hambúrguer aparece e o
+  Share desce para dentro do menu
 
-### State Record (signature component)
-The system's defining pattern. A hairline-topped row carrying: an uppercase reporting window on the right, the state name in Title serif, the count set in Title-scale ember, an uppercase `RECORDED STARTS` label, a short attribution paragraph in `Paper Dim`, and an `OPEN THE FILING` label-link with decimal coordinates beneath it in `Muted`. Every figure travels with its provenance; splitting the two breaks the product's core promise.
+### Chip
 
-### Choropleth Map (signature component)
-A D3 + topojson US map on `Surface Raised`. Unreported states hold the ground colour with a `Rule` stroke; reported states fill along a four-band ember ramp toward `Ember Deep`, labelled in `#FFFFFF` directly on the shape. A square-chip legend names every band, including `NO DATA`. Land class is switched by a row of square uppercase chips.
+Grade ciente da contagem: dois ficam lado a lado, três viram 2+1 com o ímpar
+atravessando a linha, quatro viram 2×2. Selecionado recebe fundo Ember Veil,
+texto Ember e **peso 700** — o peso é a segunda pista.
+
+### Table
+
+Célula com três papéis: **Head** (papel Rótulo em 600, fio Rule Strong), **Text**
+e **Number** (alinhado à direita, numeral tabular). A tabela rola dentro do
+próprio contêiner, que carrega `contain: paint` — sem isso a página inteira ganha
+359px de rolagem horizontal. Medido.
+
+**Estado vazio:** quando o filtro não casa, uma linha com `colspan` total diz
+quantos não casaram e oferece limpar a busca. A altura da caixa transiciona.
+
+### State explorer (signature component)
+
+O padrão que define o sistema. Mapa à esquerda, ranking à direita. Cada fileira
+carrega: posto, nome do estado, `lead · agência`, uma barra proporcional ao maior
+valor, e a contagem de starts. O selecionado troca **cor e fio**.
+
+Estado sem registro aparece como **"Not yet reported"**, nunca estimado. Toda
+figura viaja com sua procedência; separar as duas quebra a promessa do produto.
+
+### Map panel
+
+Mapa à esquerda, controles à direita; empilha no estreito. Os controles são
+componentes reais — chips, CTA e o aviso de densidade ilustrativa. As telhas são
+renderizadas pelo Mapbox em tempo real: **não são superfície de design**. Se o
+token for recusado, o componente mostra a mensagem no lugar do canvas com os
+controles intactos.
+
+### Charts
+
+Linha e anel, ambos com: entrada animada na aparição, leitura por hover e por
+teclado, etiqueta presa ao ponto, e **uma tabela equivalente escondida no DOM**.
+Um gráfico que só existe como desenho é ilegível para leitor de tela.
+
+## Accessibility floor
+
+O que está implementado e precisa sobreviver a qualquer mudança:
+
+- `aria-current="page"` no item da página atual — afirma "você está aqui"
+- `aria-live` / `role="status"` nos blocos que mudam por interação
+- `aria-sort` nas colunas ordenáveis
+- Tabela equivalente em cada gráfico
+- Setas, `Home`/`End` e `Escape` nos gráficos
+- Alvos de 24px no mínimo (WCAG 2.5.8); 44–48px nos controles principais
+- Skip link com recorte, não `left:-9999px`
+- Contraste calculado para todo par
 
 ## Do's and Don'ts
 
-### Do:
-- **Do** size with `clamp(min, Ncqw, max)` against the inline container so layouts adapt continuously.
-- **Do** separate planes with a tonal ground change or a `1px` hairline.
-- **Do** pair wide tracking with uppercase, and only with uppercase.
-- **Do** cap every text block with a `ch` measure.
-- **Do** keep a figure and its route back to the source in the same component.
-- **Do** state absence explicitly — `NO DATA`, `Not yet reported`, `3 of 50 filed` — rather than omitting the row.
-- **Do** hold the accessibility floor already shipped: skip link, `3px solid Ember` focus ring at `3px` offset, 44px minimum targets.
+### Do
 
-### Don't:
-- **Don't** add `border-radius`. The system is square everywhere.
-- **Don't** add `box-shadow`. Depth comes from tone and hairline.
-- **Don't** add `transition` or animation without an explicit decision; the implementation is motionless by construction.
-- **Don't** introduce a third type family, or set Playfair below Title scale.
-- **Don't** spend the ember on more than a few elements per viewport.
-- **Don't** use pure white or pure black in the interface; `#FFFFFF` is reserved for data labels.
-- **Don't** fill a gap in the record to balance a composition.
+- **Do** dimensionar com `clamp(min, Ncqw, max)` contra o contêiner inline.
+- **Do** separar planos com mudança de tom ou um fio de `1px`.
+- **Do** parear tracking largo com caixa alta, e só com caixa alta.
+- **Do** limitar todo bloco de texto com uma medida em `ch`.
+- **Do** manter a figura e o caminho de volta à fonte no mesmo componente.
+- **Do** dizer a ausência explicitamente — "Not filed", "Not yet reported",
+  "3 of 50 filed" — em vez de omitir a linha.
+- **Do** dar duas pistas a todo estado selecionado.
+- **Do** calcular o contraste de todo par novo antes de aprová-lo.
+
+### Don't
+
+- **Don't** acrescentar `border-radius`. O sistema é quadrado em toda parte.
+- **Don't** acrescentar `box-shadow`. Profundidade vem de tom e fio.
+- **Don't** animar sem um caminho para `prefers-reduced-motion`.
+- **Don't** usar `gsap.from()`. Sempre `fromTo`, com destino explícito.
+- **Don't** introduzir uma terceira família tipográfica.
+- **Don't** gastar a brasa em mais de poucos elementos por viewport.
+- **Don't** usar `--rule` como cor de dado; ela some. Use `--chart-slack`.
+- **Don't** usar cor como pista única.
+- **Don't** preencher uma lacuna do registro para equilibrar uma composição.

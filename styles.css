@@ -21,11 +21,19 @@
   --paper-dim:       #BDB7AF;   /* corpo secundário */
   --muted:           #9E9891;   /* rótulos, legendas, coordenadas */
 
+  /* Traço do X de limpar busca. Só a forma: a cor é aplicada por máscara. */
+  --wmc-icon-x: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 3.5 12.5 12.5M12.5 3.5 3.5 12.5' stroke='%23000' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E");
+
   /* Acento */
   --ember:           #E8613C;   /* único acento quente — hsl(13 79% 57%) */
   --ember-veil:      hsl(13 79% 10%);  /* mesmo matiz e saturação, L derrubado
                                           para 10%: estado selecionado, nunca ação */
   --ember-bright:    #F4835F;   /* hover */
+
+  /* Cinza da fatia sem acento nos gráficos. Não é --rule (#2A2D30): aquele é
+     divisor, dá 1,6:1 sobre o preto e some quando vira dado. Este foi escolhido
+     por cálculo — 3,17:1 sobre #000, o mínimo de 1.4.11 para gráfico. */
+  --chart-slack:     #595D62;
   --ember-deep:      #C0301A;   /* extremo do choropleth — só dado */
 
   /* Tipografia */
@@ -99,18 +107,35 @@ input::placeholder { color: var(--muted); opacity: 1; }
    estilo inline por ser canvas, e converter geraria classes de uso único. */
 
 .wmc-label {                      /* 30 ocorrências de caixa alta tracked */
+  /* Margem zerada na origem. Como quase todo rótulo é um <p>, ele vinha com os
+     11,52px do navegador SOMADOS ao gap do contêiner — e o espaço entre rótulo
+     e título ficava 34px numas telas e 22px noutras, conforme quem tivesse
+     zerado na mão. Quem espaça aqui é o gap do contêiner, e só ele. */
+  margin: 0;
   font-family: var(--font-body);
   font-weight: 500;
   font-size: var(--type-label);
   line-height: 1;
-  letter-spacing: .2em;
+  letter-spacing: .24em;
   text-transform: uppercase;
   color: var(--muted);
 }
-.wmc-label--wide  { letter-spacing: .26em; }
-.wmc-label--widest{ letter-spacing: .34em; }
+
+/* Os modificadores mudam SIGNIFICADO, nunca só gosto. --wide e --widest saíram:
+   eram sete trackings (.14 .16 .2 .24 .26 .3 .34) para a mesma coisa, e nenhum
+   dizia nada que o outro não dissesse. */
 .wmc-label--paper { color: var(--paper); }
 .wmc-label--ember { color: var(--ember); }
+
+/* Marcador quadrado. Era exceção embutida num bloco só; virou opção. */
+.wmc-label--mark { display: inline-flex; align-items: center; gap: 10px; }
+.wmc-label--mark::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 5px;
+  height: 5px;
+  background: var(--ember);
+}
 
 .wmc-cta {                        /* botão do cabeçalho e da hero */
   display: inline-flex;
@@ -293,7 +318,7 @@ input::placeholder { color: var(--muted); opacity: 1; }
 
 .wmc-chips {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   /* Se um rótulo quebra em duas linhas, as duas fileiras acompanham a mais
      alta — sem isso o 2x2 sai com degrau. */
   grid-auto-rows: 1fr;
@@ -304,7 +329,36 @@ input::placeholder { color: var(--muted); opacity: 1; }
 }
 
 @container (min-width: 660px) {
-  .wmc-chips { grid-template-columns: repeat(4, 1fr); }
+  .wmc-chips { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+/* A grade acima assume quatro opções. Os grupos de Data (2) e Location (3) não
+   fecham nela: com três itens sobra uma célula vazia ao lado do último, que foi
+   o buraco relatado. As regras abaixo tornam a grade ciente da quantidade.
+
+   :has(> :nth-child(N):last-child) = "este grupo tem exatamente N filhos". */
+
+/* Dois: sempre lado a lado. */
+.wmc-chips:has(> :nth-child(2):last-child) {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+/* Três: no estreito, o ímpar atravessa a linha inteira em vez de deixar vão. */
+.wmc-chips:has(> :nth-child(3):last-child) > :last-child {
+  grid-column: 1 / -1;
+}
+/* Com largura, os três cabem numa linha só e o span deixa de ser preciso.
+   440px: medido contra o rótulo mais longo ("SOUTHWEST", ~105px com o padding),
+   que cabe folgado em 440/3. O limiar anterior de 520 deixava o painel do
+   explorador em 2+1 mesmo a 1280px de janela, porque quem manda aqui é a
+   largura do PAINEL, não a da tela. */
+@container (min-width: 440px) {
+  .wmc-chips:has(> :nth-child(3):last-child) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .wmc-chips:has(> :nth-child(3):last-child) > :last-child {
+    grid-column: auto;
+  }
 }
 
 .wmc-chip {
@@ -320,7 +374,7 @@ input::placeholder { color: var(--muted); opacity: 1; }
   border-left: 1px solid var(--rule-strong);
   border-radius: 0;
   font: 600 11px/1.3 var(--font-body);
-  letter-spacing: .16em;
+  letter-spacing: .2em;      /* mesmo tracking de todo controle */
   text-transform: uppercase;
   text-align: center;
   text-wrap: balance;
@@ -347,7 +401,7 @@ input::placeholder { color: var(--muted); opacity: 1; }
    inteira enquanto não houver espaço para a terceira coluna. */
 .wmc-press-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: clamp(28px, 3.5cqw, 64px);
   align-items: stretch;
 }
@@ -362,7 +416,7 @@ input::placeholder { color: var(--muted); opacity: 1; }
 /* Duas colunas: matérias lado a lado, lista ocupando a linha toda embaixo. */
 @container (min-width: 700px) {
   .wmc-press-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     grid-template-rows: 1fr auto;
   }
   /* subgrid: as duas matérias passam a dividir as MESMAS faixas. A imagem de
@@ -479,7 +533,7 @@ input::placeholder { color: var(--muted); opacity: 1; }
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: 0 clamp(24px, 3cqw, 48px);   /* as fileiras se separam pelo fio do <li> */
 }
 
@@ -491,8 +545,8 @@ input::placeholder { color: var(--muted); opacity: 1; }
    vãos vazios na última fileira. Nenhuma largura aqui termina uma fileira pela
    metade. O limiar de 5 está em 1020px: medido, dá 166px por coluna, sem
    estouro e com a linha de coordenadas ainda cabendo em uma linha. */
-@container (min-width: 560px)  { .wmc-agencies { grid-template-columns: repeat(2, 1fr); } }
-@container (min-width: 1020px) { .wmc-agencies { grid-template-columns: repeat(5, 1fr); } }
+@container (min-width: 560px)  { .wmc-agencies { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@container (min-width: 1020px) { .wmc-agencies { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
 
 /* ── Trilha de seções ────────────────────────────────────────────────────────
    Fixa na direita, um traço por seção. Fica dentro do contentor da página, o
@@ -554,7 +608,7 @@ input::placeholder { color: var(--muted); opacity: 1; }
   right: calc(100% + 12px);
   top: 50%;
   font: 600 11px/1 var(--font-body);
-  letter-spacing: .18em;
+  letter-spacing: .2em;      /* mesmo tracking de todo controle */
   text-transform: uppercase;
   white-space: nowrap;
   padding: 7px 11px;
@@ -613,14 +667,14 @@ input::placeholder { color: var(--muted); opacity: 1; }
    e sobrava metade do contêiner. */
 .wmc-sources {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: clamp(14px, 1.6cqw, 22px);
 }
 
 /* Duas colunas de prosa; o título e a nota curta atravessam a linha inteira. */
 @container (min-width: 720px) {
   .wmc-sources {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     column-gap: clamp(28px, 3.5cqw, 64px);
     row-gap: clamp(18px, 2cqw, 30px);
   }
@@ -681,13 +735,7 @@ input::placeholder { color: var(--muted); opacity: 1; }
   border-top: 1px solid var(--rule);
 }
 
-.wmc-footer-mark {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  text-decoration: none;
-  color: var(--paper);
-}
+
 .wmc-footer-mark-name {
   font-family: var(--font-display);
   font-size: clamp(19px, 1.7cqw, 25px);
@@ -822,11 +870,13 @@ input::placeholder { color: var(--muted); opacity: 1; }
   color: var(--paper);
 }
 
+/* Mesma tipografia do rótulo; só o papel na página é outro. */
 .wmc-section-meta {
   margin: 0;
-  font-size: clamp(11px, 0.8cqw, 12px);
+  font-weight: 500;
+  font-size: var(--type-label);
   line-height: 1.6;
-  letter-spacing: .16em;
+  letter-spacing: .24em;
   text-transform: uppercase;
   color: var(--muted);
 }
@@ -882,14 +932,33 @@ input::placeholder { color: var(--muted); opacity: 1; }
   gap: 24px;
 }
 
-.wmc-masthead {
+/* Símbolo e texto numa linha; o texto segue empilhado dentro dele. O símbolo
+   é vazado — a torre é o negativo — então ele toma o fundo de onde estiver, e
+   por isso não precisa de versão clara e versão escura. */
+.wmc-masthead,
+.wmc-footer-mark {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: clamp(9px, 0.9cqw, 13px);
+  text-decoration: none;
+  color: var(--paper);
+}
+.wmc-masthead { padding-block: 10px; }
+.wmc-masthead-text {
   display: flex;
   flex-direction: column;
   align-items: flex-start;      /* alinha pela esquerda, não pelo centro */
   gap: 4px;
-  padding-block: 10px;
-  text-decoration: none;
-  color: var(--paper);
+  min-width: 0;
+}
+/* Decorativo: o nome da marca já está escrito ao lado, em texto. Repetir num
+   alt seria ler duas vezes a mesma coisa no leitor de tela. */
+.wmc-mark-logo {
+  flex: 0 0 auto;
+  width: clamp(30px, 2.8cqw, 40px);
+  height: auto;
+  display: block;
 }
 .wmc-masthead-name {
   font-family: var(--font-display);
@@ -899,9 +968,11 @@ input::placeholder { color: var(--muted); opacity: 1; }
   letter-spacing: .02em;
   text-transform: uppercase;
 }
+/* Mesma assinatura no cabeçalho e no rodapé: era 10px/.30em aqui e
+   11px/.30em lá, dois valores para o mesmo elemento. */
 .wmc-masthead-sub {
   font-weight: 500;
-  font-size: clamp(10px, 0.72cqw, 11px);
+  font-size: 11px;
   line-height: 1;
   letter-spacing: .3em;
   text-transform: uppercase;
@@ -960,7 +1031,7 @@ input::placeholder { color: var(--muted); opacity: 1; }
   min-height: 58px;
   border-bottom: 1px solid var(--rule);
   font-weight: 500;
-  font-size: 12px;
+  font-size: var(--type-label);     /* igual ao item da navegação larga */
   letter-spacing: .2em;
   text-transform: uppercase;
   text-decoration: none;
@@ -973,4 +1044,1181 @@ input::placeholder { color: var(--muted); opacity: 1; }
   align-items: center;
   gap: 12px;
   padding-top: 22px;
+}
+
+/* ==========================================================================
+   Páginas estáticas (build.mjs). A home continua vindo do artboard.
+   ========================================================================== */
+
+/* O artboard declarava container-type num div inline. Sem este contêiner,
+   TODA consulta @container deste arquivo deixa de casar e a página cai no
+   estado base. */
+.wmc-root {
+  container-type: inline-size;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+}
+
+/* Recorte em vez de left:-9999px — deslocamento negativo já arrastou a caixa
+   do documento neste projeto. */
+.wmc-skip {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.wmc-skip:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  clip-path: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 20px;
+  background: var(--ember);
+  color: var(--ink);
+  font: 600 12px/1 var(--font-body);
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.wmc-header {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  background: rgba(0, 0, 0, .9);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--rule);
+}
+
+.wmc-burger { display: flex; flex-direction: column; gap: 4px; width: 16px; }
+.wmc-burger > span { display: block; height: 1px; background: var(--paper); }
+
+.wmc-nav-toggle {
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  background: transparent;
+  color: var(--paper);
+  border: 1px solid var(--rule-strong);
+  cursor: pointer;
+}
+
+/* O menu nasce com [hidden]; sem isto o display da classe venceria o atributo
+   e ele apareceria aberto. */
+.wmc-menu[hidden] { display: none; }
+
+/* --------------------------------------------------------------- Lede --- */
+.wmc-lede-section { padding-block: clamp(48px, 6cqw, 104px); }
+
+/* minmax(0, 1fr) e não 1fr em toda base de grade: `1fr` é `minmax(auto, 1fr)`,
+   e esse `auto` deixa o conteúdo mínimo de um filho largo — um mapa, uma tabela
+   — esticar a faixa além do contêiner. Num viewport de 280px o bloco de
+   abertura chegou a 512px e o overflow-x:hidden da raiz CORTAVA o excesso, que
+   é pior que rolar: some sem deixar rastro. */
+.wmc-lede {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(28px, 3.5cqw, 56px);
+  align-items: start;
+}
+@container (min-width: 900px) {
+  .wmc-lede { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); }
+
+  /* Um componente de mapa já traz o próprio layout de duas colunas (mapa à
+     esquerda, painel à direita). Espremê-lo em metade desta grade produzia uma
+     coluna muito alta à direita e um vazio à esquerda — o texto termina em 40%
+     da altura e o resto fica em branco. Quando a mídia é um mapa, o bloco
+     empilha e o mapa ocupa a largura inteira, como já acontece na home. */
+  .wmc-lede:has(state-explorer):not(:has(.wmc-figures)),
+  .wmc-lede:has(metric-map):not(:has(.wmc-figures)) {
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(28px, 3.5cqw, 52px);
+  }
+
+  /* A exceção: quando a coluna da esquerda traz os números, ela deixa de ser
+     um parágrafo curto e passa a ter mais altura que o próprio mapa (medido:
+     914px contra 590px). Aí as duas colunas se sustentam, que é o arranjo do
+     wireframe. A condição está escrita no seletor de propósito — o que decide
+     não é a página, é haver massa à esquerda. */
+}
+
+.wmc-lede-text {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 1.6cqw, 22px);
+}
+/* :not([class]) é o ponto: `.wmc-lede-text p` tem especificidade (0,1,1) e
+   vencia `.wmc-label` (0,1,0), fazendo o rótulo renderizar a 14px. Regras de
+   parágrafo por seletor de tipo só valem para parágrafos sem classe. */
+.wmc-lede-text > p:not([class]) {
+  margin: 0;
+  max-width: 52ch;
+  font-size: clamp(14px, 1.05cqw, 16px);
+  line-height: 1.72;
+  color: var(--paper-dim);
+  text-wrap: pretty;
+}
+
+.wmc-lede-media { display: flex; flex-direction: column; gap: 12px; }
+
+.wmc-county-map {
+  position: relative;
+  aspect-ratio: 16 / 11;
+  overflow: hidden;
+  background: var(--surface-card);
+  border: 1px solid var(--rule);
+}
+.wmc-county-map img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) brightness(.5) contrast(1.1);
+}
+
+.wmc-caption {
+  margin: 0;
+  font-size: clamp(11px, 0.82cqw, 12px);
+  line-height: 1.7;
+  color: var(--muted);
+  max-width: 62ch;
+}
+
+/* -------------------------------------------------------------- Tabela --- */
+
+/* Cabeçalho das seções de tabela.
+
+   Era uma pilha de quatro blocos — título, linha de meta em colchetes,
+   parágrafo e busca — cada um numa faixa própria, com metade da largura vazia
+   à direita. A tabela começava fora da primeira tela por causa do cabeçalho.
+
+   Agora o texto ocupa a coluna da esquerda e a busca sobe para a direita, na
+   mesma linha de base. A contagem que estava nos colchetes não se perdeu: virou
+   o próprio aviso do filtro, que em repouso diz quantos registros existem e,
+   filtrando, quantos casaram. Um lugar só para o mesmo fato. */
+.wmc-table-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(20px, 2.6cqw, 36px);
+  align-items: end;
+  margin-bottom: clamp(22px, 2.6cqw, 38px);
+}
+.wmc-table-head-text {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, 1.2cqw, 18px);
+  min-width: 0;
+}
+/* Dentro do cabeçalho a medida é maior: a coluna é mais larga que a faixa
+   estreita de antes, e 72ch fecha o mesmo texto em menos linhas. */
+.wmc-table-head .wmc-intro { margin: 0; max-width: 72ch; }
+.wmc-table-head .wmc-table-tools { margin: 0; max-width: none; }
+
+/* minmax(0, 1fr) e não 1fr: 1fr é minmax(auto, 1fr), e um mínimo de conteúdo
+   largo estoura a grade — já aconteceu aqui com o mapa. */
+@container (min-width: 860px) {
+  .wmc-table-head { grid-template-columns: minmax(0, 1fr) clamp(280px, 26%, 380px); }
+}
+
+.wmc-table-section {
+  padding-block: clamp(48px, 6cqw, 104px);
+  border-top: 1px solid var(--rule);
+}
+
+.wmc-table-tools {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-block: clamp(24px, 3cqw, 40px) clamp(16px, 2cqw, 26px);
+  max-width: 460px;
+}
+.wmc-table-tools input {
+  min-height: 48px;
+  padding: 0 16px;
+  background: transparent;
+  color: var(--paper);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius);
+  font: 400 15px/1 var(--font-body);
+}
+.wmc-table-tools input::placeholder { color: var(--muted); }
+.wmc-table-tools input:focus-visible { outline: 2px solid var(--paper); outline-offset: 3px; }
+
+/* O X de limpar a busca é desenhado pelo sistema, e vinha na cor de destaque
+   do SO — azul, a única coisa azul do site. Aqui ele é substituído por uma
+   máscara: a forma vem do SVG e a COR vem de background-color, que é nossa.
+
+   A caixa é 24x24 com o desenho a 11px: o alvo cumpre o mínimo de 24px do
+   WCAG 2.5.8 sem que o X fique grande ao lado do texto do campo. */
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  background-color: var(--muted);
+  -webkit-mask: var(--wmc-icon-x) center / 11px 11px no-repeat;
+  mask: var(--wmc-icon-x) center / 11px 11px no-repeat;
+}
+input[type="search"]::-webkit-search-cancel-button:hover { background-color: var(--paper); }
+
+/* Papel de Rótulo (500 / .24em): esta linha herdou o que a linha de meta em
+   colchetes dizia, então usa a mesma tipografia que ela usava. Antes tinha
+   12px/.16em — um quarto valor solto no sistema, sem papel próprio. */
+.wmc-filter-count {
+  margin: 0;
+  font-weight: 500;
+  font-size: var(--type-label);
+  line-height: 1.6;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--muted);
+  min-height: 1.6em;
+  text-wrap: balance;
+}
+
+/* Tabela larga não cabe no telefone: rola dentro da própria caixa.
+   O `contain: paint` não é decorativo — medido, sem ele a tabela some da vista
+   mas continua somando ao canvas do documento, e a PÁGINA inteira ganha 359px
+   de rolagem horizontal vazia. Só o overflow-x não contém o descendente. */
+.wmc-table-scroll {
+  overflow-x: auto;
+  contain: paint;
+}
+.wmc-table-scroll:focus-visible { outline: 2px solid var(--paper); outline-offset: 3px; }
+/* Enquanto a altura anima, o conteúdo excede a caixa por um instante. Sem isto
+   uma barra de rolagem vertical pisca a cada tecla digitada. */
+.wmc-table-scroll.is-medindo { overflow-y: hidden; }
+
+/* Estado vazio da tabela. As células herdam `white-space: nowrap`, que serve
+   para dado tabular e não para uma frase — aqui o texto volta a quebrar. */
+.wmc-table-empty td {
+  padding: clamp(28px, 4cqw, 52px) 0;
+  border-bottom: 0;
+  white-space: normal;
+}
+.wmc-table-empty-title {
+  margin: 0 0 6px;
+  font-family: var(--font-display);
+  font-size: clamp(15px, 1.2cqw, 18px);
+  line-height: 1.3;
+  color: var(--paper);
+}
+.wmc-table-empty-note {
+  margin: 0 0 18px;
+  max-width: 48ch;
+  font-size: clamp(13px, 1cqw, 15px);
+  line-height: 1.65;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.wmc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: clamp(13px, 1cqw, 15px);
+}
+.wmc-table th, .wmc-table td {
+  padding: 14px 18px 14px 0;
+  text-align: left;
+  vertical-align: baseline;
+  border-bottom: 1px solid var(--rule);
+  white-space: nowrap;
+}
+.wmc-table thead th {
+  position: relative;
+  font-weight: 600;
+  font-size: var(--type-label);
+  letter-spacing: .24em;            /* rótulo de coluna é rótulo */
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom-color: var(--rule-strong);
+  cursor: pointer;
+  user-select: none;
+}
+.wmc-table thead th:hover { color: var(--paper); }
+.wmc-table thead th[aria-sort="ascending"]::after  { content: " \2191"; color: var(--ember); }
+.wmc-table thead th[aria-sort="descending"]::after { content: " \2193"; color: var(--ember); }
+
+.wmc-table tbody th { font-weight: 400; }
+.wmc-table tbody a { color: var(--paper); text-decoration-color: var(--rule-strong); }
+.wmc-table tbody a:hover { color: var(--ember-bright); }
+
+.wmc-num { text-align: right; font-variant-numeric: tabular-nums; }
+.wmc-table th.wmc-num, .wmc-table td.wmc-num { padding-right: 0; padding-left: 18px; }
+
+.wmc-delta { margin-right: 6px; font-size: .8em; }
+.wmc-delta--up   { color: var(--ember); }
+.wmc-delta--down { color: #6E9A78; }
+
+.wmc-table tfoot td {
+  padding-top: 18px;
+  font-weight: 600;
+  color: var(--paper);
+  border-bottom: 0;
+}
+
+/* ------------------------------------------------------- Fire agencies --- */
+.wmc-agencies-section {
+  background: var(--surface-raised);
+  padding-block: clamp(48px, 6cqw, 104px);
+}
+
+.wmc-section-head--stacked {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: clamp(24px, 3cqw, 44px);
+}
+
+.wmc-agency-name {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(15px, 1.15cqw, 18px);
+  line-height: 1.25;
+  color: var(--paper);
+  text-decoration: none;
+}
+.wmc-agency-name:hover { color: var(--ember-bright); }
+
+.wmc-agency-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: clamp(12px, 0.95cqw, 14px);
+  line-height: 1.5;
+}
+.wmc-agency-lines a { color: var(--paper-dim); text-decoration-color: var(--rule-strong); }
+.wmc-agency-lines a:hover { color: var(--ember-bright); }
+.wmc-agency-addr { color: var(--muted); padding-top: 4px; }
+
+/* ---------------------------------------------- Blocos das páginas novas --- */
+
+.wmc-intro {
+  margin: 0 0 clamp(20px, 2.4cqw, 34px);
+  max-width: 62ch;
+  font-size: clamp(14px, 1.05cqw, 16px);
+  line-height: 1.72;
+  color: var(--paper-dim);
+  text-wrap: pretty;
+}
+.wmc-intro--wide { max-width: 78ch; }
+
+.wmc-hero-claim {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(28px, 3.6cqw, 56px);
+  line-height: 1.04;
+  letter-spacing: -0.015em;
+  color: var(--paper);
+  text-wrap: balance;
+  max-width: 20ch;
+}
+
+.wmc-prose-section {
+  padding-block: clamp(48px, 6cqw, 104px);
+  border-top: 1px solid var(--rule);
+}
+.wmc-prose-section--raised { background: var(--surface-raised); }
+
+.wmc-prose > p:not([class]) { margin: 0 0 18px; max-width: 72ch; font-size: clamp(14px, 1.05cqw, 16px); line-height: 1.72; color: var(--paper-dim); }
+.wmc-list { margin: 0; padding-left: 1.1em; max-width: 72ch; color: var(--paper-dim); font-size: clamp(14px, 1.05cqw, 16px); line-height: 1.72; }
+.wmc-list li { margin-bottom: 10px; }
+.wmc-list li::marker { color: var(--ember); }
+
+/* --------------------------------------------------------------- Gráficos --- */
+.wmc-figure { margin: 0; display: flex; flex-direction: column; gap: 12px; }
+
+/* preserveAspectRatio="none" estica o traço; vector-effect no SVG mantém 2px. */
+.wmc-chart {
+  display: block;
+  width: 100%;
+  height: clamp(160px, 20cqw, 260px);
+  border-bottom: 1px solid var(--rule-strong);
+}
+
+
+/* A forma dos gráficos é inventada; o aviso não é decorativo. */
+.wmc-caption--warn { color: var(--muted); border-left: 2px solid var(--ember); padding-left: 12px; }
+
+.wmc-split-section { padding-block: clamp(48px, 6cqw, 104px); border-top: 1px solid var(--rule); }
+
+/* A coluna da figura era `auto`: encolhia até o tamanho natural do anel e o
+   deixava solto na ponta direita, com o vão entre as duas metades maior que a
+   própria figura. Medido a 1440px: texto de 1074px (com o parágrafo parando em
+   58ch), anel de 200px e um buraco no meio. Agora a coluna tem tamanho
+   declarado e o anel a preenche. */
+.wmc-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(28px, 3.5cqw, 64px);
+  align-items: center;
+}
+/* A coluna de texto é medida pela própria medida do parágrafo (58ch). Com
+   `1fr` ela recebia toda a sobra e o texto parava no meio dela: a 1440px eram
+   934px de coluna para ~620px de texto, e o vão morto ficava ENTRE as duas
+   metades, que é o que fazia o bloco parecer solto. Agora a sobra vai para a
+   coluna da figura, onde o anel a ocupa centrado. */
+/* 1000px e não 780: com o texto valendo 58ch, a 820px sobravam 150px para a
+   figura — o anel encolhia até virar enfeite. Abaixo disso as duas metades
+   empilham, e o anel usa a linha inteira ao lado da legenda. */
+@container (min-width: 1000px) {
+  .wmc-split { grid-template-columns: minmax(0, 58ch) minmax(0, 1fr); }
+}
+.wmc-split-text { display: flex; flex-direction: column; gap: 12px; }
+.wmc-split-text > p:not([class]) { margin: 0; max-width: 58ch; font-size: clamp(14px, 1.05cqw, 16px); line-height: 1.72; color: var(--paper-dim); }
+.wmc-split-figure { margin: 0; }
+
+/* ------------------------------------------------------------- Anel --- */
+
+/* Dois arranjos, cada um por uma razão medida.
+
+   ESTREITO — anel e legenda lado a lado. Sozinho na linha, o anel deixava
+   230px vazios ao lado dele (medido a 390px). Lado a lado a linha é usada e o
+   bloco encurta.
+
+   LARGO (>=1000px) — a figura ganha coluna própria: anel grande com a legenda
+   da MESMA largura logo abaixo, para os dois lerem como um bloco só.
+   O limiar é 1000 e não 780 porque, com o texto valendo 58ch, a 820px sobravam
+   150px para a figura e o anel virava enfeite. */
+donut-chart {
+  display: grid;
+  grid-template-columns: clamp(116px, 38%, 180px) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(16px, 3cqw, 26px);
+}
+@container (min-width: 1000px) {
+  donut-chart {
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(16px, 1.6cqw, 24px);
+    width: min(100%, 400px);
+    margin-inline: auto;
+  }
+}
+
+/* Contêiner próprio: o número e o rótulo do centro medem-se contra o ANEL e
+   não contra a página — 140px e 400px pedem tamanhos diferentes, e a página
+   não sabe de qual se trata. */
+.wmc-dn-ring { position: relative; width: 100%; container-type: inline-size; }
+.wmc-dn-svg { display: block; width: 100%; height: auto; overflow: visible; }
+.wmc-dn-track { stroke: var(--rule); }
+.wmc-dn-arc {
+  stroke: var(--chart-slack);
+  stroke-linecap: butt;
+  transition: opacity .25s ease, stroke .25s ease;
+}
+/* Por índice, e não :first-of-type: o primeiro <circle> irmão é a TRILHA, então
+   :first-of-type não casava com arco nenhum e o anel saía todo cinza. */
+.wmc-dn-arc[data-i="0"] { stroke: var(--ember); }
+/* Enquanto uma fatia está em leitura as outras recuam. O recuo não é a única
+   pista: o número do centro e o item da legenda dizem em texto qual é. */
+.wmc-dn--lendo .wmc-dn-arc:not(.is-ativa) { opacity: .3; }
+
+.wmc-dn-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  text-align: center;
+  padding: 22%;
+  pointer-events: none;                 /* o anel atrás continua recebendo hover */
+}
+.wmc-dn-value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(18px, 20cqw, 48px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--paper);
+  font-variant-numeric: tabular-nums;   /* a contagem não treme */
+}
+.wmc-dn-name {
+  font-weight: 500;
+  font-size: clamp(8px, 3.2cqw, 12px);
+  line-height: 1.3;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-wrap: balance;
+}
+
+.wmc-dn-legend { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.wmc-dn-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 32px;                     /* alvo confortável, WCAG 2.5.8 */
+  padding: 5px 6px;
+  margin-inline: -6px;
+  background: none;
+  border: 0;
+  border-radius: var(--radius);
+  color: var(--muted);
+  font: 500 var(--type-label)/1.4 var(--font-body);
+  letter-spacing: .1em;
+  text-align: left;
+  cursor: pointer;
+  transition: color .2s ease, background-color .2s ease;
+}
+.wmc-dn-item:hover, .wmc-dn-item.is-ativa { color: var(--paper); background: var(--surface-raised); }
+.wmc-dn-item:focus-visible { outline: 2px solid var(--paper); outline-offset: 2px; }
+/* O nome QUEBRA em vez de ser cortado: a 320px a coluna da legenda tem 134px, e
+   com reticências "Complete filings" perdia a segunda palavra — que é
+   justamente a que distingue as duas fatias. */
+.wmc-dn-item-name { flex: 1 1 auto; min-width: 0; }
+.wmc-dn-item-pct { flex: 0 0 auto; font-variant-numeric: tabular-nums; color: var(--paper-dim); }
+.wmc-dn-swatch { width: 10px; height: 10px; flex: 0 0 auto; background: var(--chart-slack); }
+.wmc-dn-legend li:first-child .wmc-dn-swatch { background: var(--ember); }
+
+/* No arranjo largo a legenda tem a largura do anel e a coluna de porcentagem
+   alinha com a borda dele: aí a quebra desalinharia, e não é preciso. */
+@container (min-width: 1000px) {
+  .wmc-dn-item-name { white-space: nowrap; }
+}
+
+/* ---------------------------------------------------------------- Números --- */
+.wmc-keystats, .wmc-bigstats { list-style: none; margin: 0; padding: 0; }
+
+.wmc-keystats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(20px, 2.6cqw, 44px);
+  padding-top: 8px;
+}
+.wmc-keystats li { display: flex; flex-direction: column; gap: 6px; }
+.wmc-keystat-value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(22px, 2.2cqw, 34px);
+  line-height: 1;
+  color: var(--paper);
+  font-variant-numeric: tabular-nums;
+}
+.wmc-keystat-label {
+  font-weight: 500;
+  font-size: var(--type-label);
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.wmc-bigstats {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(28px, 3.5cqw, 56px);
+}
+@container (min-width: 820px) { .wmc-bigstats { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+/* Empilhado dentro do topo da página de agências: ali a coluna é estreita e os
+   três números são a massa da esquerda, que é o que equilibra o mapa à direita.
+   Na largura cheia de uma seção própria eles continuam em três colunas. */
+.wmc-bigstats--stack { grid-template-columns: minmax(0, 1fr) !important; gap: clamp(20px, 2.2cqw, 30px); }
+
+.wmc-figures { display: flex; flex-direction: column; gap: clamp(14px, 1.6cqw, 22px); }
+.wmc-figures-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.wmc-select--inline { width: auto; min-width: 118px; max-width: none; }
+
+/* Papel de Rótulo. O número sozinho não diz o que conta. */
+.wmc-bigstat-label {
+  margin: 0;
+  font-weight: 500;
+  font-size: var(--type-label);
+  line-height: 1.6;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.wmc-bigstats li {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-top: clamp(18px, 2cqw, 26px);
+  border-top: 1px solid var(--rule-strong);
+}
+.wmc-bigstats li > p { margin: 0; }
+.wmc-bigstat-value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(34px, 3.4cqw, 52px);
+  line-height: 1;
+  color: var(--paper);
+  font-variant-numeric: tabular-nums;
+}
+.wmc-bigstat-unit { font-size: .5em; letter-spacing: .04em; color: var(--muted); }
+.wmc-bigstat-note { font-size: clamp(13px, 1cqw, 14px); line-height: 1.66; color: var(--paper-dim); max-width: 34ch; }
+
+/* --------------------------------------------------------------- Imprensa --- */
+.wmc-media-grid {
+  list-style: none;
+  /* Sem esta margem a grade encostava no cabeçalho, e o fio do primeiro cartão
+     caía exatamente na linha de base do <h2> — cortando os descendentes de
+     "reported". */
+  margin: clamp(24px, 3cqw, 44px) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0 clamp(28px, 3.5cqw, 56px);
+}
+@container (min-width: 620px)  { .wmc-media-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@container (min-width: 1020px) { .wmc-media-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+.wmc-media-card { min-width: 0; }
+
+/* O fio separa FILEIRAS. Na primeira ele não separa nada — vira um risco solto
+   logo abaixo do título. Quantos cartões formam a primeira fileira depende da
+   largura, então a regra acompanha os mesmos limiares da grade. */
+.wmc-media-card:nth-child(-n+1) .wmc-media-link { border-top: 0; }
+@container (min-width: 620px)  { .wmc-media-card:nth-child(-n+2) .wmc-media-link { border-top: 0; } }
+@container (min-width: 1020px) { .wmc-media-card:nth-child(-n+3) .wmc-media-link { border-top: 0; } }
+.wmc-media-link {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-block: clamp(20px, 2.2cqw, 30px);
+  border-top: 1px solid var(--rule);
+  text-decoration: none;
+}
+.wmc-media-source {
+  font-weight: 500;
+  font-size: var(--type-label);
+  letter-spacing: .24em;            /* mesmo rótulo do resto do site */
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.wmc-media-headline {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(16px, 1.3cqw, 20px);
+  line-height: 1.3;
+  color: var(--paper);
+  text-wrap: pretty;
+  transition: color .25s ease;
+}
+.wmc-media-link:hover .wmc-media-headline { color: var(--ember-bright); }
+.wmc-media-link:focus-visible { outline: 2px solid var(--paper); outline-offset: 3px; }
+
+/* Os componentes de mapa nas páginas estáticas precisam de altura própria. */
+metric-map, state-explorer { display: block; width: 100%; min-height: 420px; }
+
+/* ── Destaque: a tese da página do cenário ───────────────────────────────────
+   Era um parágrafo solto num bloco de prosa. A frase já trazia três causas e
+   uma ressalva; aqui cada uma ganha seu lugar, sem trocar as palavras.
+
+   O texto fica num painel quase opaco sobre o ground, e NÃO sobre a foto: papel
+   sobre preto é 18,3:1 e mensurável, enquanto texto sobre fotografia depende de
+   onde a brasa cai no quadro. */
+.wmc-feature {
+  padding-block: clamp(48px, 6cqw, 104px);
+  border-top: 1px solid var(--rule);
+  background: var(--surface-raised);
+}
+
+.wmc-feature-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(28px, 3.5cqw, 56px);
+  align-items: stretch;
+}
+@container (min-width: 900px) {
+  .wmc-feature-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); }
+}
+
+.wmc-feature-media {
+  position: relative;
+  margin: 0;
+  min-height: 260px;
+  /* A foto é retrato e, sem teto, ela é quem define a altura da fileira: a
+     622px de largura ela pedia 833px de altura e dominava a seção. O teto
+     devolve a proporção entre as duas colunas; o corte que sobra é vertical e
+     modesto, e o texto ao lado já centra sozinho. */
+  max-height: clamp(380px, 58vh, 660px);
+  overflow: hidden;
+  background: var(--ink);
+}
+.wmc-feature-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Retrato 3:4 num vão mais largo que alto: o corte é vertical. 60% empurrava
+     para a direita e deixava a dupla fora do quadro; 50/50 guarda a equipe à
+     esquerda e a frente de fogo à direita na mesma faixa. */
+  object-position: 50% 50%;
+  /* Mais claro que o de antes. A foto anterior era um incêndio noturno, que
+     pedia contenção; esta é uma cena de fumaça cinza, e escurecer apagava
+     justamente a dupla que é o assunto dela. */
+  filter: brightness(.88) contrast(1.05) saturate(.88);
+}
+/* O crédito precisa de fundo próprio: ele é a única coisa que pousa na foto. */
+.wmc-feature-credit {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: 10px 14px;
+  background: rgba(0, 0, 0, .82);
+  backdrop-filter: blur(10px);
+  font: 500 11px/1 var(--font-body);
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.wmc-feature-panel {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(18px, 2cqw, 28px);
+  justify-content: center;
+}
+
+.wmc-label--ember { color: var(--ember); }
+
+.wmc-feature-claim {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(26px, 3cqw, 44px);
+  line-height: 1.06;
+  letter-spacing: -0.015em;
+  color: var(--paper);
+  text-wrap: balance;
+  max-width: 18ch;
+}
+
+.wmc-drivers {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.wmc-drivers li {
+  display: flex;
+  gap: clamp(14px, 1.6cqw, 22px);
+  padding-block: clamp(16px, 1.8cqw, 24px);
+  border-top: 1px solid var(--rule-strong);
+}
+.wmc-driver-num {
+  flex: 0 0 auto;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(12px, 0.9cqw, 13px);
+  line-height: 1.5;
+  letter-spacing: .1em;
+  color: var(--ember);
+  font-variant-numeric: tabular-nums;
+}
+.wmc-driver-body { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.wmc-driver-name {
+  font-weight: 600;
+  font-size: clamp(14px, 1.1cqw, 17px);
+  line-height: 1.3;
+  color: var(--paper);
+}
+.wmc-driver-note {
+  font-size: clamp(13px, 1cqw, 15px);
+  line-height: 1.66;
+  color: var(--paper-dim);
+  text-wrap: pretty;
+}
+
+/* A ressalva é a promessa editorial do produto, não uma nota de rodapé: fio em
+   ember e largura de leitura própria. */
+.wmc-feature-caveat {
+  margin: clamp(28px, 3.5cqw, 56px) 0 0;
+  padding-left: clamp(14px, 1.6cqw, 22px);
+  border-left: 2px solid var(--ember);
+  max-width: 66ch;
+  font-size: clamp(15px, 1.2cqw, 19px);
+  line-height: 1.6;
+  color: var(--paper);
+  text-wrap: pretty;
+}
+
+/* Lacuna declarada, não número estimado: o valor ausente lê como ausência. */
+.wmc-keystat-value--blank {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: clamp(13px, 1cqw, 15px);
+  letter-spacing: .06em;
+  color: var(--muted);
+}
+
+/* ── Fecho da página do cenário ──────────────────────────────────────────────
+   Era um título, um parágrafo e dois botões pequenos numa coluna estreita, com
+   metade da largura vazia. É o fecho da página — precisa fechar.
+
+   Contraste sobre fotografia: o véu é preto a 0.90, então o PIOR caso possível
+   (uma foto branca por baixo) compõe #191919. Sobre isso, papel dá 15,3:1 e
+   ember 5,2:1. O número não depende de onde a brasa cai no quadro. */
+.wmc-action {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-top: 1px solid var(--rule);
+  padding-block: clamp(56px, 7cqw, 128px);
+  background: var(--ink);
+}
+
+.wmc-action-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 70% 55%;
+}
+
+.wmc-action-veil {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: rgba(0, 0, 0, .9);
+}
+
+/* Onde o texto não chega, o véu abre e a foto aparece. Só acima do ponto em
+   que a coluna de texto deixa de ocupar a largura inteira. */
+@container (min-width: 900px) {
+  .wmc-action-veil {
+    background: linear-gradient(
+      to right,
+      rgba(0, 0, 0, .93) 0%,
+      rgba(0, 0, 0, .92) 58%,
+      rgba(0, 0, 0, .66) 100%
+    );
+  }
+}
+
+.wmc-action-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 1.8cqw, 24px);
+}
+
+.wmc-action-claim {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(34px, 5cqw, 78px);
+  line-height: .98;
+  letter-spacing: -0.02em;
+  color: var(--paper);
+  text-wrap: balance;
+  max-width: 14ch;
+}
+
+.wmc-action-lede {
+  margin: 0;
+  max-width: 54ch;
+  font-size: clamp(15px, 1.25cqw, 20px);
+  line-height: 1.6;
+  color: var(--paper);
+  text-wrap: pretty;
+}
+
+.wmc-action-list {
+  list-style: none;
+  margin: clamp(20px, 2.4cqw, 36px) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(24px, 2.6cqw, 40px);
+}
+@container (min-width: 760px) {
+  .wmc-action-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+.wmc-action-list li {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+  padding-top: clamp(16px, 1.8cqw, 24px);
+  border-top: 1px solid var(--rule-strong);
+}
+.wmc-action-list li > p {
+  margin: 0 0 6px;
+  font-size: clamp(13px, 1cqw, 15px);
+  line-height: 1.66;
+  color: var(--paper-dim);
+  text-wrap: pretty;
+}
+
+.wmc-action-num {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(12px, 0.9cqw, 13px);
+  line-height: 1;
+  letter-spacing: .1em;
+  color: var(--ember);
+  font-variant-numeric: tabular-nums;
+}
+
+.wmc-action-step {
+  margin: 0;
+  font-weight: 600;
+  font-size: clamp(15px, 1.25cqw, 19px);
+  line-height: 1.25;
+  color: var(--paper);
+}
+
+.wmc-action-share { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+
+/* Botão secundário: contorno, para o ember preenchido continuar sendo um só
+   por bloco. Vive aqui e não no bloco do fecho — é usado em mais de um lugar. */
+.wmc-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 clamp(20px, 2cqw, 32px);
+  background: transparent;
+  color: var(--paper);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius);
+  font: 600 11px/1 var(--font-body);
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+}
+.wmc-btn-ghost:hover { border-color: var(--paper); }
+.wmc-btn-ghost:focus-visible { outline: 2px solid var(--paper); outline-offset: 3px; }
+
+/* Crédito de foto. É fotografia de autor, não geração — e não é registro de
+   incidente, o que precisa ficar dito numa página que só publica o filado. */
+.wmc-action-credit {
+  margin: clamp(24px, 3cqw, 40px) 0 0;
+  font-size: clamp(11px, 0.82cqw, 12px);
+  line-height: 1.7;
+  color: var(--muted);
+  max-width: 62ch;
+}
+
+/* ── Gráfico de linha (line-chart.js) ───────────────────────────────────────
+   preserveAspectRatio="none" estica o desenho; por isso traço e texto usam
+   vector-effect / tamanho fixo em vez de herdar a distorção. */
+line-chart {
+  display: block;
+  position: relative;
+  cursor: crosshair;
+}
+line-chart:focus-visible { outline: 2px solid var(--paper); outline-offset: 4px; }
+
+/* A altura vem do atributo, calculada em px reais pelo componente — não de um
+   clamp aqui, senão o desenho e a caixa discordam. */
+.wmc-lc-svg {
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+
+.wmc-lc-grid { stroke: var(--rule); stroke-width: 1; vector-effect: non-scaling-stroke; }
+
+.wmc-lc-tick {
+  fill: var(--muted);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+.wmc-lc-tick--y { text-anchor: end; dominant-baseline: middle; }
+.wmc-lc-tick--x { text-anchor: middle; }
+
+.wmc-lc-line {
+  fill: none;
+  stroke: var(--ember);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+/* A área só entra depois que a linha termina de desenhar. */
+.wmc-lc-area { opacity: 0; transition: opacity .6s ease .9s; }
+.wmc-lc--pronto .wmc-lc-area { opacity: 1; }
+
+.wmc-lc-cursor,
+.wmc-lc-dot { opacity: 0; transition: opacity .15s ease; }
+.wmc-lc-cursor { stroke: var(--rule-strong); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.wmc-lc-dot { fill: var(--ember); stroke: var(--ink); stroke-width: 2; vector-effect: non-scaling-stroke; }
+.wmc-lc--lendo .wmc-lc-cursor,
+.wmc-lc--lendo .wmc-lc-dot { opacity: 1; }
+
+/* Etiqueta do ponto. Substitui a linha de leitura que ficava abaixo do
+   desenho — e a instrução "Hover or use the arrow keys", que existia como
+   ::before dela. O valor agora aparece onde o olho já está: no ponto.
+
+   Quem navega por teclado não perde nada: o mesmo texto continua indo para uma
+   região viva escondida, e a etiqueta acompanha o ponto focado. */
+.wmc-lc-tip {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 11px;
+  background: var(--surface-raised);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius);
+  white-space: nowrap;
+  pointer-events: none;                 /* não rouba o hover do desenho */
+  opacity: 0;
+  transition: opacity .15s ease;
+}
+.wmc-lc--lendo .wmc-lc-tip { opacity: 1; }
+.wmc-lc-tip-x {
+  font-weight: 500;
+  font-size: var(--type-label);
+  line-height: 1;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.wmc-lc-tip-y {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(14px, 1.1cqw, 17px);
+  line-height: 1.2;
+  color: var(--paper);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wmc-lc-area { transition: none; opacity: 1; }
+}
+
+/* ── Os quatro papéis de caixa alta ──────────────────────────────────────────
+   Este bloco não tem regra nenhuma: existe para registrar o sistema, porque o
+   projeto chegou a ter SETE trackings diferentes para a mesma coisa.
+
+     RÓTULO      500 ou 600 · .24em   kicker, meta, legenda de dado,
+                                      cabeçalho de coluna, fonte da notícia
+     CONTROLE    600 ou 700 · .20em   botão, chip, traço da trilha
+     NAVEGAÇÃO   500        · .20em   item do menu, largo ou estreito
+     ASSINATURA  500        · .30em   "MEDIA COVERAGE" sob a marca
+
+   O peso carrega estado (chip selecionado em 700); o tracking carrega papel.
+   Se precisar de um valor novo, o papel é que tem que ser novo. */
+
+/* Bloco de abertura em duas metades: título à esquerda, apoio e ação à direita.
+   Só entra quando o bloco está empilhado (páginas com mapa de largura total) —
+   ali o texto ficava numa coluna estreita com o resto da largura vazio. */
+.wmc-lede-text--split { gap: clamp(20px, 2.4cqw, 34px); }
+
+.wmc-lede-head,
+.wmc-lede-aside {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 1.6cqw, 22px);
+  min-width: 0;
+}
+/* O kicker é uma linha própria acima das duas metades. Antes ele morava dentro
+   da metade esquerda, e com `align-items: end` ele subia ou descia conforme
+   QUAL metade fosse mais alta: em "Wildfires by Region" o título é curto e o
+   apoio é longo, então o rótulo caía para o meio da seção, enquanto na tela do
+   estado ele ficava no topo. Fora da grade, ele ancora no mesmo ponto sempre. */
+.wmc-lede-aside > p:not([class]) {
+  margin: 0;
+  max-width: 46ch;
+  font-size: clamp(14px, 1.05cqw, 16px);
+  line-height: 1.72;
+  color: var(--paper-dim);
+  text-wrap: pretty;
+}
+
+@container (min-width: 900px) {
+  .wmc-lede-text--split {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    column-gap: clamp(32px, 4cqw, 72px);
+    /* start, e não end: as duas metades começam na mesma linha nas três telas.
+       Com `end` o alinhamento dependia de qual lado tinha mais conteúdo. */
+    align-items: start;
+    row-gap: clamp(14px, 1.6cqw, 22px);
+  }
+  .wmc-lede-kicker { grid-column: 1 / -1; }
+}
+
+/* ── Controles do mapa ───────────────────────────────────────────────────────
+   Um grupo por linha: rótulo em cima, opções embaixo. Serve tanto para chips
+   quanto para <select>, porque o conjunto de controles é configurável e nem
+   toda página usa o mesmo. */
+.wmc-controls {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 1.8cqw, 24px);
+}
+.wmc-control { display: flex; flex-direction: column; gap: 10px; }
+
+/* <select> nativo: teclado, busca por digitação e leitor de tela vêm de graça.
+   A seta é desenhada aqui porque a nativa não segue a paleta. */
+.wmc-select {
+  appearance: none;
+  width: 100%;
+  max-width: 260px;
+  min-height: 46px;
+  padding: 0 40px 0 14px;
+  background: transparent;
+  background-image: linear-gradient(45deg, transparent 50%, var(--paper) 50%),
+                    linear-gradient(135deg, var(--paper) 50%, transparent 50%);
+  background-position: calc(100% - 20px) center, calc(100% - 14px) center;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  color: var(--paper);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius);
+  font: 600 11px/1 var(--font-body);
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.wmc-select:hover { border-color: var(--paper); }
+.wmc-select:focus-visible { outline: 2px solid var(--paper); outline-offset: 3px; }
+/* A lista aberta é desenhada pelo sistema: fundo claro, então texto escuro. */
+.wmc-select option { background: var(--ink); color: var(--paper); }
+
+/* --- A faixa May — October ------------------------------------------------
+   O valor animado vive em custom properties no <html>, e não no atributo
+   style dos elementos. Dois motivos concretos, os dois já custaram caro aqui:
+
+   1. o runtime do artboard é React, e ele reescreve o style dos nós que
+      administra. Foi o que prendeu a CTA da hero em y:16.
+   2. a versão anterior era uma timeline pausada do GSAP, e `progress(0)` numa
+      timeline que JÁ está em 0 não pinta nada — o estado inicial só chegava ao
+      DOM quando a rolagem movia o playhead. Daí o defeito: o October aparecia
+      pronto e alinhado, piscava, e só então animava.
+
+   O <html> está fora da árvore do React, e uma custom property não tem estado
+   interno para divergir do DOM.
+
+   Tudo escopado em .wmc-season-live, classe que o script põe ao assumir o
+   controle: sem JavaScript nenhuma regra casa e a faixa aparece pronta. O
+   fallback 1 é o estado final, então um primeiro quadro antes da medição
+   mostra a faixa montada, nunca um buraco. */
+.wmc-season-live [data-season="rule"] {
+  transform: scaleX(var(--wmc-season-rule, 1));
+}
+.wmc-season-live [data-season="end"] {
+  opacity: var(--wmc-season-end, 1);
+  transform: translateX(calc(26px * (1 - var(--wmc-season-end, 1))));
 }

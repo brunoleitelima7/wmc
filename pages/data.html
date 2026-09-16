@@ -1,0 +1,176 @@
+<!--meta
+title: Wildfire Data
+description: Wildfires and acres burned by US state and responsible agency, with what the record does not cover.
+scripts: mapbox-token.js, metric-map.js, donut-chart.js
+active: data
+-->
+
+    <section class="wmc-lede-section">
+      <div class="wmc-container wmc-lede">
+        <div class="wmc-lede-text wmc-lede-text--split">
+          <p class="wmc-label wmc-lede-kicker">By region</p>
+          <div class="wmc-lede-head">
+          <h1 class="wmc-hero-claim">Wildfires by Region</h1>
+          </div>
+
+          <div class="wmc-lede-aside">
+          <p>Wildfires are devastating communities across the United States every year. The map shows where incidents were filed in 2023, by the agency that holds the record. Where a state filed nothing, the record stays blank &mdash; it is not estimated.</p>
+          <a class="wmc-btn wmc-btn--start" href="#records">Read the region table</a>
+          </div>
+        </div>
+        <div class="wmc-lede-media">
+          <metric-map data-controls="quality" data-cta-href="county.html" data-cta-label="Wildfires by county"></metric-map>
+        </div>
+      </div>
+    </section>
+
+    <section id="records" class="wmc-table-section">
+      <div class="wmc-container">
+        <div class="wmc-table-head">
+          <div class="wmc-table-head-text">
+            <h2 class="wmc-section-title">The region record</h2>
+            <p class="wmc-intro">Ten state agencies filed a complete 2023 return: the count, the acreage, and the change against the previous season. Each row is attributed to the agency that filed it.</p>
+          </div>
+          <div class="wmc-table-tools">
+            <label class="wmc-label" for="wmc-region-search">Search states</label>
+            <input id="wmc-region-search" type="search" placeholder="Search by state or agency&hellip;" autocomplete="off" data-table-filter="wmc-region-table">
+            <p class="wmc-filter-count" role="status" data-filter-count data-noun="state,states"></p>
+          </div>
+        </div>
+        <div class="wmc-table-scroll" tabindex="0" role="region" aria-label="Wildfires by region in 2023.">
+          <table id="wmc-region-table" class="wmc-table">
+            <caption class="wmc-sr">Wildfires by region in 2023. Select a column heading to sort.</caption>
+            <thead>
+              <tr>
+                <th scope="col" data-sortable aria-sort="none">State</th>
+                <th scope="col" data-sortable aria-sort="none">Agency</th>
+                <th scope="col" data-sortable aria-sort="none" class="wmc-num">Wildfires</th>
+                <th scope="col" data-sortable aria-sort="none" class="wmc-num">Fires change</th>
+                <th scope="col" data-sortable aria-sort="none" class="wmc-num">Acres burned</th>
+                <th scope="col" data-sortable aria-sort="none" class="wmc-num">Acres change</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">California</th>
+                <td>CAL FIRE</td>
+                <td class="wmc-num" data-sort="6754">6,754</td>
+                <td class="wmc-num" data-sort="178">178</td>
+                <td class="wmc-num" data-sort="79501">79,501</td>
+                <td class="wmc-num" data-sort="6910">6,910</td>
+              </tr>
+              <tr>
+                <th scope="row">Oregon</th>
+                <td>USFS Fire &amp; Aviation</td>
+                <td class="wmc-num" data-sort="7456">7,456</td>
+                <td class="wmc-num" data-sort="243">243</td>
+                <td class="wmc-num" data-sort="71831">71,831</td>
+                <td class="wmc-num" data-sort="5289">5,289</td>
+              </tr>
+              <tr>
+                <th scope="row">Texas</th>
+                <td>Texas A&amp;M Forest Service</td>
+                <td class="wmc-num" data-sort="6952">6,952</td>
+                <td class="wmc-num" data-sort="1019">1,019</td>
+                <td class="wmc-num" data-sort="68545">68,545</td>
+                <td class="wmc-num" data-sort="11682">11,682</td>
+              </tr>
+              <tr>
+                <th scope="row">Washington</th>
+                <td>Washington DNR</td>
+                <td class="wmc-num" data-sort="5233">5,233</td>
+                <td class="wmc-num" data-sort="1122">1,122</td>
+                <td class="wmc-num" data-sort="58769">58,769</td>
+                <td class="wmc-num" data-sort="9752">9,752</td>
+              </tr>
+              <tr>
+                <th scope="row">Colorado</th>
+                <td>Colorado State Forest Service</td>
+                <td class="wmc-num" data-sort="6084">6,084</td>
+                <td class="wmc-num" data-sort="3229">3,229</td>
+                <td class="wmc-num" data-sort="51250">51,250</td>
+                <td class="wmc-num" data-sort="28494">28,494</td>
+              </tr>
+              <tr>
+                <th scope="row">Montana</th>
+                <td>Montana DNRC Forestry</td>
+                <td class="wmc-num" data-sort="4707">4,707</td>
+                <td class="wmc-num" data-sort="3064">3,064</td>
+                <td class="wmc-num" data-sort="44454">44,454</td>
+                <td class="wmc-num" data-sort="26308">26,308</td>
+              </tr>
+              <tr>
+                <th scope="row">Idaho</th>
+                <td>BLM Fire Operations</td>
+                <td class="wmc-num" data-sort="4536">4,536</td>
+                <td class="wmc-num" data-sort="555">555</td>
+                <td class="wmc-num" data-sort="43983">43,983</td>
+                <td class="wmc-num" data-sort="2805">2,805</td>
+              </tr>
+              <tr>
+                <th scope="row">Arizona</th>
+                <td>Arizona Dept of Forestry</td>
+                <td class="wmc-num" data-sort="4320">4,320</td>
+                <td class="wmc-num" data-sort="813">813</td>
+                <td class="wmc-num" data-sort="43506">43,506</td>
+                <td class="wmc-num" data-sort="4072">4,072</td>
+              </tr>
+              <tr>
+                <th scope="row">Nevada</th>
+                <td>BLM Fire Operations</td>
+                <td class="wmc-num" data-sort="4068">4,068</td>
+                <td class="wmc-num" data-sort="603">603</td>
+                <td class="wmc-num" data-sort="40170">40,170</td>
+                <td class="wmc-num" data-sort="10432">10,432</td>
+              </tr>
+              <tr>
+                <th scope="row">New Mexico</th>
+                <td>NPS Fire Management</td>
+                <td class="wmc-num" data-sort="4669">4,669</td>
+                <td class="wmc-num" data-sort="394">394</td>
+                <td class="wmc-num" data-sort="39643">39,643</td>
+                <td class="wmc-num" data-sort="1858">1,858</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="2">All states filed</td>
+                <td class="wmc-num">459,053</td>
+                <td class="wmc-num">23,704</td>
+                <td class="wmc-num">3,387,825</td>
+                <td class="wmc-num">423,704</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="wmc-split-section">
+      <div class="wmc-container wmc-split">
+        <div class="wmc-split-text">
+          <h2 class="wmc-panel-title">Incomplete reporting</h2>
+          <p class="wmc-section-meta">All states &middot; all agencies &middot; 2023</p>
+          <p>Reporting is incomplete for many wildfire events. A number of fire monitoring stations report gaps in data, so the true figure is higher than what appears here. We publish what was filed and mark what was not.</p>
+        </div>
+        <figure class="wmc-split-figure">
+          <donut-chart data-desc="Share of 2023 state filings that arrived complete"
+                       data-series='[["Complete filings", 30], ["Reporting gaps", 70]]'></donut-chart>
+        </figure>
+      </div>
+    </section>
+
+    <section class="wmc-prose-section">
+      <div class="wmc-container">
+        <h2 class="wmc-panel-title">Permits &amp; authorization</h2>
+        <div class="wmc-prose">
+          <p>Some fires are reported against burn permit numbers that appear to be expired or invalid. This could mean the record is wrong, or that the burn itself was never authorised. We cannot tell the two apart from the filing alone.</p>
+          <p>To put this another way &mdash; if fire records list permits that do not appear in the permit database, do those burns exist in any register at all?</p>
+          <ul class="wmc-list">
+            <li>Some sites simply have no permit on file at all.</li>
+            <li>Several agencies list many sites as &ldquo;TBD&rdquo; or &ldquo;Under Review&rdquo;, while others use &ldquo;N/A&rdquo; without saying which.</li>
+            <li>Where a permit number is present but unmatched, we leave the row and flag it rather than dropping it.</li>
+          </ul>
+        </div>
+      </div>
+    </section>

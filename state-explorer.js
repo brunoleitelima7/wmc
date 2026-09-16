@@ -41,7 +41,7 @@
   //    (Account > Tokens > URL restrictions) antes de publicar.
   //  - A camada de render Mapbox ainda NÃO foi implementada; preencher isto
   //    sozinho não troca o mapa. Ver _drawMap().
-  var MAPBOX_TOKEN = "pk.eyJ1IjoiYnJ1bm9sZWl0ZWxpbWEiLCJhIjoiV0FISndtZyJ9.smRbtAJFvsXUFdtBBFh9Ww";
+  var MAPBOX_TOKEN = (typeof window !== "undefined" && window.__WMC_MAPBOX_TOKEN) || "";   // ver mapbox-token.js
   // ---------------------------------------------------------------------
 
   // Reserva, no fitBounds, o espaço que o painel sobreposto ocupa à direita.
@@ -101,6 +101,15 @@
     }
 
     // ---------------------------------------------------------------- UI --
+    /* O destino vem do atributo: na home leva a outra pagina, e na propria
+       pagina de destino o botao some para nao virar auto-link. */
+    _ctaHTML() {
+      var href = this.getAttribute("data-cta-href");
+      if (href === "none") return "";
+      var rotulo = this.getAttribute("data-cta-label") || "Full state data";
+      return '<a href="' + (href || "state.html") + '" class="wmc-btn wmc-btn--start">' + rotulo + '</a>';
+    }
+
     _render() {
       var filed = this._filed;
       var ranked = Object.keys(filed).map(function (k) {
@@ -124,9 +133,9 @@
               '<ul data-role="listbox" id="wmc-state-listbox" role="listbox" aria-label="Matching states" hidden ' +
                 'style="list-style:none;margin:0;padding:0;position:absolute;left:0;right:0;top:100%;z-index:5;max-height:264px;overflow:auto;background:#0A0A0A;border:1px solid ' + RULE_STRONG + ';border-top:0"></ul>' +
             '</div>' +
-            '<p data-role="status" role="status" aria-live="polite" style="margin:0;' + lbl + '"></p>' +
+            '<p data-role="status" role="status" aria-live="polite" style="margin:0;" class=\"wmc-label\"></p>' +
             '<ol data-role="list" style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:clamp(16px,1.8cqw,24px)"></ol>' +
-            '<a href="#map" class="wmc-btn wmc-btn--start">Full state data</a>' +
+            this._ctaHTML() +
           '</div>' +
         '</div>';
 
@@ -160,8 +169,8 @@
           '<span style="flex:1 1 min(100%,200px);display:flex;flex-direction:column;gap:6px;min-width:0">' +
             '<span style="font-family:Inter,system-ui,sans-serif;font-weight:400;font-size:clamp(20px,1.9cqw,28px);line-height:1.1;color:' + (isSel ? EMBER : PAPER) + '">' + r.name + '</span>' +
             (filedRow
-              ? '<span style="font:500 clamp(11px,0.8cqw,12px)/1.5 Krub,system-ui;letter-spacing:.14em;text-transform:uppercase;color:' + MUTED + '">' + (r.lead || "") + (r.lead ? " · " : "") + (r.agency || "") + '</span>'
-              : '<span style="font:500 clamp(11px,0.8cqw,12px)/1.5 Krub,system-ui;letter-spacing:.2em;text-transform:uppercase;color:' + MUTED + '">Not yet reported</span>') +
+              ? '<span class="wmc-label" style="line-height:1.5;color:' + MUTED + '">' + (r.lead || "") + (r.lead ? " · " : "") + (r.agency || "") + '</span>'
+              : '<span class="wmc-label" style="line-height:1.5;color:' + MUTED + '">Not yet reported</span>') +
           '</span>' +
           (filedRow
             ? '<span style="flex:1 1 min(100%,180px);display:flex;flex-direction:column;gap:6px;min-width:0">' +
@@ -375,7 +384,7 @@
         return '<li role="option" id="wmc-opt-' + i + '" data-name="' + n + '" aria-selected="false" ' +
           'style="display:flex;justify-content:space-between;gap:16px;align-items:baseline;padding:12px 16px;cursor:pointer;border-top:1px solid ' + RULE + '">' +
           '<span style="font:400 clamp(14px,1.05cqw,15px)/1.3 Krub,system-ui;color:' + PAPER + '">' + n + '</span>' +
-          '<span style="font:500 11px/1 Krub,system-ui;letter-spacing:.16em;text-transform:uppercase;color:' + (rec ? EMBER : MUTED) + '">' +
+          '<span class="wmc-label" style="color:' + (rec ? EMBER : MUTED) + '">' +
             (rec ? fmt(rec.value) : "No record") + '</span></li>';
       }).join("");
       box.hidden = false;
@@ -418,8 +427,19 @@
         this._closeList();
       }
     }
+    /* Avisa a pagina. O componente nao sabe nada sobre a seccao de destaque da
+       state.html — so anuncia o que foi escolhido e entrega o registro filado
+       (ou undefined, quando o estado nao filou nada). */
+    _emitirEscolha(name) {
+      this.dispatchEvent(new CustomEvent("wmc:state-chosen", {
+        bubbles: true,
+        detail: { name: name, filed: this._filed[name] || null }
+      }));
+    }
+
     _choose(name) {                                   // só aqui o mapa se move
       if (!name) return;
+      this._emitirEscolha(name);
       var input = this.querySelector('[data-role="search"]');
       input.value = name;
       this._closeList();

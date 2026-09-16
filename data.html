@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wildfire Data — Wildfire Media Coverage</title>
+<meta name="description" content="Wildfires and acres burned by US state and responsible agency, with what the record does not cover.">
+<link rel="icon" type="image/svg+xml" href="wmc-mark.svg?v=47hnu2yn">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=44aatqso">
+<link rel="apple-touch-icon" href="icon-180.png?v=49z1s45a">
+<meta name="theme-color" content="#000000">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Krub:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/mapbox-gl@3.9.0/dist/mapbox-gl.css" integrity="sha384-GTsgKcJXGSkBp0M68qpxkz9XovzVH0PwSrjYONvkn3tXtySOSq+a14bG2gVJHwQG" crossorigin="anonymous">
+<script src="https://unpkg.com/mapbox-gl@3.9.0/dist/mapbox-gl.js" integrity="sha384-QRI8HEhaDamjVGfoos6X0AB+VVxCE4fAm6jaRZqcMn8mPsbxJvCc8cyG3Wu/+Pyq" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="styles.css?v=zuf71lzs">
+</head>
+<body>
+<a class="wmc-skip" href="#conteudo">Skip to content</a>
+<div class="wmc-root">
+
+  <header id="top" class="wmc-header">
+    <div class="wmc-header-bar">
+
+      <a class="wmc-masthead" href="index.html">
+        <img class="wmc-mark-logo" src="wmc-mark.svg" alt="" width="593" height="591" decoding="async">
+        <span class="wmc-masthead-text">
+          <span class="wmc-masthead-name">Wildfire</span>
+          <span class="wmc-masthead-sub">Media Coverage</span>
+        </span>
+      </a>
+
+      <div class="wmc-header-right">
+        <nav class="wmc-nav-wide" aria-label="Primary">
+            <a class="wmc-nav-item" href="index.html">Home</a>
+            <a class="wmc-nav-item" href="scenario.html">The Scenario</a>
+            <a class="wmc-nav-item" href="state.html">States</a>
+            <a class="wmc-nav-item" href="data.html" aria-current="page">Wildfire Data</a>
+            <a class="wmc-nav-item" href="agencies.html">Fire Agencies</a>
+            <a class="wmc-nav-item" href="media.html">Media</a>
+        </nav>
+
+        <span class="wmc-share-status" role="status" data-share-status></span>
+        <button class="wmc-btn wmc-nav-wide-inline" type="button" data-share>Share</button>
+
+        <button class="wmc-nav-toggle" type="button" aria-expanded="false" aria-controls="wmc-menu" data-menu-toggle>
+          <span aria-hidden="true" class="wmc-burger">
+            <span></span><span></span><span></span>
+          </span>
+          <span class="wmc-sr">Menu</span>
+        </button>
+      </div>
+    </div>
+
+    <nav id="wmc-menu" class="wmc-menu" aria-label="Primary" hidden>
+            <a class="wmc-menu-item" href="index.html">Home</a>
+            <a class="wmc-menu-item" href="scenario.html">The Scenario</a>
+            <a class="wmc-menu-item" href="state.html">States</a>
+            <a class="wmc-menu-item" href="data.html" aria-current="page">Wildfire Data</a>
+            <a class="wmc-menu-item" href="agencies.html">Fire Agencies</a>
+            <a class="wmc-menu-item" href="media.html">Media</a>
+      <span class="wmc-menu-share">
+        <button class="wmc-btn" type="button" data-share>Share</button>
+        <span class="wmc-share-status" role="status" data-share-status></span>
+      </span>
+    </nav>
+  </header>
+
+  <main id="conteudo">
+
+<section class="wmc-lede-section">
+      <div class="wmc-container wmc-lede">
+        <div class="wmc-lede-text wmc-lede-text--split">
+          <p class="wmc-label wmc-lede-kicker">By region</p>
+          <div class="wmc-lede-head">
+          <h1 class="wmc-hero-claim">Wildfires by Region</h1>
+          </div>
+
+          <div class="wmc-lede-aside">
+          <p>Wildfires are devastating communities across the United States every year. The map shows where incidents were filed in 2023, by the agency that holds the record. Where a state filed nothing, the record stays blank &mdash; it is not estimated.</p>
+          <a class="wmc-btn wmc-btn--start" href="#records">Read the region table</a>
+          </div>
+        </div>
+        <div class="wmc-lede-media">
+          <metric-map data-controls="quality" data-cta-href="county.html" data-cta-label="Wildfires by county"></metric-map>
+        </div>
+      </div>
+    </section>
+
+    <section id="records" class="wmc-table-section">
+      <div class="wmc-container">
+        <div class="wmc-table-head">
+          <div class="wmc-table-head-text">
+            <h2 class="wmc-section-title">The region record</h2>
+            <p class="wmc-intro">Ten state agencies filed a complete 2023 return: the count, the acreage, and the change against the previous season. Each row is attributed to the agency that filed it.</p>
+          </div>
+          <div class="wmc-table-tools">
+            <label class="wmc-label" for="wmc-region-search">Search states</label>
+            <input id="wmc-region-search" type="search" placeholder="Search by state or agency&hellip;" autocomplete="off" data-table-filter="wmc-region-table">
+            <p class="wmc-filter-count" role="status" data-filter-count data-noun="state,states"></p>
+          </div>
+        </div>
+        <div class="wmc-table-scroll" tabindex="0" role="region" aria-label="Wildfires by region in 2023.">
+          <table id="wmc-region-table" class="wmc-table">
+            <caption class="wmc-sr">Wildfires by region in 2023. Select a column heading to sort.</caption>
+            <thead>
+              <tr>
+                <th scope="col" data-sortable aria-sort="none">State</th>
+                <th scope="col" data-sortable aria-sort="none">Agency</th>
+                <th scope="col" data-sortable aria-sort="none" class="wmc-num">Wildfires</th>
+                <th scope="col" data-sortable aria-sort="none" class="wmc-num">Fires change</th>
+                <th scope="col" data-sortable aria-sort="none" class="wmc-num">Acres burned</th>
+                <th scope="col" data-sortable aria-sort="none" class="wmc-num">Acres change</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">California</th>
+                <td>CAL FIRE</td>
+                <td class="wmc-num" data-sort="6754">6,754</td>
+                <td class="wmc-num" data-sort="178">178</td>
+                <td class="wmc-num" data-sort="79501">79,501</td>
+                <td class="wmc-num" data-sort="6910">6,910</td>
+              </tr>
+              <tr>
+                <th scope="row">Oregon</th>
+                <td>USFS Fire &amp; Aviation</td>
+                <td class="wmc-num" data-sort="7456">7,456</td>
+                <td class="wmc-num" data-sort="243">243</td>
+                <td class="wmc-num" data-sort="71831">71,831</td>
+                <td class="wmc-num" data-sort="5289">5,289</td>
+              </tr>
+              <tr>
+                <th scope="row">Texas</th>
+                <td>Texas A&amp;M Forest Service</td>
+                <td class="wmc-num" data-sort="6952">6,952</td>
+                <td class="wmc-num" data-sort="1019">1,019</td>
+                <td class="wmc-num" data-sort="68545">68,545</td>
+                <td class="wmc-num" data-sort="11682">11,682</td>
+              </tr>
+              <tr>
+                <th scope="row">Washington</th>
+                <td>Washington DNR</td>
+                <td class="wmc-num" data-sort="5233">5,233</td>
+                <td class="wmc-num" data-sort="1122">1,122</td>
+                <td class="wmc-num" data-sort="58769">58,769</td>
+                <td class="wmc-num" data-sort="9752">9,752</td>
+              </tr>
+              <tr>
+                <th scope="row">Colorado</th>
+                <td>Colorado State Forest Service</td>
+                <td class="wmc-num" data-sort="6084">6,084</td>
+                <td class="wmc-num" data-sort="3229">3,229</td>
+                <td class="wmc-num" data-sort="51250">51,250</td>
+                <td class="wmc-num" data-sort="28494">28,494</td>
+              </tr>
+              <tr>
+                <th scope="row">Montana</th>
+                <td>Montana DNRC Forestry</td>
+                <td class="wmc-num" data-sort="4707">4,707</td>
+                <td class="wmc-num" data-sort="3064">3,064</td>
+                <td class="wmc-num" data-sort="44454">44,454</td>
+                <td class="wmc-num" data-sort="26308">26,308</td>
+              </tr>
+              <tr>
+                <th scope="row">Idaho</th>
+                <td>BLM Fire Operations</td>
+                <td class="wmc-num" data-sort="4536">4,536</td>
+                <td class="wmc-num" data-sort="555">555</td>
+                <td class="wmc-num" data-sort="43983">43,983</td>
+                <td class="wmc-num" data-sort="2805">2,805</td>
+              </tr>
+              <tr>
+                <th scope="row">Arizona</th>
+                <td>Arizona Dept of Forestry</td>
+                <td class="wmc-num" data-sort="4320">4,320</td>
+                <td class="wmc-num" data-sort="813">813</td>
+                <td class="wmc-num" data-sort="43506">43,506</td>
+                <td class="wmc-num" data-sort="4072">4,072</td>
+              </tr>
+              <tr>
+                <th scope="row">Nevada</th>
+                <td>BLM Fire Operations</td>
+                <td class="wmc-num" data-sort="4068">4,068</td>
+                <td class="wmc-num" data-sort="603">603</td>
+                <td class="wmc-num" data-sort="40170">40,170</td>
+                <td class="wmc-num" data-sort="10432">10,432</td>
+              </tr>
+              <tr>
+                <th scope="row">New Mexico</th>
+                <td>NPS Fire Management</td>
+                <td class="wmc-num" data-sort="4669">4,669</td>
+                <td class="wmc-num" data-sort="394">394</td>
+                <td class="wmc-num" data-sort="39643">39,643</td>
+                <td class="wmc-num" data-sort="1858">1,858</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="2">All states filed</td>
+                <td class="wmc-num">459,053</td>
+                <td class="wmc-num">23,704</td>
+                <td class="wmc-num">3,387,825</td>
+                <td class="wmc-num">423,704</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="wmc-split-section">
+      <div class="wmc-container wmc-split">
+        <div class="wmc-split-text">
+          <h2 class="wmc-panel-title">Incomplete reporting</h2>
+          <p class="wmc-section-meta">All states &middot; all agencies &middot; 2023</p>
+          <p>Reporting is incomplete for many wildfire events. A number of fire monitoring stations report gaps in data, so the true figure is higher than what appears here. We publish what was filed and mark what was not.</p>
+        </div>
+        <figure class="wmc-split-figure">
+          <donut-chart data-desc="Share of 2023 state filings that arrived complete"
+                       data-series='[["Complete filings", 30], ["Reporting gaps", 70]]'></donut-chart>
+        </figure>
+      </div>
+    </section>
+
+    <section class="wmc-prose-section">
+      <div class="wmc-container">
+        <h2 class="wmc-panel-title">Permits &amp; authorization</h2>
+        <div class="wmc-prose">
+          <p>Some fires are reported against burn permit numbers that appear to be expired or invalid. This could mean the record is wrong, or that the burn itself was never authorised. We cannot tell the two apart from the filing alone.</p>
+          <p>To put this another way &mdash; if fire records list permits that do not appear in the permit database, do those burns exist in any register at all?</p>
+          <ul class="wmc-list">
+            <li>Some sites simply have no permit on file at all.</li>
+            <li>Several agencies list many sites as &ldquo;TBD&rdquo; or &ldquo;Under Review&rdquo;, while others use &ldquo;N/A&rdquo; without saying which.</li>
+            <li>Where a permit number is present but unmatched, we leave the row and flag it rather than dropping it.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wmc-footer">
+    <div class="wmc-container wmc-footer-inner">
+
+      <div class="wmc-sources">
+        <h2 class="wmc-sources-title">Wildfire Data Sources &amp; Accuracy</h2>
+        <p>This website is intended to provide an accurate representation of wildfire data from federal and state fire agencies. The data is complex, and thus some errors may have been made. If you find something that is incorrect, please <a href="https://github.com/brunoleitelima7/wmc/issues/new">raise an issue on GitHub</a> and we&rsquo;ll endeavour to fix it quickly.</p>
+        <p>Wildfire data is sourced from incident reports, fire perimeter updates, and air quality monitoring systems. We combine data from USFS, CAL FIRE, BLM, and NWS to provide a unified view of active fires, containment status, and smoke forecasts. If you notice inconsistencies in fire naming, acreage, or containment percentages, please let us know so we can reconcile the data.</p>
+        <p class="wmc-sources-note">All the data sources are listed on the <a href="https://github.com/brunoleitelima7/wmc">source code</a> website.</p>
+      </div>
+
+      <div class="wmc-footer-bar">
+        <a class="wmc-footer-mark" href="index.html">
+          <img class="wmc-mark-logo" src="wmc-mark.svg" alt="" width="593" height="591" decoding="async">
+          <span class="wmc-masthead-text">
+            <span class="wmc-footer-mark-name">Wildfire</span>
+            <span class="wmc-footer-mark-sub">Media Coverage</span>
+          </span>
+        </a>
+
+        <nav class="wmc-footer-nav" aria-label="Footer">
+          <a class="wmc-footer-link" href="index.html">Home</a>
+          <a class="wmc-footer-link" href="scenario.html">The Scenario</a>
+          <a class="wmc-footer-link" href="state.html">States</a>
+          <a class="wmc-footer-link" href="data.html">Wildfire Data</a>
+          <a class="wmc-footer-link" href="agencies.html">Fire Agencies</a>
+          <a class="wmc-footer-link" href="media.html">Media</a>
+          <a class="wmc-footer-link" href="county.html">By County</a>
+        </nav>
+
+        <div class="wmc-footer-actions">
+          <a class="wmc-icon-btn" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fbrunoleitelima7.github.io%2Fwmc%2F" aria-label="Share this page on Twitter"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a>
+          <a class="wmc-icon-btn" href="https://github.com/brunoleitelima7/wmc" aria-label="Source code on GitHub"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a>
+          <button class="wmc-btn" type="button" data-share>Share</button>
+          <span class="wmc-share-status" role="status" data-share-status></span>
+        </div>
+      </div>
+
+      <p class="wmc-colophon">&copy; 2023 Wildfire Media Coverage. Text and data licensed <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>. Data provided by NIFC and state fire agencies. Full copyright information available <a href="https://creativecommons.org/licenses/by-sa/4.0/">here</a>.</p>
+
+    </div>
+  </footer>
+</div>
+
+<script src="mapbox-token.js?v=3efz6dhv" defer></script>
+<script src="metric-map.js?v=7hnkjbr5" defer></script>
+<script src="donut-chart.js?v=36lxb7dw" defer></script>
+<script src="site.js?v=4m2jn8xq" defer></script>
+</body>
+</html>

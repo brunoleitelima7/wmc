@@ -18,7 +18,12 @@
 <script src="https://unpkg.com/gsap@3.13.0/dist/gsap.min.js" integrity="sha384-HOvlOYPIs/zjoIkWUGXkVmXsjr8GuZLV+Q+rcPwmJOVZVpvTSXQChiN4t9Euv9Vc" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/gsap@3.13.0/dist/SplitText.min.js" integrity="sha384-xb96EMJeax+NLXMC88ZBa1xAeAW+kn+horHh/zFlbMLG2UPWhMJJSlv7fi57hS+Q" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/topojson-client@3.1.0/dist/topojson-client.min.js" integrity="sha384-Ukv1p/xTma6P4/2bY5KzWBw+ydSpXmhCMtyciIQVDJ1RmOxtCYNMF1uXT9T63H67" crossorigin="anonymous"></script>
+<link rel="icon" type="image/svg+xml" href="wmc-mark.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="theme-color" content="#000000">
 <link rel="stylesheet" href="styles.css">
+<script src="mapbox-token.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/mapbox-gl@3.9.0/dist/mapbox-gl.css" integrity="sha384-GTsgKcJXGSkBp0M68qpxkz9XovzVH0PwSrjYONvkn3tXtySOSq+a14bG2gVJHwQG" crossorigin="anonymous">
 <script src="https://unpkg.com/mapbox-gl@3.9.0/dist/mapbox-gl.js" integrity="sha384-QRI8HEhaDamjVGfoos6X0AB+VVxCE4fAm6jaRZqcMn8mPsbxJvCc8cyG3Wu/+Pyq" crossorigin="anonymous"></script>
 </helmet>
@@ -31,8 +36,11 @@
     <div class="wmc-header-bar">
 
       <a class="wmc-masthead" href="#top">
+        <img class="wmc-mark-logo" src="wmc-mark.svg" alt="" width="593" height="591" decoding="async">
+        <span class="wmc-masthead-text">
         <span class="wmc-masthead-name">Wildfire</span>
         <span class="wmc-masthead-sub">Media Coverage</span>
+        </span>
       </a>
 
       <div class="wmc-header-right">
@@ -79,19 +87,19 @@
       <div aria-hidden="true" class="wmc-scroll-hint"><x-import component-from-global-scope="scroll-hint" from="./scroll-hint.js" hint-size="100%,100%"></x-import></div>
       <div style="position:relative;width:100%;max-width:1480px;margin:0 auto;padding:clamp(64px,8cqw,130px) clamp(20px,4cqw,72px) clamp(28px,3cqw,48px);display:flex;flex-wrap:wrap;gap:clamp(18px,2cqw,30px);align-items:flex-start;text-align:left">
         <div style="flex:0 1 auto;width:100%;max-width:max(320px,50%);display:flex;flex-direction:column;gap:clamp(18px,2cqw,30px)">
-          <p style="margin:0;font-weight:700;font-size:clamp(11px,0.95cqw,13px);line-height:1;letter-spacing:.24em;text-transform:uppercase;color:#9E9891" data-anim="kicker">Why does it matter</p>
+          <p class="wmc-label" style="margin:0" data-anim="kicker">Why does it matter</p>
           <h1 style="margin:0;display:flex;flex-direction:column;gap:clamp(18px,2.4cqw,40px)">
             <span style="font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:clamp(56px,13cqw,192px);line-height:0.92;letter-spacing:-0.02em;color:#F2EFEA;font-variant-numeric:tabular-nums" data-anim="figure"><span aria-hidden="true" data-count-to="56580">56,580</span><span class="wmc-sr">56,580</span></span>
             <span style="font-family:Inter,system-ui,sans-serif;font-weight:800;font-size:clamp(28px,4.4cqw,64px);line-height:0.96;letter-spacing:0.005em;text-transform:uppercase;color:#F2EFEA;text-wrap:balance" data-anim="claim">wildfires<span style="color:#9E9891">*</span> in the United States in 2023</span>
           </h1>
-          <a href="#opening" class="wmc-btn wmc-btn--start" data-anim="cta">Understand the scenario</a>
+          <a href="scenario.html" class="wmc-btn wmc-btn--start" data-anim="cta">Understand the scenario</a>
         </div>
       </div>
     </section>
 
     <section id="opening" data-screen-label="Opening" data-rail-label="The scale" style="padding:clamp(56px,7cqw,120px) 0 clamp(72px,9cqw,160px)">
       <div style="width:100%;max-width:1480px;margin:0 auto;padding:0 clamp(20px,4cqw,72px);display:flex;flex-direction:column;gap:clamp(26px,3cqw,44px);align-items:center;text-align:center">
-        <p style="margin:0;display:inline-flex;align-items:center;gap:10px;font-weight:600;font-size:11px;line-height:1;letter-spacing:.3em;text-transform:uppercase;color:#9E9891" data-reveal="1"><span aria-hidden="true" style="display:block;width:5px;height:5px;background:#E8613C"></span>The burned year</p>
+        <p class="wmc-label wmc-label--mark" style="margin:0" data-reveal="1">The burned year</p>
         <h2 style="margin:0;max-width:29ch;font-family:Inter,system-ui,sans-serif;font-weight:400;font-size:clamp(24px,3.1cqw,44px);line-height:1.1;letter-spacing:-0.012em;color:#F2EFEA;text-wrap:balance" data-lines>Wildfires are becoming increasingly destructive across the US, threatening communities and ecosystems. Understanding the scale of the crisis is the first step to mitigating its impact.</h2>
         <p style="margin:0;max-width:50ch;font-size:clamp(14px,1.02cqw,15px);line-height:1.78;letter-spacing:.005em;color:#9E9891;text-wrap:pretty" data-reveal="3">This is an index of what agencies actually filed in 2023, and what the press actually reported. Nothing here is modelled or estimated. Where a state filed nothing, it stays blank.</p>
       </div>
@@ -101,11 +109,11 @@
       <span aria-hidden="true" style="position:absolute;inset:0;z-index:-1;background:linear-gradient(to bottom,#000000 0%,rgba(0,0,0,.78) 10%,rgba(0,0,0,.5) 26%,rgba(0,0,0,.62) 44%,rgba(0,0,0,.72) 66%,rgba(0,0,0,.86) 86%,#000000 100%)"></span>
 
       <div style="position:relative;width:100%;max-width:1480px;margin:0 auto;padding:clamp(120px,15cqw,280px) clamp(20px,4cqw,72px) clamp(56px,7cqw,120px);display:flex;flex-direction:column;gap:clamp(24px,2.8cqw,44px);align-items:stretch">
-        <p style="margin:0;font-weight:500;font-size:11px;line-height:1;letter-spacing:.34em;text-transform:uppercase;color:#E8613C">The season</p>
-        <div style="display:flex;align-items:center;gap:clamp(16px,2cqw,32px);width:100%">
-          <h2 style="margin:0;font-family:Inter,system-ui,sans-serif;font-weight:400;font-size:clamp(34px,6cqw,110px);line-height:1;letter-spacing:-0.016em;color:#F2EFEA;white-space:nowrap">May</h2>
-          <span aria-hidden="true" data-season="rule" style="flex:1 1 0;min-width:24px;height:1px;background:#E8613C;transform-origin:left center"></span>
-          <h2 style="margin:0;font-family:Inter,system-ui,sans-serif;font-weight:400;font-size:clamp(34px,6cqw,110px);line-height:1;letter-spacing:-0.016em;color:#F2EFEA;white-space:nowrap" data-season="end">October</h2>
+        <p class="wmc-label wmc-label--ember" style="margin:0">The season</p>
+        <div style="display:flex;align-items:center;gap:clamp(8px,2cqw,32px);width:100%;min-width:0">
+          <h2 style="margin:0;font-family:Inter,system-ui,sans-serif;font-weight:400;font-size:clamp(28px,6cqw,110px);line-height:1;letter-spacing:-0.016em;color:#F2EFEA;white-space:nowrap;flex:0 0 auto">May</h2>
+          <span aria-hidden="true" data-season="rule" style="flex:1 1 0;min-width:12px;height:1px;background:#E8613C;transform-origin:left center"></span>
+          <h2 style="margin:0;font-family:Inter,system-ui,sans-serif;font-weight:400;font-size:clamp(28px,6cqw,110px);line-height:1;letter-spacing:-0.016em;color:#F2EFEA;white-space:nowrap;flex:0 0 auto" data-season="end">October</h2>
         </div>
         <span aria-hidden="true" style="display:block;width:100%;height:1px;background:#2A2D30"></span>
       <p style="flex:1 1 min(100%,380px);margin:0;max-width:68ch;font-size:clamp(16px,1.16cqw,17px);line-height:1.82;color:#F2EFEA;text-wrap:pretty">Most of the year's ignitions land in six months. Federal and state crews move between them on a rolling deployment — the same engines, the same hotshot teams, three thousand miles apart in a fortnight. The record below is what those deployments left behind on paper.</p>
@@ -129,7 +137,7 @@
         <blockquote data-lines style="margin:0;max-width:34ch;font-family:Inter,system-ui,sans-serif;font-weight:400;font-size:clamp(23px,2.7cqw,40px);line-height:1.38;color:#F2EFEA;text-wrap:pretty">A containment figure is not a measure of safety. It is a measure of the line we have managed to hold.</blockquote>
         <span data-reveal="quote" style="display:flex;flex-direction:column;gap:8px;align-items:center">
           <span aria-hidden="true" style="display:block;width:28px;height:1px;background:#4A4E52"></span>
-          <span style="font-weight:500;font-size:clamp(11px,0.8cqw,12px);letter-spacing:.26em;text-transform:uppercase;color:#9E9891">Incident commander, Oregon Dept. of Forestry</span>
+          <span class="wmc-label">Incident commander, Oregon Dept. of Forestry</span>
         </span>
       </div>
     </section>
@@ -146,7 +154,7 @@
         <ul style="list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:clamp(24px,3cqw,48px)">
           <sc-for list="{{ heroStats }}" as="s" hint-placeholder-count="3">
             <li style="display:flex;flex-direction:column;gap:clamp(10px,1.2cqw,16px);padding-top:clamp(18px,2cqw,26px);border-top:1px solid #4A4E52">
-              <span style="font-weight:500;font-size:clamp(11px,0.82cqw,12px);line-height:1;letter-spacing:.26em;text-transform:uppercase;color:#9E9891">{{ s.label }}</span>
+              <span class="wmc-label">{{ s.label }}</span>
               <span style="font-family:Inter,system-ui,sans-serif;font-weight:400;font-size:clamp(32px,3.4cqw,50px);line-height:1;color:#F2EFEA">{{ s.value }}</span>
               <span style="font-size:clamp(13px,1cqw,14px);line-height:1.6;color:#BDB7AF;max-width:32ch">{{ s.note }}</span>
             </li>
@@ -159,10 +167,10 @@
       <div style="width:100%;max-width:1480px;margin:0 auto;padding:0 clamp(20px,4cqw,72px);display:flex;flex-direction:column;gap:clamp(36px,4.5cqw,72px)">
         <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px">
           <div style="display:flex;flex-direction:column;gap:clamp(12px,1.4cqw,20px)">
-            <p style="margin:0;font-weight:500;font-size:clamp(11px,0.82cqw,12px);line-height:1;letter-spacing:.34em;text-transform:uppercase;color:#9E9891">In the press</p>
+            <p class="wmc-label" style="margin:0">In the press</p>
             <h2 style="margin:0;font-family:Inter,system-ui,sans-serif;font-weight:400;font-size:clamp(28px,3.4cqw,50px);line-height:1.06;color:#F2EFEA">What was reported</h2>
           </div>
-          <a class="wmc-btn" href="#press">See all</a>
+          <a class="wmc-btn" href="media.html">See all</a>
         </div>
 
 
@@ -173,8 +181,8 @@
             <span class="wmc-press-cue" aria-hidden="true"><span>Read full story</span></span>
           </span>
           <span style="display:flex;flex-direction:column;gap:6px">
-            <span style="font-weight:500;font-size:clamp(11px,0.8cqw,12px);letter-spacing:.26em;text-transform:uppercase;color:#9E9891">Reuters &middot; 14 Sep 2023</span>
-            <a class="wmc-press-headline" href="#press" style="display:flex;align-items:center;min-height:28px;font-family:Inter,system-ui,sans-serif;font-weight:400;font-size:clamp(17px,1.5cqw,21px);line-height:1.26;text-decoration:none;text-wrap:pretty">Record season stretches federal crews thin</a>
+            <span class="wmc-label">Reuters &middot; 14 Sep 2023</span>
+            <a class="wmc-press-headline" href="media.html" style="display:flex;align-items:center;min-height:28px;font-family:Inter,system-ui,sans-serif;font-weight:400;font-size:clamp(17px,1.5cqw,21px);line-height:1.26;text-decoration:none;text-wrap:pretty">Record season stretches federal crews thin</a>
             <span style="font-size:clamp(13px,0.96cqw,14px);line-height:1.58;color:#9E9891;max-width:50ch;text-wrap:pretty">Rolling deployments moved the same hotshot teams across four states in a fortnight, leaving gaps in the ledger behind them.</span>
           </span>
         </article>
@@ -185,8 +193,8 @@
             <span class="wmc-press-cue" aria-hidden="true"><span>Read full story</span></span>
           </span>
           <span style="display:flex;flex-direction:column;gap:6px">
-            <span style="font-weight:500;font-size:clamp(11px,0.8cqw,12px);letter-spacing:.26em;text-transform:uppercase;color:#9E9891">The Atlantic &middot; 02 Nov 2023</span>
-            <a class="wmc-press-headline" href="#press" style="display:flex;align-items:center;min-height:28px;font-family:Inter,system-ui,sans-serif;font-weight:400;font-size:clamp(17px,1.5cqw,21px);line-height:1.26;text-decoration:none;text-wrap:pretty">What a containment percentage really tells you</a>
+            <span class="wmc-label">The Atlantic &middot; 02 Nov 2023</span>
+            <a class="wmc-press-headline" href="media.html" style="display:flex;align-items:center;min-height:28px;font-family:Inter,system-ui,sans-serif;font-weight:400;font-size:clamp(17px,1.5cqw,21px);line-height:1.26;text-decoration:none;text-wrap:pretty">What a containment percentage really tells you</a>
             <span style="font-size:clamp(13px,0.96cqw,14px);line-height:1.58;color:#9E9891;max-width:50ch;text-wrap:pretty">Ninety-four per cent contained is a statement about perimeter, not about risk &mdash; and the two are routinely confused in reporting.</span>
           </span>
         </article>
@@ -194,8 +202,8 @@
         <ul class="wmc-press-list" style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column">
           <sc-for list="{{ press }}" as="p" hint-placeholder-count="4">
             <li style="display:flex;flex-direction:column;gap:8px;padding:clamp(18px,2cqw,26px) 0;border-bottom:1px solid #2A2D30">
-              <span style="font-weight:500;font-size:clamp(11px,0.8cqw,12px);letter-spacing:.26em;text-transform:uppercase;color:#9E9891">{{ p.source }}</span>
-              <a href="#press" style="display:flex;align-items:center;min-height:26px;font-size:clamp(15px,1.15cqw,17px);line-height:1.4;color:#F2EFEA;text-decoration:none;text-wrap:pretty" style-hover="color:#F4835F;text-decoration:underline">{{ p.headline }}</a>
+              <span class="wmc-label">{{ p.source }}</span>
+              <a href="media.html" style="display:flex;align-items:center;min-height:26px;font-size:clamp(15px,1.15cqw,17px);line-height:1.4;color:#F2EFEA;text-decoration:none;text-wrap:pretty" style-hover="color:#F4835F;text-decoration:underline">{{ p.headline }}</a>
             </li>
           </sc-for>
         </ul>
@@ -207,7 +215,7 @@
     <section id="agencies" data-screen-label="Agencies" data-rail-label="Who filed it" style="background:#121315;padding:0 0 clamp(72px,9cqw,168px)">
       <div style="width:100%;max-width:1480px;margin:0 auto;padding:clamp(56px,7cqw,120px) clamp(20px,4cqw,72px) 0;border-top:1px solid #2A2D30;display:flex;flex-direction:column;gap:clamp(36px,4.5cqw,68px)">
         <div style="display:flex;flex-direction:column;gap:clamp(12px,1.4cqw,20px);max-width:52ch">
-          <p style="margin:0;font-weight:500;font-size:clamp(11px,0.82cqw,12px);line-height:1;letter-spacing:.34em;text-transform:uppercase;color:#9E9891">Who filed it</p>
+          <p class="wmc-label" style="margin:0">Who filed it</p>
           <h2 style="margin:0;font-family:Inter,system-ui,sans-serif;font-weight:400;font-size:clamp(28px,3.4cqw,50px);line-height:1.06;color:#F2EFEA">The responding agencies</h2>
         </div>
 
@@ -218,7 +226,7 @@
               <span style="display:flex;flex-direction:column;gap:7px;font-size:clamp(13px,1cqw,14px);line-height:1.5">
                 <a href="#agencies" style="display:flex;align-items:center;min-height:24px;color:#F2EFEA;text-decoration:none" style-hover="color:#F4835F;text-decoration:underline">{{ a.site }}</a>
                 <a href="#agencies" style="display:flex;align-items:center;min-height:24px;color:#F2EFEA;text-decoration:none;font-variant-numeric:tabular-nums" style-hover="color:#F4835F;text-decoration:underline">{{ a.phone }}</a>
-                <span style="display:block;padding-top:6px;font-size:clamp(11px,0.8cqw,12px);letter-spacing:.14em;text-transform:uppercase;color:#9E9891">{{ a.coords }}</span>
+                <span class="wmc-label" style="display:block;padding-top:6px">{{ a.coords }}</span>
               </span>
             </li>
           </sc-for>
@@ -234,8 +242,8 @@
         <h2 style="margin:0;max-width:26ch;font-family:Inter,system-ui,sans-serif;font-weight:800;font-size:clamp(26px,3.4cqw,50px);line-height:1.04;letter-spacing:0.005em;text-transform:uppercase;color:#F2EFEA;text-wrap:balance">Found something wrong? We fix it in public.</h2>
         <p style="margin:0;max-width:50ch;font-size:clamp(15px,1.15cqw,17px);line-height:1.72;color:#F2EFEA;text-wrap:pretty">Every correction is logged with the date, the source that triggered it, and the figure it replaced. Nothing is quietly edited.</p>
         <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center">
-          <a href="#corrections" style="display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 30px;background:#C0301A;color:#FFFFFF;border:1px solid #C0301A;font:600 11px/1 Krub,system-ui;letter-spacing:.22em;text-transform:uppercase;text-decoration:none" style-hover="background:#E8613C;border-color:#E8613C;color:#000000">File a correction</a>
-          <a href="#corrections" style="display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 30px;background:transparent;color:#F2EFEA;border:1px solid rgba(242,239,234,.6);font:600 11px/1 Krub,system-ui;letter-spacing:.22em;text-transform:uppercase;text-decoration:none" style-hover="background:#F2EFEA;border-color:#F2EFEA;color:#000000">Read the method</a>
+          <a class="wmc-btn" href="#corrections">File a correction</a>
+          <a class="wmc-btn-ghost" href="#corrections">Read the method</a>
         </div>
       </div>
     </section>
@@ -253,17 +261,21 @@
 
       <div class="wmc-footer-bar">
         <a class="wmc-footer-mark" href="#top">
+          <img class="wmc-mark-logo" src="wmc-mark.svg" alt="" width="593" height="591" decoding="async">
+          <span class="wmc-masthead-text">
           <span class="wmc-footer-mark-name">Wildfire</span>
           <span class="wmc-footer-mark-sub">Media Coverage</span>
+          </span>
         </a>
 
         <nav class="wmc-footer-nav" aria-label="Footer">
-            <a class="wmc-footer-link" href="#top">Home</a>
-            <a class="wmc-footer-link" href="#opening">The scenario</a>
-            <a class="wmc-footer-link" href="#records">States</a>
-            <a class="wmc-footer-link" href="#map">Fire Data</a>
-            <a class="wmc-footer-link" href="#agencies">Fire Agencies</a>
-            <a class="wmc-footer-link" href="#press">Media Appearances</a>
+            <a class="wmc-footer-link" href="index.html">Home</a>
+            <a class="wmc-footer-link" href="scenario.html">The Scenario</a>
+            <a class="wmc-footer-link" href="state.html">States</a>
+            <a class="wmc-footer-link" href="data.html">Wildfire Data</a>
+            <a class="wmc-footer-link" href="agencies.html">Fire Agencies</a>
+            <a class="wmc-footer-link" href="media.html">Media</a>
+            <a class="wmc-footer-link" href="county.html">By County</a>
         </nav>
 
         <div class="wmc-footer-actions">
@@ -274,7 +286,7 @@
         </div>
       </div>
 
-      <p class="wmc-colophon">&copy; 2023 Wildfire Media Coverage. Text and data licensed <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>. Data provided by NIFC and state fire agencies. Full copyright information available <a href="#corrections">here</a>.</p>
+      <p class="wmc-colophon">&copy; 2023 Wildfire Media Coverage. Text and data licensed <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>. Data provided by NIFC and state fire agencies. Full copyright information available <a href="https://creativecommons.org/licenses/by-sa/4.0/">here</a>.</p>
 
     </div>
   </footer>
@@ -283,16 +295,20 @@
 </div>
 
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;compact&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;},&quot;activeSection&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Home&quot;,&quot;The Scenario&quot;,&quot;States&quot;,&quot;Fire Data&quot;,&quot;Fire Agencies&quot;],&quot;default&quot;:&quot;States&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Navbar&quot;},&quot;defaultMetric&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;All land&quot;,&quot;National parks&quot;,&quot;Forest&quot;,&quot;Grassland&quot;],&quot;default&quot;:&quot;All land&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Map&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;compact&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;},&quot;activeSection&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Home&quot;,&quot;The Scenario&quot;,&quot;States&quot;,&quot;Wildfire Data&quot;,&quot;Fire Agencies&quot;,&quot;Media&quot;],&quot;default&quot;:&quot;Home&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Navbar&quot;},&quot;defaultMetric&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;All land&quot;,&quot;National parks&quot;,&quot;Forest&quot;,&quot;Grassland&quot;],&quot;default&quot;:&quot;All land&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Map&quot;}}">
 class Component extends DCLogic {
   state = { metric: null, active: null, menuOpen: false };
 
+  /* Os destinos precisam bater com data/nav.json — o build.mjs falha se
+     divergirem, porque cabecalho da home e das paginas estaticas sao duas
+     copias da mesma navegacao. */
   NAV = [
-    { label: "Home", href: "#top" },
-    { label: "The Scenario", href: "#opening" },
-    { label: "States", href: "#records" },
-    { label: "Fire Data", href: "#map" },
-    { label: "Fire Agencies", href: "#agencies" }
+    { label: "Home", href: "index.html" },
+    { label: "The Scenario", href: "scenario.html" },
+    { label: "States", href: "state.html" },
+    { label: "Wildfire Data", href: "data.html" },
+    { label: "Fire Agencies", href: "agencies.html" },
+    { label: "Media", href: "media.html" }
   ];
 
   HERO_STATS = [
@@ -346,7 +362,7 @@ class Component extends DCLogic {
       { label: "Federal bodies", href: "#agencies" },
       { label: "State forestry", href: "#agencies" },
       { label: "Volunteer brigades", href: "#agencies" },
-      { label: "View all", href: "#agencies" }
+      { label: "View all", href: "agencies.html" }
     ] },
     { title: "Method", links: [
       { label: "Sources", href: "#corrections" },
@@ -363,7 +379,9 @@ class Component extends DCLogic {
 
   renderVals() {
     const compact = !!this.props.compact;
-    const active = this.state.active ?? (this.props.activeSection || "States");
+    // "Home": esta pagina E a home. O padrao era "States" de quando a navegacao
+    // era por ancora e nao havia pagina de estados separada.
+    const active = this.state.active ?? (this.props.activeSection || "Home");
     const metricLabel = this.state.metric ?? (this.props.defaultMetric || "All land");
     const metric = this.METRICS.find(m => m.label === metricLabel) || this.METRICS[0];
     const max = Math.max(...this.STATES.map(s => s.value));
@@ -504,7 +522,11 @@ class Component extends DCLogic {
         ents.forEach(function (en) {
           if (!en.isIntersecting) return;
           io.unobserve(en.target);
-          gsap.from(en.target, { y: 28, autoAlpha: 0, duration: 1.1, ease: 'expo.out' });
+          // fromTo, e nao from: .from() grava o estado ATUAL como destino, e se o
+          // no for reconstruido enquanto esta escondido o destino vira invisivel.
+          // Foi o que travou a CTA da hero e a regua de maio-outubro.
+          gsap.fromTo(en.target, { y: 28, autoAlpha: 0 },
+            { y: 0, autoAlpha: 1, duration: 1.1, ease: 'expo.out' });
         });
       }, { rootMargin: '0px 0px -18% 0px' });
     }
@@ -512,8 +534,11 @@ class Component extends DCLogic {
     return true;
   }
 
-  /* --- the season: fio e "October" atrelados ao scroll ---------------- */
-  var seasonTl = null, seasonEl = null, seasonEnd = null, sAlvo = 0, sAtual = 0, sLoop = 0;
+  /* --- the season: fio e "October" atrelados ao scroll ----------------
+     Sem GSAP de proposito, e sem escrever no style dos elementos: o progresso
+     sai em duas custom properties no <html> e o CSS desenha a partir delas.
+     O porque esta em styles.css, na secao "A faixa May - October". */
+  var seasonEl = null, sAlvo = 0, sAtual = 0, sLoop = 0;
 
   function seasonProgress(el) {
     var r = el.getBoundingClientRect();
@@ -522,34 +547,42 @@ class Component extends DCLogic {
     return p < 0 ? 0 : (p > 1 ? 1 : p);
   }
 
+  /* Os mesmos tempos da timeline que existia aqui: o fio ocupa 0 a 1 de uma
+     faixa de 1,25, e "October" entra em 0,55 e dura 0,7, com power2.out. */
+  function seasonPintar(p) {
+    var t = p * 1.25;
+    var fio = t < 0 ? 0 : (t > 1 ? 1 : t);
+    var e = (t - 0.55) / 0.7;
+    e = e < 0 ? 0 : (e > 1 ? 1 : e);
+    e = 1 - (1 - e) * (1 - e);
+    var raiz = document.documentElement.style;
+    raiz.setProperty('--wmc-season-rule', fio.toFixed(4));
+    raiz.setProperty('--wmc-season-end', e.toFixed(4));
+  }
+
   function buildSeason() {
     var rule = document.querySelector('[data-season="rule"]');
-    var end = document.querySelector('[data-season="end"]');
-    if (!rule || !end) return false;
-    // o runtime troca os nos em momentos diferentes: so reaproveita a timeline
-    // se AMBOS os elementos ainda forem os mesmos que ela referencia
-    if (rule === seasonEl && end === seasonEnd && seasonTl) return true;
-    if (seasonTl) { seasonTl.kill(); seasonTl = null; }
-    seasonEl = rule; seasonEnd = end;
-    // fromTo, e nao from: o handler de resize zera seasonEl e forca a reconstrucao
-    // sobre o MESMO no. Se naquele instante a regua estiver em scaleX 0 — que e o
-    // estado normal enquanto a secao ainda nao foi rolada — o .from() grava 0 como
-    // destino e a linha nunca mais aparece. Destino explicito nao tem esse estado.
-    seasonTl = gsap.timeline({ paused: true })
-      .fromTo(rule, { scaleX: 0 }, { scaleX: 1, duration: 1, ease: "none" })
-      .fromTo(end, { autoAlpha: 0, x: 26 }, { autoAlpha: 1, x: 0, duration: 0.7, ease: "power2.out" }, 0.55);
+    if (!rule) return false;
+    if (rule === seasonEl) return true;            // mesmo no: nada a refazer
+    seasonEl = rule;
+    document.documentElement.classList.add('wmc-season-live');
     sAlvo = sAtual = seasonProgress(rule);
-    seasonTl.progress(sAtual);
+    seasonPintar(sAtual);
     return true;
   }
 
   function seasonStep() {
     sLoop = 0;
-    if (!seasonTl || !seasonEl || !seasonEl.isConnected) return;
+    // o runtime troca nos; se o que estavamos medindo saiu, remede no novo em
+    // vez de esperar o proximo tick — o observador do DOM nao vive para sempre
+    if (!seasonEl || !seasonEl.isConnected) {
+      seasonEl = null;
+      if (!buildSeason()) return;
+    }
     sAlvo = seasonProgress(seasonEl);
     sAtual += (sAlvo - sAtual) * 0.12;
     if (Math.abs(sAlvo - sAtual) < 0.0008) sAtual = sAlvo;
-    seasonTl.progress(sAtual);
+    seasonPintar(sAtual);
     if (sAtual !== sAlvo) sLoop = requestAnimationFrame(seasonStep);
   }
 
@@ -662,7 +695,9 @@ class Component extends DCLogic {
 
   tick();
   addEventListener('scroll', onScroll, { passive: true });
-  addEventListener('resize', function () { derrubarBandas(); seasonEl = null; seasonEnd = null; buildLines(); buildSeason(); onScroll(); });
+  addEventListener('resize', function () { derrubarBandas(); buildLines(); onScroll(); });
+  // a faixa da temporada nao precisa de reconstrucao: seasonStep mede o rect
+  // vivo a cada quadro, entao a nova altura de janela ja entra na conta
   var obs = new MutationObserver(function () { tick(); });
   obs.observe(document.body, { childList: true, subtree: true });
   var n = 0, iv = setInterval(function () { if (tick() || ++n > 60) clearInterval(iv); }, 150);

@@ -1,0 +1,54 @@
+<!--meta
+title: Fire Agencies
+description: Who files the US wildfire record, how to reach them, and what the filing does not cover.
+scripts: line-chart.js, mapbox-token.js, metric-map.js
+data: figures
+active: agencies
+-->
+
+    <section class="wmc-lede-section">
+      <div class="wmc-container wmc-lede">
+        <div class="wmc-lede-text">
+          <p class="wmc-label">About</p>
+          <h1 class="wmc-hero-claim">US Wildfire Tracker</h1>
+          <p>Data is compiled from the NIFC, InciWeb, and state fire agencies. Some incidents may be reported with delays. Statistics shown represent confirmed fire perimeters and official incident reports from federal and state sources.</p>
+
+          <div class="wmc-figures">
+            <div class="wmc-figures-head">
+              <label class="wmc-label" for="wmc-year">Year</label>
+              <select class="wmc-select wmc-select--inline" id="wmc-year" data-figures-year>
+                {{FIGURE_YEARS}}
+              </select>
+            </div>
+            <ul class="wmc-bigstats wmc-bigstats--stack" data-figures-list>
+              {{FIGURES}}
+            </ul>
+          </div>
+        </div>
+        <div class="wmc-lede-media">
+          <metric-map data-cta-href="data.html" data-cta-label="Full fire data"></metric-map>
+        </div>
+      </div>
+    </section>
+
+    <section class="wmc-prose-section">
+      <div class="wmc-container">
+        <h2 class="wmc-panel-title">Wildfires through time (Duration)</h2>
+        <p class="wmc-intro">Wildfire activity across the United States has increased significantly over the past decade due to climate change, prolonged drought, and expanding development into fire-prone landscapes. This page tracks incidents reported to the National Interagency Fire Center.</p>
+        <figure class="wmc-figure">
+          <line-chart data-series='[["2010",9],["2011",12],["2012",11],["2013",16],["2014",14],["2015",22],["2016",19],["2017",29],["2018",26],["2019",37],["2020",34],["2021",46],["2022",43],["2023",58]]' data-unit="days" data-y-label="Median duration" data-desc="Median wildfire duration in days, 2010 to 2023"></line-chart>
+        </figure>
+      </div>
+    </section>
+
+    <section id="directory" class="wmc-agencies-section">
+      <div class="wmc-container">
+        <div class="wmc-section-head wmc-section-head--stacked">
+          <h2 class="wmc-section-title">The Fire Agencies</h2>
+          <p class="wmc-section-meta">Select an agency to view wildfire response details</p>
+        </div>
+        <ul class="wmc-agencies">
+            {{AGENCIES}}
+        </ul>
+      </div>
+    </section>

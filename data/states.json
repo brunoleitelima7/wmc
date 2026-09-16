@@ -1,0 +1,9 @@
+{
+  "year": 2021,
+  "note": "Só o que foi efetivamente filado. Campo ausente = não filado; a página mostra isso como lacuna e NUNCA estima. Ver PRODUCT.md > Evidence.",
+  "filed": {
+    "California": { "wildfires": 1563, "contained": "98.5%", "acres": "1.56M", "agency": "CAL FIRE" },
+    "Texas":      { "wildfires": 9134, "agency": "Texas A&M Forest Service" },
+    "Oregon":     { "wildfires": 7876, "agency": "Oregon Dept. of Forestry" }
+  }
+}

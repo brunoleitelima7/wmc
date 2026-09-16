@@ -1,0 +1,117 @@
+<!--meta
+title: The Scenario
+description: The context behind the 2023 wildfire season, and why the filed numbers still understate it.
+scripts: line-chart.js, mapbox-token.js, metric-map.js
+active: scenario
+-->
+
+    <section class="wmc-lede-section">
+      <div class="wmc-container wmc-lede">
+        <div class="wmc-lede-text wmc-lede-text--split">
+          <p class="wmc-label wmc-lede-kicker">The context</p>
+          <div class="wmc-lede-head">
+          <h1 class="wmc-hero-claim">470,000 wildfire incidents across the US in 2023</h1>
+          </div>
+
+          <div class="wmc-lede-aside">
+          <p>Here are all the wildfire incidents in the US in 2023 &mdash; burning through national forests, grasslands, coastal scrub and the edges of towns.</p>
+          <p>Each colour represents a different fire agency region, and the size of each mark relates to how many acres were burned.</p>
+          <a class="wmc-btn wmc-btn--start" href="#trend">Is it getting better?</a>
+          </div>
+        </div>
+        <div class="wmc-lede-media">
+          <metric-map data-cta-href="data.html" data-cta-label="Full fire data"></metric-map>
+        </div>
+      </div>
+    </section>
+
+    <section class="wmc-feature">
+      <div class="wmc-container">
+        <div class="wmc-feature-grid">
+
+          <figure class="wmc-feature-media">
+            <img src="fireline-crew.jpg" alt="Two firefighters in protective gear walking through heavy smoke toward a wall of flame, across ground that has already burned" loading="lazy" decoding="async" width="1200" height="1600">
+            <figcaption class="wmc-feature-credit">A crew walking in on the flank &middot; Mikhail Serdyukov / Unsplash</figcaption>
+          </figure>
+
+          <div class="wmc-feature-panel">
+            <p class="wmc-label wmc-label--ember">Why it keeps growing</p>
+            <h2 class="wmc-feature-claim">Wildfires are a growing crisis across North America</h2>
+
+            <ol class="wmc-drivers">
+              <li>
+                <span class="wmc-driver-num" aria-hidden="true">01</span>
+                <span class="wmc-driver-body">
+                  <span class="wmc-driver-name">Climate change</span>
+                  <span class="wmc-driver-note">Seasons that start earlier, run hotter and end later than the record was built to describe.</span>
+                </span>
+              </li>
+              <li>
+                <span class="wmc-driver-num" aria-hidden="true">02</span>
+                <span class="wmc-driver-body">
+                  <span class="wmc-driver-name">Drought</span>
+                  <span class="wmc-driver-note">Moisture leaves the fuel before the season opens, so an ignition that once died now carries.</span>
+                </span>
+              </li>
+              <li>
+                <span class="wmc-driver-num" aria-hidden="true">03</span>
+                <span class="wmc-driver-body">
+                  <span class="wmc-driver-name">Decades of fire suppression</span>
+                  <span class="wmc-driver-note">A century of putting fires out left forests dense with fuel that was never allowed to burn.</span>
+                </span>
+              </li>
+            </ol>
+          </div>
+        </div>
+
+        <p class="wmc-feature-caveat">The figures, compiled from multiple federal and state agencies, may undercount the full scale of the crisis &mdash; and the gap is not evenly spread.</p>
+      </div>
+    </section>
+
+    <section id="trend" class="wmc-prose-section wmc-prose-section--raised">
+      <div class="wmc-container">
+        <h2 class="wmc-panel-title">But, it&rsquo;s getting better, right?</h2>
+        <p class="wmc-intro">Unfortunately, in the years that we have been analysing the data, wildfire frequency and severity have continued to climb rather than level off.</p>
+        <figure class="wmc-figure">
+          <line-chart data-series='[["2008",1.9],["2009",2.3],["2010",2.1],["2011",3.2],["2012",3.0],["2013",4.1],["2014",3.8],["2015",5.5],["2016",4.9],["2017",7.0],["2018",6.6],["2019",8.9],["2020",8.4],["2021",10.8],["2022",10.2],["2023",12.0]]' data-unit="M acres" data-y-label="Acres burned" data-desc="Acres burned per season, 2008 to 2023, trending upward"></line-chart>
+        </figure>
+        <p class="wmc-intro">The numbers in this chart are very large, but a total of 12 million acres burned is equivalent to the entire state of Maryland going up at once.</p>
+      </div>
+    </section>
+
+    <section class="wmc-action">
+      <img class="wmc-action-bg" src="action-ridge.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async" width="1800" height="1200">
+      <span class="wmc-action-veil" aria-hidden="true"></span>
+
+      <div class="wmc-container wmc-action-inner">
+        <p class="wmc-label wmc-label--ember">What now</p>
+        <h2 class="wmc-action-claim">It&rsquo;s time to take action</h2>
+        <p class="wmc-action-lede">Hold government agencies and policymakers accountable for wildfire prevention, for the completeness of what they file, and for the gaps they leave unmarked.</p>
+
+        <ol class="wmc-action-list">
+          <li>
+            <span class="wmc-action-num" aria-hidden="true">01</span>
+            <h3 class="wmc-action-step">Ask an agency</h3>
+            <p>Ten agencies publish a phone number and a street address. Ask them what is missing from their filing, and why.</p>
+            <a class="wmc-btn" href="agencies.html#directory">Find an agency</a>
+          </li>
+          <li>
+            <span class="wmc-action-num" aria-hidden="true">02</span>
+            <h3 class="wmc-action-step">Check the method</h3>
+            <p>Every figure here says where it came from, and every gap says that it is a gap rather than a zero.</p>
+            <a class="wmc-btn-ghost" href="data.html">Read the method</a>
+          </li>
+          <li>
+            <span class="wmc-action-num" aria-hidden="true">03</span>
+            <h3 class="wmc-action-step">Pass it on</h3>
+            <p>The record only pressures anyone if people read it. Send this page to someone who files, or who votes.</p>
+            <span class="wmc-action-share">
+              <button class="wmc-btn-ghost" type="button" data-share>Share this page</button>
+              <span class="wmc-share-status" role="status" data-share-status></span>
+            </span>
+          </li>
+        </ol>
+
+        <p class="wmc-action-credit">Photograph by Matt Palmer on Unsplash. Used to illustrate; it is not a filed incident record.</p>
+      </div>
+    </section>

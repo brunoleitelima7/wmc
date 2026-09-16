@@ -1,0 +1,151 @@
+<!--meta
+title: California
+description: Reported wildfires, acreage and containment for California in 2021, and what the record leaves out.
+scripts: line-chart.js, donut-chart.js, mapbox-token.js, state-explorer.js
+data: states
+active: states
+-->
+
+    <section class="wmc-lede-section">
+      <div class="wmc-container wmc-lede">
+        <!-- aria-live no bloco inteiro: escolher um estado reescreve manchete E
+             números juntos, e os dois precisam ser anunciados como um resultado só. -->
+        <div class="wmc-lede-text wmc-lede-text--split" data-state-panel aria-live="polite">
+          <p class="wmc-label wmc-lede-kicker">State record</p>
+          <div class="wmc-lede-head">
+            <h1 class="wmc-hero-claim" data-state-claim>1,563 wildfires burning across California in 2021</h1>
+          </div>
+
+          <div class="wmc-lede-aside">
+            <ul class="wmc-keystats" data-state-stats>
+              <li><span class="wmc-keystat-value">98.5%</span><span class="wmc-keystat-label">Contained overall</span></li>
+              <li><span class="wmc-keystat-value">1.56M</span><span class="wmc-keystat-label">Acres burned</span></li>
+              <li><span class="wmc-keystat-value">CAL FIRE</span><span class="wmc-keystat-label">Reporting agency</span></li>
+            </ul>
+            <p>Search any state in the map to change this record. For more information, visit the <a href="data.html">Wildfire Data</a> page.</p>
+          </div>
+        </div>
+        <div class="wmc-lede-media">
+          <state-explorer data-cta-href="county.html" data-cta-label="Wildfires by county" data-filed="{&quot;Texas&quot;: {&quot;value&quot;: 9134, &quot;agency&quot;: &quot;Texas A&M Forest Service&quot;, &quot;lead&quot;: &quot;Greg Abbott&quot;, &quot;window&quot;: &quot;Feb — Aug&quot;}, &quot;California&quot;: {&quot;value&quot;: 8412, &quot;agency&quot;: &quot;CAL FIRE&quot;, &quot;lead&quot;: &quot;Gavin Newsom&quot;, &quot;window&quot;: &quot;May — Nov&quot;}, &quot;Oregon&quot;: {&quot;value&quot;: 7876, &quot;agency&quot;: &quot;Oregon Dept. of Forestry&quot;, &quot;lead&quot;: &quot;Tina Kotek&quot;, &quot;window&quot;: &quot;Jun — Oct&quot;}}" data-total="752"></state-explorer>
+        </div>
+      </div>
+    </section>
+
+    <section id="records" class="wmc-table-section">
+      <div class="wmc-container">
+        <div class="wmc-table-head">
+          <div class="wmc-table-head-text">
+            <h2 class="wmc-section-title">Wildfire Summary 2021</h2>
+            <p class="wmc-intro">Here are all the reported wildfire totals for California in 2021. Sometimes fires can be burning for months, so a single incident may span more than one reporting window.</p>
+          </div>
+          <div class="wmc-table-tools">
+            <label class="wmc-label" for="wmc-fire-search">Search fires</label>
+            <input id="wmc-fire-search" type="search" placeholder="Search by fire name or county&hellip;" autocomplete="off" data-table-filter="wmc-fire-table">
+            <p class="wmc-filter-count" role="status" data-filter-count data-noun="fire,fires"></p>
+          </div>
+        </div>
+        <div class="wmc-table-scroll" tabindex="0" role="region" aria-label="Reported wildfires in California in 2021.">
+          <table id="wmc-fire-table" class="wmc-table">
+            <caption class="wmc-sr">Reported wildfires in California in 2021. Select a column heading to sort.</caption>
+            <thead>
+              <tr>
+                <th scope="col" data-sortable aria-sort="none">Fire name</th>
+                <th scope="col" data-sortable aria-sort="none">County</th>
+                <th scope="col" data-sortable aria-sort="none" class="wmc-num">Acres burned</th>
+                <th scope="col" data-sortable aria-sort="none" class="wmc-num">Containment</th>
+                <th scope="col" data-sortable aria-sort="none" class="wmc-num">Fatalities</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">DIXIE FIRE</th>
+                <td>Butte County</td>
+                <td class="wmc-num" data-sort="963309">963,309</td>
+                <td class="wmc-num" data-sort="100%">100%</td>
+                <td class="wmc-num" data-sort="1">1</td>
+              </tr>
+              <tr>
+                <th scope="row">CREEK FIRE</th>
+                <td>Madera County</td>
+                <td class="wmc-num" data-sort="379571">379,571</td>
+                <td class="wmc-num" data-sort="100%">100%</td>
+                <td class="wmc-num" data-sort="0">0</td>
+              </tr>
+              <tr>
+                <th scope="row">MONUMENT FIRE</th>
+                <td>Trinity County</td>
+                <td class="wmc-num" data-sort="223124">223,124</td>
+                <td class="wmc-num" data-sort="100%">100%</td>
+                <td class="wmc-num" data-sort="0">0</td>
+              </tr>
+              <tr>
+                <th scope="row">McFARLAND FIRE</th>
+                <td>Shasta County</td>
+                <td class="wmc-num" data-sort="122653">122,653</td>
+                <td class="wmc-num" data-sort="98%">98%</td>
+                <td class="wmc-num" data-sort="0">0</td>
+              </tr>
+              <tr>
+                <th scope="row">BECKWOURTH COMPLEX</th>
+                <td>Plumas County</td>
+                <td class="wmc-num" data-sort="105670">105,670</td>
+                <td class="wmc-num" data-sort="98%">98%</td>
+                <td class="wmc-num" data-sort="0">0</td>
+              </tr>
+              <tr>
+                <th scope="row">KNP COMPLEX FIRE</th>
+                <td>Tulare County</td>
+                <td class="wmc-num" data-sort="88307">88,307</td>
+                <td class="wmc-num" data-sort="100%">100%</td>
+                <td class="wmc-num" data-sort="0">0</td>
+              </tr>
+              <tr>
+                <th scope="row">TAMARACK FIRE</th>
+                <td>Alpine County</td>
+                <td class="wmc-num" data-sort="68637">68,637</td>
+                <td class="wmc-num" data-sort="100%">100%</td>
+                <td class="wmc-num" data-sort="0">0</td>
+              </tr>
+              <tr>
+                <th scope="row">ALISAL FIRE</th>
+                <td>Santa Barbara County</td>
+                <td class="wmc-num" data-sort="17254">17,254</td>
+                <td class="wmc-num" data-sort="100%">100%</td>
+                <td class="wmc-num" data-sort="0">0</td>
+              </tr>
+              <tr>
+                <th scope="row">FAWN FIRE</th>
+                <td>Shasta County</td>
+                <td class="wmc-num" data-sort="8578">8,578</td>
+                <td class="wmc-num" data-sort="100%">100%</td>
+                <td class="wmc-num" data-sort="0">0</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="wmc-prose-section">
+      <div class="wmc-container">
+        <h2 class="wmc-panel-title">Wildfire Trends (Acres Burned)</h2>
+        <p class="wmc-intro">Wildfires in the US have been increasing in severity over the last decade. The 2021 season saw record-breaking acreage across the western states.</p>
+        <figure class="wmc-figure">
+          <line-chart data-series='[["2010",0.31],["2011",0.42],["2012",0.38],["2013",0.61],["2014",0.55],["2015",0.88],["2016",0.74],["2017",1.12],["2018",0.97],["2019",1.38],["2020",1.29],["2021",1.56]]' data-unit="M acres" data-y-label="Acres burned" data-desc="Acres burned in California per season, 2010 to 2021"></line-chart>
+        </figure>
+      </div>
+    </section>
+
+    <section class="wmc-split-section">
+      <div class="wmc-container wmc-split">
+        <div class="wmc-split-text">
+          <h2 class="wmc-panel-title">Incomplete reporting</h2>
+          <p class="wmc-section-meta">California &middot; 2021</p>
+          <p>Reporting is incomplete for many fires. Some incidents report zero containment data, meaning the real picture is worse than the one this page can show.</p>
+        </div>
+        <figure class="wmc-split-figure">
+          <donut-chart data-desc="Share of California 2021 filings that arrived complete"
+                       data-series='[["Complete filings", 30], ["Reporting gaps", 70]]'></donut-chart>
+        </figure>
+      </div>
+    </section>

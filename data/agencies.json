@@ -1,0 +1,72 @@
+[
+  {
+    "name": "CAL FIRE",
+    "handle": "@CAL_FIRE",
+    "phone": "+1 916 653 7772",
+    "site": "fire.ca.gov",
+    "address": "1234 Spinnaker Way, West Sacramento CA"
+  },
+  {
+    "name": "USDA Forest Service",
+    "handle": "@USForestService",
+    "phone": "+1 202 205 8333",
+    "site": "fs.usda.gov",
+    "address": "201 14th St SW, Washington DC"
+  },
+  {
+    "name": "National Interagency Fire Center",
+    "handle": "@NIFCfire",
+    "phone": "+1 208 387 5512",
+    "site": "nifc.gov",
+    "address": "3833 S Development Ave, Boise ID"
+  },
+  {
+    "name": "Texas A&M Forest Service",
+    "handle": "@TxForestService",
+    "phone": "+1 979 458 6606",
+    "site": "tfsweb.tamu.edu",
+    "address": "200 Technology Way, College Station TX"
+  },
+  {
+    "name": "Oregon Dept of Forestry",
+    "handle": "@OregonForestry",
+    "phone": "+1 503 945 7200",
+    "site": "oregon.gov/odf",
+    "address": "2600 State St, Salem OR"
+  },
+  {
+    "name": "Montana DNRC",
+    "handle": "@MontanaDNRC",
+    "phone": "+1 406 444 2074",
+    "site": "dnrc.mt.gov",
+    "address": "1539 Eleventh Ave, Helena MT"
+  },
+  {
+    "name": "Colorado State Forest Service",
+    "handle": "@ColoradoSFS",
+    "phone": "+1 970 491 6303",
+    "site": "csfs.colostate.edu",
+    "address": "5060 Campus Delivery, Fort Collins CO"
+  },
+  {
+    "name": "Arizona Dept of Forestry",
+    "handle": "@AZForestry",
+    "phone": "+1 602 771 1400",
+    "site": "dffm.az.gov",
+    "address": "1110 W Washington St, Phoenix AZ"
+  },
+  {
+    "name": "New Mexico Forestry Division",
+    "handle": "@NMForestry",
+    "phone": "+1 505 476 3325",
+    "site": "nmforestry.com",
+    "address": "1220 S St Francis Dr, Santa Fe NM"
+  },
+  {
+    "name": "Washington DNR",
+    "handle": "@waDNR",
+    "phone": "+1 360 902 1004",
+    "site": "dnr.wa.gov",
+    "address": "1111 Washington St SE, Olympia WA"
+  }
+]

@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fire Agencies — Wildfire Media Coverage</title>
+<meta name="description" content="Who files the US wildfire record, how to reach them, and what the filing does not cover.">
+<link rel="icon" type="image/svg+xml" href="wmc-mark.svg?v=47hnu2yn">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=44aatqso">
+<link rel="apple-touch-icon" href="icon-180.png?v=49z1s45a">
+<meta name="theme-color" content="#000000">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Krub:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/mapbox-gl@3.9.0/dist/mapbox-gl.css" integrity="sha384-GTsgKcJXGSkBp0M68qpxkz9XovzVH0PwSrjYONvkn3tXtySOSq+a14bG2gVJHwQG" crossorigin="anonymous">
+<script src="https://unpkg.com/mapbox-gl@3.9.0/dist/mapbox-gl.js" integrity="sha384-QRI8HEhaDamjVGfoos6X0AB+VVxCE4fAm6jaRZqcMn8mPsbxJvCc8cyG3Wu/+Pyq" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="styles.css?v=zuf71lzs">
+</head>
+<body>
+<a class="wmc-skip" href="#conteudo">Skip to content</a>
+<div class="wmc-root">
+
+  <header id="top" class="wmc-header">
+    <div class="wmc-header-bar">
+
+      <a class="wmc-masthead" href="index.html">
+        <img class="wmc-mark-logo" src="wmc-mark.svg" alt="" width="593" height="591" decoding="async">
+        <span class="wmc-masthead-text">
+          <span class="wmc-masthead-name">Wildfire</span>
+          <span class="wmc-masthead-sub">Media Coverage</span>
+        </span>
+      </a>
+
+      <div class="wmc-header-right">
+        <nav class="wmc-nav-wide" aria-label="Primary">
+            <a class="wmc-nav-item" href="index.html">Home</a>
+            <a class="wmc-nav-item" href="scenario.html">The Scenario</a>
+            <a class="wmc-nav-item" href="state.html">States</a>
+            <a class="wmc-nav-item" href="data.html">Wildfire Data</a>
+            <a class="wmc-nav-item" href="agencies.html" aria-current="page">Fire Agencies</a>
+            <a class="wmc-nav-item" href="media.html">Media</a>
+        </nav>
+
+        <span class="wmc-share-status" role="status" data-share-status></span>
+        <button class="wmc-btn wmc-nav-wide-inline" type="button" data-share>Share</button>
+
+        <button class="wmc-nav-toggle" type="button" aria-expanded="false" aria-controls="wmc-menu" data-menu-toggle>
+          <span aria-hidden="true" class="wmc-burger">
+            <span></span><span></span><span></span>
+          </span>
+          <span class="wmc-sr">Menu</span>
+        </button>
+      </div>
+    </div>
+
+    <nav id="wmc-menu" class="wmc-menu" aria-label="Primary" hidden>
+            <a class="wmc-menu-item" href="index.html">Home</a>
+            <a class="wmc-menu-item" href="scenario.html">The Scenario</a>
+            <a class="wmc-menu-item" href="state.html">States</a>
+            <a class="wmc-menu-item" href="data.html">Wildfire Data</a>
+            <a class="wmc-menu-item" href="agencies.html" aria-current="page">Fire Agencies</a>
+            <a class="wmc-menu-item" href="media.html">Media</a>
+      <span class="wmc-menu-share">
+        <button class="wmc-btn" type="button" data-share>Share</button>
+        <span class="wmc-share-status" role="status" data-share-status></span>
+      </span>
+    </nav>
+  </header>
+
+  <main id="conteudo">
+
+<section class="wmc-lede-section">
+      <div class="wmc-container wmc-lede">
+        <div class="wmc-lede-text">
+          <p class="wmc-label">About</p>
+          <h1 class="wmc-hero-claim">US Wildfire Tracker</h1>
+          <p>Data is compiled from the NIFC, InciWeb, and state fire agencies. Some incidents may be reported with delays. Statistics shown represent confirmed fire perimeters and official incident reports from federal and state sources.</p>
+
+          <div class="wmc-figures">
+            <div class="wmc-figures-head">
+              <label class="wmc-label" for="wmc-year">Year</label>
+              <select class="wmc-select wmc-select--inline" id="wmc-year" data-figures-year>
+                <option value="2023" selected>2023</option>
+                <option value="2022">2022</option>
+                <option value="2021">2021</option>
+              </select>
+            </div>
+            <ul class="wmc-bigstats wmc-bigstats--stack" data-figures-list>
+              <li>
+                <p class="wmc-bigstat-label">Acres burned</p>
+                <p class="wmc-bigstat-value">8,942,000<span class="wmc-bigstat-unit"> ac</span></p>
+                <p class="wmc-bigstat-note">That’s an area larger than the entire state of Maryland.</p>
+              </li>
+              <li>
+                <p class="wmc-bigstat-label">Fire incidents</p>
+                <p class="wmc-bigstat-value">56,580</p>
+                <p class="wmc-bigstat-note">On average, 155 wildfires are reported every single day across the US.</p>
+              </li>
+              <li>
+                <p class="wmc-bigstat-label">Counties affected</p>
+                <p class="wmc-bigstat-value">1,247</p>
+                <p class="wmc-bigstat-note">Many rural fire incidents lack comprehensive monitoring — the actual count may be significantly higher.</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="wmc-lede-media">
+          <metric-map data-cta-href="data.html" data-cta-label="Full fire data"></metric-map>
+        </div>
+      </div>
+    </section>
+
+    <section class="wmc-prose-section">
+      <div class="wmc-container">
+        <h2 class="wmc-panel-title">Wildfires through time (Duration)</h2>
+        <p class="wmc-intro">Wildfire activity across the United States has increased significantly over the past decade due to climate change, prolonged drought, and expanding development into fire-prone landscapes. This page tracks incidents reported to the National Interagency Fire Center.</p>
+        <figure class="wmc-figure">
+          <line-chart data-series='[["2010",9],["2011",12],["2012",11],["2013",16],["2014",14],["2015",22],["2016",19],["2017",29],["2018",26],["2019",37],["2020",34],["2021",46],["2022",43],["2023",58]]' data-unit="days" data-y-label="Median duration" data-desc="Median wildfire duration in days, 2010 to 2023"></line-chart>
+        </figure>
+      </div>
+    </section>
+
+    <section id="directory" class="wmc-agencies-section">
+      <div class="wmc-container">
+        <div class="wmc-section-head wmc-section-head--stacked">
+          <h2 class="wmc-section-title">The Fire Agencies</h2>
+          <p class="wmc-section-meta">Select an agency to view wildfire response details</p>
+        </div>
+        <ul class="wmc-agencies">
+            <li>
+              <a class="wmc-agency-name" href="https://fire.ca.gov">CAL FIRE</a>
+              <span class="wmc-agency-lines">
+                <a href="https://twitter.com/CAL_FIRE">@CAL_FIRE</a>
+                <a href="tel:+19166537772">+1 916 653 7772</a>
+                <a href="https://fire.ca.gov">fire.ca.gov</a>
+                <span class="wmc-agency-addr">1234 Spinnaker Way, West Sacramento CA</span>
+              </span>
+            </li>
+            <li>
+              <a class="wmc-agency-name" href="https://fs.usda.gov">USDA Forest Service</a>
+              <span class="wmc-agency-lines">
+                <a href="https://twitter.com/USForestService">@USForestService</a>
+                <a href="tel:+12022058333">+1 202 205 8333</a>
+                <a href="https://fs.usda.gov">fs.usda.gov</a>
+                <span class="wmc-agency-addr">201 14th St SW, Washington DC</span>
+              </span>
+            </li>
+            <li>
+              <a class="wmc-agency-name" href="https://nifc.gov">National Interagency Fire Center</a>
+              <span class="wmc-agency-lines">
+                <a href="https://twitter.com/NIFCfire">@NIFCfire</a>
+                <a href="tel:+12083875512">+1 208 387 5512</a>
+                <a href="https://nifc.gov">nifc.gov</a>
+                <span class="wmc-agency-addr">3833 S Development Ave, Boise ID</span>
+              </span>
+            </li>
+            <li>
+              <a class="wmc-agency-name" href="https://tfsweb.tamu.edu">Texas A&amp;M Forest Service</a>
+              <span class="wmc-agency-lines">
+                <a href="https://twitter.com/TxForestService">@TxForestService</a>
+                <a href="tel:+19794586606">+1 979 458 6606</a>
+                <a href="https://tfsweb.tamu.edu">tfsweb.tamu.edu</a>
+                <span class="wmc-agency-addr">200 Technology Way, College Station TX</span>
+              </span>
+            </li>
+            <li>
+              <a class="wmc-agency-name" href="https://oregon.gov/odf">Oregon Dept of Forestry</a>
+              <span class="wmc-agency-lines">
+                <a href="https://twitter.com/OregonForestry">@OregonForestry</a>
+                <a href="tel:+15039457200">+1 503 945 7200</a>
+                <a href="https://oregon.gov/odf">oregon.gov/odf</a>
+                <span class="wmc-agency-addr">2600 State St, Salem OR</span>
+              </span>
+            </li>
+            <li>
+              <a class="wmc-agency-name" href="https://dnrc.mt.gov">Montana DNRC</a>
+              <span class="wmc-agency-lines">
+                <a href="https://twitter.com/MontanaDNRC">@MontanaDNRC</a>
+                <a href="tel:+14064442074">+1 406 444 2074</a>
+                <a href="https://dnrc.mt.gov">dnrc.mt.gov</a>
+                <span class="wmc-agency-addr">1539 Eleventh Ave, Helena MT</span>
+              </span>
+            </li>
+            <li>
+              <a class="wmc-agency-name" href="https://csfs.colostate.edu">Colorado State Forest Service</a>
+              <span class="wmc-agency-lines">
+                <a href="https://twitter.com/ColoradoSFS">@ColoradoSFS</a>
+                <a href="tel:+19704916303">+1 970 491 6303</a>
+                <a href="https://csfs.colostate.edu">csfs.colostate.edu</a>
+                <span class="wmc-agency-addr">5060 Campus Delivery, Fort Collins CO</span>
+              </span>
+            </li>
+            <li>
+              <a class="wmc-agency-name" href="https://dffm.az.gov">Arizona Dept of Forestry</a>
+              <span class="wmc-agency-lines">
+                <a href="https://twitter.com/AZForestry">@AZForestry</a>
+                <a href="tel:+16027711400">+1 602 771 1400</a>
+                <a href="https://dffm.az.gov">dffm.az.gov</a>
+                <span class="wmc-agency-addr">1110 W Washington St, Phoenix AZ</span>
+              </span>
+            </li>
+            <li>
+              <a class="wmc-agency-name" href="https://nmforestry.com">New Mexico Forestry Division</a>
+              <span class="wmc-agency-lines">
+                <a href="https://twitter.com/NMForestry">@NMForestry</a>
+                <a href="tel:+15054763325">+1 505 476 3325</a>
+                <a href="https://nmforestry.com">nmforestry.com</a>
+                <span class="wmc-agency-addr">1220 S St Francis Dr, Santa Fe NM</span>
+              </span>
+            </li>
+            <li>
+              <a class="wmc-agency-name" href="https://dnr.wa.gov">Washington DNR</a>
+              <span class="wmc-agency-lines">
+                <a href="https://twitter.com/waDNR">@waDNR</a>
+                <a href="tel:+13609021004">+1 360 902 1004</a>
+                <a href="https://dnr.wa.gov">dnr.wa.gov</a>
+                <span class="wmc-agency-addr">1111 Washington St SE, Olympia WA</span>
+              </span>
+            </li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wmc-footer">
+    <div class="wmc-container wmc-footer-inner">
+
+      <div class="wmc-sources">
+        <h2 class="wmc-sources-title">Wildfire Data Sources &amp; Accuracy</h2>
+        <p>This website is intended to provide an accurate representation of wildfire data from federal and state fire agencies. The data is complex, and thus some errors may have been made. If you find something that is incorrect, please <a href="https://github.com/brunoleitelima7/wmc/issues/new">raise an issue on GitHub</a> and we&rsquo;ll endeavour to fix it quickly.</p>
+        <p>Wildfire data is sourced from incident reports, fire perimeter updates, and air quality monitoring systems. We combine data from USFS, CAL FIRE, BLM, and NWS to provide a unified view of active fires, containment status, and smoke forecasts. If you notice inconsistencies in fire naming, acreage, or containment percentages, please let us know so we can reconcile the data.</p>
+        <p class="wmc-sources-note">All the data sources are listed on the <a href="https://github.com/brunoleitelima7/wmc">source code</a> website.</p>
+      </div>
+
+      <div class="wmc-footer-bar">
+        <a class="wmc-footer-mark" href="index.html">
+          <img class="wmc-mark-logo" src="wmc-mark.svg" alt="" width="593" height="591" decoding="async">
+          <span class="wmc-masthead-text">
+            <span class="wmc-footer-mark-name">Wildfire</span>
+            <span class="wmc-footer-mark-sub">Media Coverage</span>
+          </span>
+        </a>
+
+        <nav class="wmc-footer-nav" aria-label="Footer">
+          <a class="wmc-footer-link" href="index.html">Home</a>
+          <a class="wmc-footer-link" href="scenario.html">The Scenario</a>
+          <a class="wmc-footer-link" href="state.html">States</a>
+          <a class="wmc-footer-link" href="data.html">Wildfire Data</a>
+          <a class="wmc-footer-link" href="agencies.html">Fire Agencies</a>
+          <a class="wmc-footer-link" href="media.html">Media</a>
+          <a class="wmc-footer-link" href="county.html">By County</a>
+        </nav>
+
+        <div class="wmc-footer-actions">
+          <a class="wmc-icon-btn" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fbrunoleitelima7.github.io%2Fwmc%2F" aria-label="Share this page on Twitter"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a>
+          <a class="wmc-icon-btn" href="https://github.com/brunoleitelima7/wmc" aria-label="Source code on GitHub"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a>
+          <button class="wmc-btn" type="button" data-share>Share</button>
+          <span class="wmc-share-status" role="status" data-share-status></span>
+        </div>
+      </div>
+
+      <p class="wmc-colophon">&copy; 2023 Wildfire Media Coverage. Text and data licensed <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>. Data provided by NIFC and state fire agencies. Full copyright information available <a href="https://creativecommons.org/licenses/by-sa/4.0/">here</a>.</p>
+
+    </div>
+  </footer>
+</div>
+<script type="application/json" id="wmc-data-figures">{"_nota":"Os tres numeros do topo da pagina de agencias, por ano. As comparacoes de area foram conferidas: 8.942.000 ac = 13.972 mi2 contra Maryland 12.406; 7.577.000 = 11.839 contra Massachusetts 10.554; 7.125.000 = 11.133 contra Hawaii 10.932. A media diaria e a contagem dividida por 365.","default":"2023","order":["2023","2022","2021"],"years":{"2021":[{"label":"Acres burned","value":"7,125,000","unit":" ac","note":"That’s an area larger than the entire state of Hawaii."},{"label":"Fire incidents","value":"58,985","note":"On average, 161 wildfires were reported every single day across the US."},{"label":"Counties affected","value":"1,032","note":"Many rural fire incidents lack comprehensive monitoring — the actual count may be significantly higher."}],"2022":[{"label":"Acres burned","value":"7,577,000","unit":" ac","note":"That’s an area larger than the entire state of Massachusetts."},{"label":"Fire incidents","value":"68,988","note":"On average, 189 wildfires were reported every single day across the US."},{"label":"Counties affected","value":"1,104","note":"Many rural fire incidents lack comprehensive monitoring — the actual count may be significantly higher."}],"2023":[{"label":"Acres burned","value":"8,942,000","unit":" ac","note":"That’s an area larger than the entire state of Maryland."},{"label":"Fire incidents","value":"56,580","note":"On average, 155 wildfires are reported every single day across the US."},{"label":"Counties affected","value":"1,247","note":"Many rural fire incidents lack comprehensive monitoring — the actual count may be significantly higher."}]}}</script>
+<script src="line-chart.js?v=50op8a8f" defer></script>
+<script src="mapbox-token.js?v=3efz6dhv" defer></script>
+<script src="metric-map.js?v=7hnkjbr5" defer></script>
+<script src="site.js?v=4m2jn8xq" defer></script>
+</body>
+</html>

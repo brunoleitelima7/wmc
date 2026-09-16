@@ -1,0 +1,183 @@
+<!--meta
+title: Wildfires by County
+description: Wildfire counts and acreage by US county in 2023, with the responsible fire agency for each.
+active: none
+-->
+
+    <section class="wmc-lede-section">
+      <div class="wmc-container wmc-lede">
+        <div class="wmc-lede-text">
+          <p class="wmc-label">By county</p>
+          <h1 class="wmc-hero-claim">Wildfires by County</h1>
+          <p>Here is a list of wildfires by county. How does your county fare? You can search by typing the name into the search box. Want to contact your local fire agency about it?</p>
+          <p>Click on the agency in the table below to reach the relevant fire agency — or scroll on to find out more about their suppression efforts.</p>
+          <a class="wmc-btn wmc-btn--start" href="#records">Scroll down to the county table</a>
+        </div>
+
+        <div class="wmc-lede-media">
+          <div class="wmc-county-map" role="img" aria-label="Choropleth map of the United States shaded by wildfire count per county. The densest shading falls across California, Oregon and Washington.">
+            <img src="hero-poster.jpg" alt="">
+          </div>
+          <p class="wmc-caption">Shading runs from the lowest to the highest county count filed in 2023.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="records" class="wmc-table-section">
+      <div class="wmc-container">
+        <div class="wmc-table-head">
+          <div class="wmc-table-head-text">
+            <h2 class="wmc-section-title">The county record</h2>
+            <p class="wmc-intro">Ten counties completed a 2023 filing. The other 588 are not zeros &mdash; they are unfiled, and nothing on this page estimates on their behalf.</p>
+          </div>
+          <div class="wmc-table-tools">
+            <label class="wmc-label" for="wmc-county-search">Search counties</label>
+            <input id="wmc-county-search" type="search" placeholder="Search by county, agency or state&hellip;"
+                   autocomplete="off" data-table-filter="wmc-county-table">
+            <p class="wmc-filter-count" role="status" data-filter-count data-noun="county,counties"></p>
+          </div>
+        </div>
+
+        <div class="wmc-table-scroll" tabindex="0" role="region" aria-label="Wildfires by county, scrollable table">
+          <table id="wmc-county-table" class="wmc-table">
+            <caption class="wmc-sr">Wildfires by county in 2023. Select a column heading to sort.</caption>
+            <thead>
+              <tr>
+                <th scope="col" data-sortable aria-sort="none" class="wmc-num">Rank</th>
+                <th scope="col" data-sortable aria-sort="none">County</th>
+                <th scope="col" data-sortable aria-sort="none">Fire agency</th>
+                <th scope="col" data-sortable aria-sort="none">State</th>
+                <th scope="col" data-sortable aria-sort="none">Region</th>
+                <th scope="col" data-sortable aria-sort="none" class="wmc-num">Wildfires</th>
+                <th scope="col" data-sortable aria-sort="none" class="wmc-num">Change</th>
+                <th scope="col" data-sortable aria-sort="none" class="wmc-num">Acres burned</th>
+                <th scope="col" data-sortable aria-sort="none" class="wmc-num">Change</th>
+              </tr>
+            </thead>
+            <tbody>
+          <tr>
+            <td class="wmc-num">1</td>
+            <th scope="row"><a href="county.html#riverside-county">Riverside County</a></th>
+            <td><a href="agencies.html#directory">CAL FIRE</a></td>
+            <td>California</td>
+            <td>CAL FIRE South</td>
+            <td class="wmc-num" data-sort="6754">6,754</td>
+            <td class="wmc-num" data-sort="178"><span class="wmc-delta wmc-delta--up" aria-hidden="true">&#9650;</span>178<span class="wmc-sr"> up on last year</span></td>
+            <td class="wmc-num" data-sort="79501">79,501</td>
+            <td class="wmc-num" data-sort="6910"><span class="wmc-delta wmc-delta--up" aria-hidden="true">&#9650;</span>6,910<span class="wmc-sr"> up on last year</span></td>
+          </tr>
+          <tr>
+            <td class="wmc-num">2</td>
+            <th scope="row"><a href="county.html#los-angeles-county">Los Angeles County</a></th>
+            <td><a href="agencies.html#directory">LAFD</a></td>
+            <td>California</td>
+            <td>CAL FIRE SLU</td>
+            <td class="wmc-num" data-sort="7456">7,456</td>
+            <td class="wmc-num" data-sort="243"><span class="wmc-delta wmc-delta--down" aria-hidden="true">&#9660;</span>243<span class="wmc-sr"> down on last year</span></td>
+            <td class="wmc-num" data-sort="71831">71,831</td>
+            <td class="wmc-num" data-sort="5289"><span class="wmc-delta wmc-delta--down" aria-hidden="true">&#9660;</span>5,289<span class="wmc-sr"> down on last year</span></td>
+          </tr>
+          <tr>
+            <td class="wmc-num">3</td>
+            <th scope="row"><a href="county.html#san-bernardino-county">San Bernardino County</a></th>
+            <td><a href="agencies.html#directory">USFS</a></td>
+            <td>California</td>
+            <td>USFS San Bernardino</td>
+            <td class="wmc-num" data-sort="6952">6,952</td>
+            <td class="wmc-num" data-sort="1019"><span class="wmc-delta wmc-delta--down" aria-hidden="true">&#9660;</span>1,019<span class="wmc-sr"> down on last year</span></td>
+            <td class="wmc-num" data-sort="68545">68,545</td>
+            <td class="wmc-num" data-sort="11682"><span class="wmc-delta wmc-delta--down" aria-hidden="true">&#9660;</span>11,682<span class="wmc-sr"> down on last year</span></td>
+          </tr>
+          <tr>
+            <td class="wmc-num">4</td>
+            <th scope="row"><a href="county.html#mariposa-county">Mariposa County</a></th>
+            <td><a href="agencies.html#directory">CAL FIRE MMU</a></td>
+            <td>California</td>
+            <td>CAL FIRE MMU</td>
+            <td class="wmc-num" data-sort="5233">5,233</td>
+            <td class="wmc-num" data-sort="1122"><span class="wmc-delta wmc-delta--up" aria-hidden="true">&#9650;</span>1,122<span class="wmc-sr"> up on last year</span></td>
+            <td class="wmc-num" data-sort="58769">58,769</td>
+            <td class="wmc-num" data-sort="9752"><span class="wmc-delta wmc-delta--up" aria-hidden="true">&#9650;</span>9,752<span class="wmc-sr"> up on last year</span></td>
+          </tr>
+          <tr>
+            <td class="wmc-num">5</td>
+            <th scope="row"><a href="county.html#shasta-county">Shasta County</a></th>
+            <td><a href="agencies.html#directory">CAL FIRE SHU</a></td>
+            <td>California</td>
+            <td>CAL FIRE SHU</td>
+            <td class="wmc-num" data-sort="6084">6,084</td>
+            <td class="wmc-num" data-sort="3229"><span class="wmc-delta wmc-delta--down" aria-hidden="true">&#9660;</span>3,229<span class="wmc-sr"> down on last year</span></td>
+            <td class="wmc-num" data-sort="51250">51,250</td>
+            <td class="wmc-num" data-sort="28494"><span class="wmc-delta wmc-delta--down" aria-hidden="true">&#9660;</span>28,494<span class="wmc-sr"> down on last year</span></td>
+          </tr>
+          <tr>
+            <td class="wmc-num">6</td>
+            <th scope="row"><a href="county.html#trinity-county">Trinity County</a></th>
+            <td><a href="agencies.html#directory">CAL FIRE TYR</a></td>
+            <td>California</td>
+            <td>CAL FIRE TYR</td>
+            <td class="wmc-num" data-sort="4707">4,707</td>
+            <td class="wmc-num" data-sort="3064"><span class="wmc-delta wmc-delta--down" aria-hidden="true">&#9660;</span>3,064<span class="wmc-sr"> down on last year</span></td>
+            <td class="wmc-num" data-sort="44454">44,454</td>
+            <td class="wmc-num" data-sort="26308"><span class="wmc-delta wmc-delta--down" aria-hidden="true">&#9660;</span>26,308<span class="wmc-sr"> down on last year</span></td>
+          </tr>
+          <tr>
+            <td class="wmc-num">7</td>
+            <th scope="row"><a href="county.html#josephine-county">Josephine County</a></th>
+            <td><a href="agencies.html#directory">Oregon Dept of Forestry</a></td>
+            <td>Oregon</td>
+            <td>Oregon Dept of Forestry</td>
+            <td class="wmc-num" data-sort="4536">4,536</td>
+            <td class="wmc-num" data-sort="555"><span class="wmc-delta wmc-delta--down" aria-hidden="true">&#9660;</span>555<span class="wmc-sr"> down on last year</span></td>
+            <td class="wmc-num" data-sort="43983">43,983</td>
+            <td class="wmc-num" data-sort="2805"><span class="wmc-delta wmc-delta--down" aria-hidden="true">&#9660;</span>2,805<span class="wmc-sr"> down on last year</span></td>
+          </tr>
+          <tr>
+            <td class="wmc-num">8</td>
+            <th scope="row"><a href="county.html#chelan-county">Chelan County</a></th>
+            <td><a href="agencies.html#directory">Natural Resources</a></td>
+            <td>Washington</td>
+            <td>WA DNR</td>
+            <td class="wmc-num" data-sort="4320">4,320</td>
+            <td class="wmc-num" data-sort="813"><span class="wmc-delta wmc-delta--up" aria-hidden="true">&#9650;</span>813<span class="wmc-sr"> up on last year</span></td>
+            <td class="wmc-num" data-sort="43506">43,506</td>
+            <td class="wmc-num" data-sort="4072"><span class="wmc-delta wmc-delta--up" aria-hidden="true">&#9650;</span>4,072<span class="wmc-sr"> up on last year</span></td>
+          </tr>
+          <tr>
+            <td class="wmc-num">9</td>
+            <th scope="row"><a href="county.html#klamath-county">Klamath County</a></th>
+            <td><a href="agencies.html#directory">Oregon Dept of Forestry</a></td>
+            <td>Oregon</td>
+            <td>Oregon Dept of Forestry</td>
+            <td class="wmc-num" data-sort="4068">4,068</td>
+            <td class="wmc-num" data-sort="603"><span class="wmc-delta wmc-delta--down" aria-hidden="true">&#9660;</span>603<span class="wmc-sr"> down on last year</span></td>
+            <td class="wmc-num" data-sort="40170">40,170</td>
+            <td class="wmc-num" data-sort="10432"><span class="wmc-delta wmc-delta--down" aria-hidden="true">&#9660;</span>10,432<span class="wmc-sr"> down on last year</span></td>
+          </tr>
+          <tr>
+            <td class="wmc-num">10</td>
+            <th scope="row"><a href="county.html#butte-county">Butte County</a></th>
+            <td><a href="agencies.html#directory">CAL FIRE NEU</a></td>
+            <td>California</td>
+            <td>CAL FIRE NEU</td>
+            <td class="wmc-num" data-sort="4669">4,669</td>
+            <td class="wmc-num" data-sort="394"><span class="wmc-delta wmc-delta--up" aria-hidden="true">&#9650;</span>394<span class="wmc-sr"> up on last year</span></td>
+            <td class="wmc-num" data-sort="39643">39,643</td>
+            <td class="wmc-num" data-sort="1858"><span class="wmc-delta wmc-delta--down" aria-hidden="true">&#9660;</span>1,858<span class="wmc-sr"> down on last year</span></td>
+          </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="5">All 598 counties filed</td>
+                <td class="wmc-num">459,053</td>
+                <td class="wmc-num">23,704</td>
+                <td class="wmc-num">3,387,825</td>
+                <td class="wmc-num">423,704</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <p class="wmc-caption">Only the ten counties with the highest filed acreage are shown. Where a county filed nothing, the record stays blank &mdash; it is not estimated.</p>
+      </div>
+    </section>

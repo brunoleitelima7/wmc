@@ -1,0 +1,43 @@
+  </main>
+
+  <footer class="wmc-footer">
+    <div class="wmc-container wmc-footer-inner">
+
+      <div class="wmc-sources">
+        <h2 class="wmc-sources-title">Wildfire Data Sources &amp; Accuracy</h2>
+        <p>This website is intended to provide an accurate representation of wildfire data from federal and state fire agencies. The data is complex, and thus some errors may have been made. If you find something that is incorrect, please <a href="https://github.com/brunoleitelima7/wmc/issues/new">raise an issue on GitHub</a> and we&rsquo;ll endeavour to fix it quickly.</p>
+        <p>Wildfire data is sourced from incident reports, fire perimeter updates, and air quality monitoring systems. We combine data from USFS, CAL FIRE, BLM, and NWS to provide a unified view of active fires, containment status, and smoke forecasts. If you notice inconsistencies in fire naming, acreage, or containment percentages, please let us know so we can reconcile the data.</p>
+        <p class="wmc-sources-note">All the data sources are listed on the <a href="https://github.com/brunoleitelima7/wmc">source code</a> website.</p>
+      </div>
+
+      <div class="wmc-footer-bar">
+        <a class="wmc-footer-mark" href="index.html">
+          <img class="wmc-mark-logo" src="wmc-mark.svg" alt="" width="593" height="591" decoding="async">
+          <span class="wmc-masthead-text">
+            <span class="wmc-footer-mark-name">Wildfire</span>
+            <span class="wmc-footer-mark-sub">Media Coverage</span>
+          </span>
+        </a>
+
+        <nav class="wmc-footer-nav" aria-label="Footer">
+          {{FOOTER_NAV}}
+        </nav>
+
+        <div class="wmc-footer-actions">
+          <a class="wmc-icon-btn" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fbrunoleitelima7.github.io%2Fwmc%2F" aria-label="Share this page on Twitter"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a>
+          <a class="wmc-icon-btn" href="https://github.com/brunoleitelima7/wmc" aria-label="Source code on GitHub"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a>
+          <button class="wmc-btn" type="button" data-share>Share</button>
+          <span class="wmc-share-status" role="status" data-share-status></span>
+        </div>
+      </div>
+
+      <p class="wmc-colophon">&copy; 2023 Wildfire Media Coverage. Text and data licensed <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>. Data provided by NIFC and state fire agencies. Full copyright information available <a href="https://creativecommons.org/licenses/by-sa/4.0/">here</a>.</p>
+
+    </div>
+  </footer>
+</div>
+{{DATA}}
+{{SCRIPTS}}
+<script src="{{V_SITE}}" defer></script>
+</body>
+</html>

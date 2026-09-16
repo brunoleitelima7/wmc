@@ -1,0 +1,22 @@
+{
+  "_nota": "Os tres numeros do topo da pagina de agencias, por ano. As comparacoes de area foram conferidas: 8.942.000 ac = 13.972 mi2 contra Maryland 12.406; 7.577.000 = 11.839 contra Massachusetts 10.554; 7.125.000 = 11.133 contra Hawaii 10.932. A media diaria e a contagem dividida por 365.",
+  "default": "2023",
+  "order": ["2023", "2022", "2021"],
+  "years": {
+    "2023": [
+      { "label": "Acres burned", "value": "8,942,000", "unit": " ac", "note": "That’s an area larger than the entire state of Maryland." },
+      { "label": "Fire incidents", "value": "56,580", "note": "On average, 155 wildfires are reported every single day across the US." },
+      { "label": "Counties affected", "value": "1,247", "note": "Many rural fire incidents lack comprehensive monitoring — the actual count may be significantly higher." }
+    ],
+    "2022": [
+      { "label": "Acres burned", "value": "7,577,000", "unit": " ac", "note": "That’s an area larger than the entire state of Massachusetts." },
+      { "label": "Fire incidents", "value": "68,988", "note": "On average, 189 wildfires were reported every single day across the US." },
+      { "label": "Counties affected", "value": "1,104", "note": "Many rural fire incidents lack comprehensive monitoring — the actual count may be significantly higher." }
+    ],
+    "2021": [
+      { "label": "Acres burned", "value": "7,125,000", "unit": " ac", "note": "That’s an area larger than the entire state of Hawaii." },
+      { "label": "Fire incidents", "value": "58,985", "note": "On average, 161 wildfires were reported every single day across the US." },
+      { "label": "Counties affected", "value": "1,032", "note": "Many rural fire incidents lack comprehensive monitoring — the actual count may be significantly higher." }
+    ]
+  }
+}

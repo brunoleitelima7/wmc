@@ -1,0 +1,8 @@
+[
+  { "label": "Home",          "href": "index.html",    "key": "home" },
+  { "label": "The Scenario",  "href": "scenario.html", "key": "scenario" },
+  { "label": "States",        "href": "state.html",    "key": "states" },
+  { "label": "Wildfire Data", "href": "data.html",     "key": "data" },
+  { "label": "Fire Agencies", "href": "agencies.html", "key": "agencies" },
+  { "label": "Media",         "href": "media.html",    "key": "media" }
+]

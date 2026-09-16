@@ -47,6 +47,81 @@
               [-97.5,35.5,2.4,.8],[-104,42,2.4,.6]] }
   ];
 
+  /* Regiões: focos por plausibilidade geográfica, não por dado.
+     [lon, lat, raio graus, peso] */
+  var REGIOES = {
+    southwest: { label: "Southwest",
+      seeds: [[-120.5,36.5,3.0,1],[-115,34,2.6,.9],[-111.5,33.8,2.4,.8],
+              [-106,34.5,2.6,.7],[-117,39,2.2,.6]] },
+    southeast: { label: "Southeast",
+      seeds: [[-84,31,3.0,1],[-81.5,28.5,2.6,.9],[-88,33,2.4,.75],
+              [-80,34.5,2.2,.7],[-86,35.5,2.0,.55]] },
+    northwest: { label: "Northwest",
+      seeds: [[-122,45.5,2.6,1],[-120,47.2,2.4,.9],[-115,46.5,2.6,.85],
+              [-112,46.8,2.8,.7],[-117,44,2.2,.6]] }
+  };
+
+  /* Os dois conjuntos de controle. "land" é o original; "quality" é o do
+     wireframe da página Wildfire Data. Preset em vez de bifurcar o componente:
+     home, company e scenario continuam no conjunto de classes de solo. */
+  var PRESETS = {
+    land: {
+      grupos: [{ id: "metric", label: "Jump to metric", tipo: "choice",
+                 opcoes: METRICS.map(function (m) { return { id: m.id, label: m.label }; }) }],
+      padrao: { metric: "all" }
+    },
+    quality: {
+      grupos: [
+        { id: "data", label: "Data", tipo: "choice", opcoes: [
+            { id: "wildfires", label: "Wildfires" },
+            { id: "quality",   label: "Data Quality" } ] },
+        { id: "location", label: "Location", tipo: "choice", opcoes: [
+            { id: "southwest", label: "Southwest" },
+            { id: "southeast", label: "Southeast" },
+            { id: "northwest", label: "Northwest" } ] },
+        { id: "year", label: "Year", tipo: "select",
+          opcoes: ["2023","2022","2021","2020"].map(function (a) { return { id: a, label: a }; }) }
+      ],
+      padrao: { data: "wildfires", location: "southwest", year: "2021" }
+    }
+  };
+
+  function semente(estado) {
+    var txt = Object.keys(estado).sort().map(function (k) { return k + estado[k]; }).join("|");
+    return txt.split("").reduce(function (a, c) { return (a * 31 + c.charCodeAt(0)) | 0; }, 7);
+  }
+
+  /* O estado combinado vira um campo. A LOCALIZAÇÃO manda na geografia — sem
+     isso o mapa mostraria o Sudeste quando o usuário pediu o Sudoeste, e um
+     dado ilustrativo no lugar errado deixa de ser ilustrativo e passa a ser
+     enganoso. "Data Quality" gera menos pontos e mais espalhados: a leitura é
+     de cobertura falha, não de incidência. */
+  function campoPara(preset, estado) {
+    if (preset === "land") {
+      var m = METRICS.filter(function (x) { return x.id === estado.metric; })[0] || METRICS[0];
+      return fieldFor(m);
+    }
+    var reg = REGIOES[estado.location] || REGIOES.southwest;
+    var falha = estado.data === "quality";
+    var rnd = mulberry32(semente(estado));
+    var feats = [];
+    reg.seeds.forEach(function (s) {
+      var n = Math.round((falha ? 45 : 110) * s[3]) + (falha ? 12 : 30);
+      var espalha = falha ? 1.9 : 1.0;                  // lacuna se dispersa
+      for (var i = 0; i < n; i++) {
+        var ang = rnd() * Math.PI * 2;
+        var rad = Math.pow(rnd(), falha ? 1.05 : 1.7) * s[2] * espalha;
+        var lon = s[0] + Math.cos(ang) * rad * 1.3;
+        var lat = s[1] + Math.sin(ang) * rad;
+        if (lon < -125 || lon > -66.5 || lat < 24.5 || lat > 49.4) continue;
+        feats.push({ type: "Feature",
+          geometry: { type: "Point", coordinates: [lon, lat] },
+          properties: { w: Math.round((0.25 + rnd() * 0.75) * s[3] * 100) / 100 } });
+      }
+    });
+    return { type: "FeatureCollection", features: feats };
+  }
+
   function fieldFor(metric) {
     var rnd = mulberry32(metric.id.split("").reduce(function (a, c) { return a + c.charCodeAt(0); }, 7));
     var feats = [];
@@ -70,51 +145,103 @@
       if (this._built) return;
       this._built = true;
       this.style.display = "block";
-      this._metric = METRICS[0];
+      this._preset = PRESETS[this.getAttribute("data-controls")] ? this.getAttribute("data-controls") : "land";
+      this._estado = Object.assign({}, PRESETS[this._preset].padrao);
       this._render();
       this._boot();
     }
 
+    /* O destino vem do atributo: na home leva a outra pagina, e na propria
+       pagina de destino o botao some para nao virar auto-link. */
+    _ctaHTML() {
+      var href = this.getAttribute("data-cta-href");
+      if (href === "none") return "";
+      var rotulo = this.getAttribute("data-cta-label") || "Full fire data";
+      return '<a href="' + (href || "data.html") + '" class="wmc-btn wmc-btn--start">' + rotulo + '</a>';
+    }
+
     _render() {
-      var lbl = "font:500 clamp(11px,0.82cqw,12px)/1 Krub,system-ui;letter-spacing:.26em;text-transform:uppercase;color:" + MUTED;
       this.innerHTML =
         '<div class="wmc-explorer" style="position:relative;width:100%">' +
           '<div data-role="map" class="wmc-explorer-map"></div>' +
           '<div class="wmc-explorer-panel">' +
             '<h3 class="wmc-panel-title">Wildfire data</h3>' +
             '<p style="margin:0;max-width:48ch;font-size:clamp(14px,1.08cqw,16px);line-height:1.72;color:#BDB7AF;text-wrap:pretty">The US is experiencing a historic wildfire season. This data provides insights into the number of incidents, acres burned, and containment status across the country.</p>' +
-            '<a href="#records" class="wmc-btn wmc-btn--start">Full fire data</a>' +
-            '<div style="display:flex;flex-direction:column;gap:12px">' +
-              '<p id="wmc-metric-label" style="margin:0;' + lbl + '">Jump to metric</p>' +
-              '<div class="wmc-chipbox"><div role="group" aria-labelledby="wmc-metric-label" data-role="chips" class="wmc-chips"></div></div>' +
-            '</div>' +
+            this._ctaHTML() +
+            '<div data-role="controls" class="wmc-controls"></div>' +
             '<p data-role="note" aria-live="polite" style="margin:0;font-size:clamp(13px,1cqw,14px);line-height:1.66;color:#BDB7AF;max-width:46ch"></p>' +
-            '<p style="margin:0;' + lbl + ';color:' + RULE_STRONG + '">Illustrative density · not a filed record</p>' +
+            '<p class="wmc-label" style="margin:0;color:' + RULE_STRONG + '">Illustrative density · not a filed record</p>' +
           '</div>' +
         '</div>';
-      this._chips();
+      this._controles();
       this._note();
     }
 
-    _chips() {
-      var self = this, box = this.querySelector('[data-role="chips"]');
-      box.innerHTML = METRICS.map(function (m) {
-        var on = m.id === self._metric.id;
-        return '<button type="button" class="wmc-chip" data-metric="' + m.id + '" ' +
-          'aria-pressed="' + on + '">' + m.label + '</button>';
+    /* Um grupo por linha. `choice` vira grade de chips, `select` vira <select>
+       nativo — teclado, busca por digitação e leitor de tela vêm de graça. */
+    _controles() {
+      var self = this, box = this.querySelector('[data-role="controls"]');
+      var grupos = PRESETS[this._preset].grupos;
+
+      box.innerHTML = grupos.map(function (g, gi) {
+        var idRot = "wmc-ctl-" + gi + "-" + Math.random().toString(36).slice(2, 7);
+        if (g.tipo === "select") {
+          var opts = g.opcoes.map(function (o) {
+            return '<option value="' + o.id + '"' + (self._estado[g.id] === o.id ? " selected" : "") + '>' + o.label + '</option>';
+          }).join("");
+          return '<div class="wmc-control">' +
+            '<label class="wmc-label" for="' + idRot + '">' + g.label + '</label>' +
+            '<select class="wmc-select" id="' + idRot + '" data-group="' + g.id + '">' + opts + '</select>' +
+          '</div>';
+        }
+        var chips = g.opcoes.map(function (o) {
+          return '<button type="button" class="wmc-chip" data-group="' + g.id + '" data-opt="' + o.id + '" ' +
+            'aria-pressed="' + (self._estado[g.id] === o.id) + '">' + o.label + '</button>';
+        }).join("");
+        return '<div class="wmc-control">' +
+          '<p class="wmc-label" id="' + idRot + '">' + g.label + '</p>' +
+          '<div class="wmc-chipbox"><div role="group" aria-labelledby="' + idRot + '" class="wmc-chips">' + chips + '</div></div>' +
+        '</div>';
       }).join("");
+
       box.onclick = function (e) {
-        var b = e.target.closest("button[data-metric]");
+        var b = e.target.closest("button[data-opt]");
         if (!b) return;
-        var m = METRICS.filter(function (x) { return x.id === b.getAttribute("data-metric"); })[0];
-        if (!m || m.id === self._metric.id) return;
-        self._metric = m;
-        self._chips(); self._note(); self._paint();
+        var g = b.getAttribute("data-group"), o = b.getAttribute("data-opt");
+        if (self._estado[g] === o) return;
+        self._estado[g] = o;
+        self._controles(); self._note(); self._paint();
+      };
+      box.onchange = function (e) {
+        var sel = e.target.closest("select[data-group]");
+        if (!sel) return;
+        self._estado[sel.getAttribute("data-group")] = sel.value;
+        self._note(); self._paint();
       };
     }
+
+    _rotulo(grupo, id) {
+      var g = PRESETS[this._preset].grupos.filter(function (x) { return x.id === grupo; })[0];
+      if (!g) return id;
+      var o = g.opcoes.filter(function (x) { return x.id === id; })[0];
+      return o ? o.label : id;
+    }
+
     _note() {
-      this.querySelector('[data-role="note"]').innerHTML =
-        'Showing <strong style="font-weight:600;color:' + PAPER + '">' + this._metric.label + '</strong> — ' + this._metric.caption;
+      var forte = function (t) { return '<strong style="font-weight:600;color:' + PAPER + '">' + t + '</strong>'; };
+      var txt;
+      if (this._preset === "land") {
+        var m = METRICS.filter(function (x) { return x.id === this._estado.metric; }, this)[0] || METRICS[0];
+        txt = "Showing " + forte(m.label) + " — " + m.caption;
+      } else {
+        var e = this._estado;
+        txt = e.data === "quality"
+          ? "Showing " + forte("reporting gaps") + " across the " + forte(this._rotulo("location", e.location)) +
+            " in " + e.year + " — where stations filed late, partially, or not at all."
+          : "Showing " + forte("wildfire starts") + " across the " + forte(this._rotulo("location", e.location)) +
+            " in " + e.year + " — every reported start, all land classes.";
+      }
+      this.querySelector('[data-role="note"]').innerHTML = txt;
     }
     _fail(msg) {
       var h = this.querySelector('[data-role="map"]');
@@ -158,7 +285,7 @@
           if (!map.getLayer(id)) return;
           try { map.setPaintProperty(id, map.getLayer(id).type + "-color", INK); } catch (e) {}
         });
-        map.addSource("field", { type: "geojson", data: fieldFor(self._metric) });
+        map.addSource("field", { type: "geojson", data: campoPara(self._preset, self._estado) });
         map.addLayer({ id: "field-heat", type: "heatmap", source: "field",
           paint: {
             "heatmap-weight": ["interpolate", ["linear"], ["get", "w"], 0, 0, 1, 1],
@@ -185,7 +312,7 @@
     _paint() {
       if (!this._map || !this._ready) return;
       var src = this._map.getSource("field");
-      if (src) src.setData(fieldFor(this._metric));
+      if (src) src.setData(campoPara(this._preset, this._estado));
     }
   }
 
