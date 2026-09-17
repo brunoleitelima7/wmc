@@ -195,6 +195,7 @@ for (const arquivo of paginas) {
     VENDOR: (usaExplorer ? VENDOR_D3 + "\n" : "") + (usaMapa ? VENDOR_MAPBOX : ""),
     V_STYLES: v("styles.css"),
     V_SITE: v("site.js"),
+    V_ANALYTICS: v("analytics.js"),
     V_MARK: v("wmc-mark.svg"),
     V_FAV32: v("favicon-32.png"),
     V_ICON180: v("icon-180.png"),
